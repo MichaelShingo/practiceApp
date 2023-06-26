@@ -2,7 +2,13 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
 class Composer(models.Model):
-    name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+    
 
 class Period(models.Model):
     name = models.CharField(max_length=50)
@@ -27,4 +33,5 @@ class Piece(models.Model):
     recording_link = models.URLField(null=True, blank=True)
     tutorial_link = models.URLField(null=True, blank=True)
     type_of_piece = models.ForeignKey(TypeOfPiece, on_delete=models.CASCADE) # many-to-one - each piece can only have one type, each type can have many pieces
+
     
