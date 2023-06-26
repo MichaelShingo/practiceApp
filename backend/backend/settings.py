@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'knox',
     'core',
     'accounts',
+    'pieces',
 ]
 
 AUTH_USER_MODEL = 'core.User'
