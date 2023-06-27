@@ -46,6 +46,7 @@ class TechniqueSerializer(serializers.ModelSerializer):
 class PieceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Piece
+        depth = 1
         fields = [
             'title',
             'composer',
