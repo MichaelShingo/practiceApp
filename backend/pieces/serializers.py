@@ -4,7 +4,8 @@ from .models import (
     Period,
     TypeOfPiece,
     Technique,
-    Piece
+    Piece,
+    Category
 )
 
 class ComposerSerializer(serializers.ModelSerializer): # get full name
@@ -41,6 +42,13 @@ class TechniqueSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'tutorial'
+        ]
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = [
+            'name'
         ]
 
 class PieceSerializer(serializers.ModelSerializer):

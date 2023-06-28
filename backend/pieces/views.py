@@ -7,14 +7,16 @@ from .models import (
     Period,
     TypeOfPiece,
     Piece,
-    Technique
+    Technique,
+    Category
 )
 from .serializers import (
     ComposerSerializer,
     PieceSerializer,
     TypeOfPieceSerializer,
     TechniqueSerializer,
-    PeriodSerializer
+    PeriodSerializer,
+    CategorySerializer
 )
 import csv, os
 from django.conf import settings
@@ -64,23 +66,48 @@ class InsertPiecesAPIView(APIView):
    
         with open(os.path.join(settings.BASE_DIR, 'pieces.csv'), 'r', encoding='UTF-8') as file:
             csv_reader = csv.reader(file)
-            
+
             for row in csv_reader:
                 composer = Composer.objects.get(last_name=row[1])
                 period = Period.objects.get(name=row[2])
                 type_of_piece = TypeOfPiece.objects.get(name=row[9])
-                
-                entry = Piece(title=row[0], composer=composer, period=period, 
-                              difficulty=int(row[4]), recording_link=row[6], type_of_piece=type_of_piece)
-                entry.save()
+                category = Category.objects.get(name=row[10])
+                difficulty = int(row[4])
+                tutorial_link = row[5]
+                recording_link = row[6]
                 techniquesList = row[3].split(',')
-                print(techniquesList)
-                for techniqueStr in techniquesList:
-                    try:
-                        techniqueObj = Technique.objects.get(name=techniqueStr)
-                        entry.techniques.add(techniqueObj)
-                    except:
-                        continue
+                # print(category.name)
+                try:
+                    toUpdate = Piece.objects.get(composer__last_name=row[1], title=row[0])
+                    toUpdate.period = period
+                    toUpdate.difficulty = difficulty
+                    toUpdate.recording_link = recording_link
+                    toUpdate.tutorial_link = tutorial_link
+                    toUpdate.type_of_piece = type_of_piece
+                    toUpdate.category = category
+                    toUpdate.save()
+                    for techniqueStr in techniquesList:
+                        try:
+                            techniqueObj = Technique.objects.get(name=techniqueStr)
+                            techniqueExists = toUpdate.techniques.filter(pk=techniqueObj.pk).exists()
+                            print(techniqueObj.name, techniqueObj.pk, techniqueExists)
+                            if not techniqueExists:
+                                toUpdate.techniques.add(techniqueObj)
+                        except:
+                            continue
+                except:
+                    entry = Piece(title=row[0], composer=composer, period=period, 
+                                difficulty=difficulty, recording_link=recording_link, 
+                                type_of_piece=type_of_piece, category=category,
+                                tutorial_link=tutorial_link)
+                    entry.save()
+                    
+                    for techniqueStr in techniquesList:
+                        try:
+                            techniqueObj = Technique.objects.get(name=techniqueStr)
+                            entry.techniques.add(techniqueObj)
+                        except:
+                            continue
      
         file.close()
         status_code = status.HTTP_202_ACCEPTED
@@ -103,6 +130,22 @@ class InsertPeriodsAPIView(APIView):
         return Response({}, status_code)
 
 insert_periods_view = InsertPeriodsAPIView.as_view()
+
+class InsertCategoriesAPIView(APIView):
+    def get(self, request):
+        serializer_class = CategorySerializer
+   
+        with open(os.path.join(settings.BASE_DIR, 'categories.csv'), 'r', encoding='UTF-8') as file:
+            csv_reader = csv.reader(file)
+            for row in csv_reader:
+                entry = Category(name=row[0])
+                entry.save()
+        
+        file.close()
+        status_code = status.HTTP_202_ACCEPTED
+        return Response({}, status_code)
+
+insert_categories_view = InsertCategoriesAPIView.as_view()
 
 
 class InsertTypeOfPieceAPIView(APIView):
