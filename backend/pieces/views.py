@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from knox.auth import TokenAuthentication
 from .models import (
     Composer,
     Period,
@@ -16,11 +18,28 @@ from .serializers import (
     TypeOfPieceSerializer,
     TechniqueSerializer,
     PeriodSerializer,
-    CategorySerializer
+    CategorySerializer,
+    UserToPiecesSerializer
 )
 import csv, os
 from django.conf import settings
-# Create your views here.
+
+class UserPieceAPIView(APIView):
+    def get(self, request):
+        serializer_class = UserToPiecesSerializer
+        authentication_classes = [TokenAuthentication]
+        permission_classes = [IsAuthenticated]
+        user = request.user
+        print(user)
+
+    def post(self, request):
+        user = request.user
+        print(user)
+
+
+user_piece_view = UserPieceAPIView.as_view()
+
+
 
 class PiecesDetailView(APIView):
     def get(self, request):

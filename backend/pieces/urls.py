@@ -13,4 +13,5 @@ urlpatterns = [
     # path('techniques/', views.techniques_detail_view),
     path('insert-techniques/', views.insert_techniques_view),
     path('insert-categories/', views.insert_categories_view),
+    path('user-piece/', views.user_piece_view),
 ]

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from core.models import User
 
 class Composer(models.Model):
     first_name = models.CharField(max_length=100)
@@ -36,4 +37,8 @@ class Piece(models.Model):
     type_of_piece = models.ForeignKey(TypeOfPiece, on_delete=models.CASCADE) # many-to-one - each piece can only have one type, each type can have many pieces
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
 
+class UserToPieces(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    piece = models.ForeignKey(Piece, on_delete=models.CASCADE)
+    mastery_level = models.IntegerField()
     

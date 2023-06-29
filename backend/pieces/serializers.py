@@ -5,7 +5,8 @@ from .models import (
     TypeOfPiece,
     Technique,
     Piece,
-    Category
+    Category,
+    UserToPieces
 )
 
 class ComposerSerializer(serializers.ModelSerializer): # get full name
@@ -66,3 +67,11 @@ class PieceSerializer(serializers.ModelSerializer):
             'tutorial_link',
             'type_of_piece'
         ]
+
+class UserToPiecesSerializer(serializers.ModelSerializer):
+    model = UserToPieces
+    fields = [
+        'user',
+        'piece',
+        'mastery_level',
+    ]
