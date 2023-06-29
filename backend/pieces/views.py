@@ -10,7 +10,8 @@ from .models import (
     TypeOfPiece,
     Piece,
     Technique,
-    Category
+    Category,
+    UserToPieces
 )
 from .serializers import (
     ComposerSerializer,
@@ -30,11 +31,26 @@ class UserPieceAPIView(APIView):
         authentication_classes = [TokenAuthentication]
         permission_classes = [IsAuthenticated]
         user = request.user
-        print(user)
+        queryset = UserToPieces.objects.filter(user=user)
+        serializer = UserToPiecesSerializer(queryset, many=True)
+        status_code = status.HTTP_200_OK
+        return Response(serializer.data, status_code)
 
     def post(self, request):
         user = request.user
-        print(user)
+        data = request.data
+        piece = Piece.objects.get(id=1)
+        instance = UserToPieces(user=user, piece=piece, mastery_level=5)
+        instance.save()
+        return Response(data={'message': 'success'}, status=status.HTTP_200_OK)
+    
+    def delete(self, request):
+        data = request.data
+        instance = UserToPieces.objects.get(id=data['id'])
+        instance.delete()
+        return Response(data={'message': 'successfullly deleted'}, status=status.HTTP_204_NO_CONTENT)
+
+        
 
 
 user_piece_view = UserPieceAPIView.as_view()

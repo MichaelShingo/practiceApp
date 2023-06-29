@@ -69,9 +69,11 @@ class PieceSerializer(serializers.ModelSerializer):
         ]
 
 class UserToPiecesSerializer(serializers.ModelSerializer):
-    model = UserToPieces
-    fields = [
-        'user',
-        'piece',
-        'mastery_level',
-    ]
+    class Meta:
+        model = UserToPieces
+        depth = 1
+        fields = [
+            'user',
+            'piece',
+            'mastery_level',
+        ]
