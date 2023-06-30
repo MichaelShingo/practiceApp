@@ -216,6 +216,17 @@ class InsertTechniquesAPIView(APIView):
 
 insert_techniques_view = InsertTechniquesAPIView.as_view()
 
+class CategoriesAPIView(APIView):
+    def get(self, request):
+        serializer_class = CategorySerializer
+
+        queryset = Category.objects.all()
+        serializer = CategorySerializer(queryset, many=True)
+
+        return Response(serializer.data, status.HTTP_200_OK)
+    
+categories_view = CategoriesAPIView.as_view()
+
 
 
 

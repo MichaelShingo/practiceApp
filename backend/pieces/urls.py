@@ -14,4 +14,5 @@ urlpatterns = [
     path('insert-techniques/', views.insert_techniques_view),
     path('insert-categories/', views.insert_categories_view),
     path('user-piece/', views.user_piece_view),
+    path('categories/', views.categories_view),
 ]

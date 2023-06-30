@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import './Navbar.js';
+import Navbar from './Navbar';
+import Home from './Home';
+import Login from './Login';
+import SignUp from './SignUp';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="signup" element={<SignUp />}></Route>
+          </Routes>
+        </div>
     </div>
+    </Router>
+
   );
 }
 
 export default App;
+
+// importing CSS at the top applies that css to every component and it's children
+// otherwise you can use styled components or css modules

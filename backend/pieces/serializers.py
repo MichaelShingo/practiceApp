@@ -56,7 +56,10 @@ class PieceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Piece
         depth = 1
+        composer = ComposerSerializer(read_only=True, source='composer')
         fields = [
+            'id',
+            'category',
             'title',
             'composer',
             'period',
