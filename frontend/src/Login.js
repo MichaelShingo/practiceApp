@@ -1,28 +1,19 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { host } from './services/urls';
+import { login } from './services/authService';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, password: password })
-    }
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const url = 'http://localhost:8000/api/login/';
-
-        try {
-            const response = await fetch(url, requestOptions);
-            const jsonData = await response.json();
-            console.log(jsonData.token);
-            localStorage.setItem('authToken', jsonData.token);
-        } catch (error) {
-            console.error('Login failed:', error);
-        }
+        await login(email, password);
+        navigate('/Practice');
     }
+    
     return ( 
         <div>
             <h2>Login</h2>
@@ -35,6 +26,8 @@ const Login = () => {
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
                     <button type="submit">Login</button>
+                    <p>Not a member yet?</p>
+                    <a href="/register">Register</a>
 
                 </div>
             </form>

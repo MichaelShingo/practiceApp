@@ -1,8 +1,9 @@
 import './Navbar.js';
 import Navbar from './Navbar';
-import Home from './Home';
+import Practice from './Practice';
 import Login from './Login';
 import SignUp from './SignUp';
+import Register from './Register';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -13,9 +14,10 @@ function App() {
         <Navbar />
         <div className="content">
           <Routes>
-            <Route path="/" element={<Home />}></Route>
+            <Route path="/practice" element={<Practice />}></Route>
             <Route path="/login" element={<Login />}></Route>
-            <Route path="signup" element={<SignUp />}></Route>
+            <Route path="/signup" element={<SignUp />}></Route>
+            <Route path="/register" element={<Register />}></Route>
           </Routes>
         </div>
     </div>

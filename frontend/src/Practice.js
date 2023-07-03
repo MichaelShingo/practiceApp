@@ -5,9 +5,9 @@ const Home = () => {
     const [pieces, setPieces] = useState();
     const [categories, setCategories] = useState()
 
-    useEffect(() => {
-        fetchPieces();
-        fetchCategories();
+    useEffect( () => {
+         fetchPieces();
+         fetchCategories();
     }, []);
 
 

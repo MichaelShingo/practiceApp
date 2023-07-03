@@ -1,0 +1,109 @@
+Tracks progress on etude books, repertoire, scales
+Sends data to AI to provide next practice recommendations
+Allows marking of how much you mastered it so you can come back later and review ones that had trouble. 
+User authentication
+Provides tutorial videos and recordings
+Can it provide notifications (text or email) about practice reminders, practice inspiration.
+
+***************************
+- User creation React Component.
+- Logout route
+- add dark mode css while things are still simple...
+
+- The table - create a component for each piece category that's like a dropdown menu 
+	- get all categories, THEN for each category, fetch the pieces that are in the category. 
+
+
+- Do you need to override rest_framework/serializers
+
+
+
+- Create table that maps users to complete pieces with mastery level
+	- POST endpoint to save this data, UPDATE mastery level
+
+
+
+- Violin Roadmap
+
+
+- Probably should consider how the UI works before creating all the endpoints
+	- Function for filtering and sorting by all fields (composer, period, difficulty, type), sort by difficulty by default, but can specify other sorting parameters
+	- Based on the filtered query, display data in a table divided by category (GET all categories endpoint) 
+	- Overall progress bar
+	
+	
+- Consider all the endpoints you need 
+	- User post piece to completed list with mastery level
+	- User GET completed pieces
+	- User DELETE piece from completed list 
+	- View all pieces that use Technique X
+	- View all Pieces by Composer X
+	- View all pieces from Period X
+	- View pieces by difficulty level
+	- Should be able to combine these queries 
+	- View all Pieces with Type X
+	- Search by custom input
+	- Individual piece view 
+	
+	
+
+
+{
+    "email":"miko@gmail.com",
+    "password":"johnson&&&",
+    "first_name":"Miko",
+    "last_name":"Single"
+}
+
+{
+    "email":"mian@gmail.com",
+    "password":"mian",
+    "first_name":"Siso",
+    "last_name":"Mian"
+}
+
+{
+    "email":"mango@gmail.com",
+    "password":"mian",
+    "first_name":"Mango",
+    "last_name":"Mian"
+}
+
+{
+    "email":"dango@gmail.com",
+    "password":"dango",
+    "first_name":"Dango",
+    "last_name":"Mian"
+}
+
+
+Superuser
+mcrawford5376@gmail.com
+1234
+
+
+Type of Pieces
+- Sonata
+- Etude
+- Scale
+- Arpeggio
+- Concerto
+- Miniature
+- Showpiece
+- Exercise
+- Suite
+
+
+INSERT INTO pieces_technique (name, description, tutorial)
+VALUES ('left hand articulation', 'placeholder', 'placeholder');
+
+
+	
+	
+from rest_framework import serializers
+from .models import Techniques
+
+class TechniquesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Techniques
+        fields = '__all__'
