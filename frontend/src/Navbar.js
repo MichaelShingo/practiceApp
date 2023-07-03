@@ -26,7 +26,7 @@ const Navbar = () => {
                 <a href="/practice">Practice Tracker</a>
                 {(isAuthenticated ? 
                     <div>
-                        <p>{localStorage.getItem('user')}</p>
+                        {/* <p>{localStorage.getItem('user')}</p> */}
                         <button onClick={handleLogout}>Logout</button>
                     </div>
                     :

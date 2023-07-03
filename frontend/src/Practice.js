@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import PieceList from './components/PieceList.js';
 
-const Home = () => {
+const Home = ({ funcNav }) => {
+    funcNav(true);
     const [pieces, setPieces] = useState();
     const [categories, setCategories] = useState()
 

@@ -37,39 +37,28 @@ export const login = async (email, password) => {
         body: JSON.stringify(userData)
     }
 
-    
-    
-    try {
-        const response = await fetch(url, requestOptions);
-        if (response.ok) {
-            const jsonData = await response.json();
-            localStorage.setItem('authToken', jsonData.token);
+    const response = await fetch(url, requestOptions);
+    if (response.ok) {
+        const jsonData = await response.json();
+        localStorage.setItem('authToken', jsonData.token);
 
-            const requestUserOptions = {
-                method: 'GET',
-                headers: { 
-                    Authorization: `Token ${jsonData.token}`,
-                    'Content-Type': 'application/json',
-        
-                 }
-            }
-
-
-            localStorage.setItem('user', JSON.stringify(response.data));
-            const userData = await fetch(userUrl, requestUserOptions);
-
-            
-
-            console.log(`localStorage token set to ${localStorage.getItem('authToken')}`);
-        } else {
-            throw new Error('Invalid username or password.');
+        const requestUserOptions = {
+            method: 'GET',
+            headers: { 
+                Authorization: `Token ${jsonData.token}`,
+                'Content-Type': 'application/json',
+                }
         }
-        
-        
-    } catch (error) {
-        console.error('Login failed:', error);
+
+        localStorage.setItem('user', JSON.stringify(response.data));
+        const userData = await fetch(userUrl, requestUserOptions);
+        return response.status;
+    } else {
+        console.log(response.status);
+        return response.status;
     }
 }
+    
 
 export const register = async (email, password, first_name, last_name) => { 
     const url = `${host}/api/register/`;
@@ -84,14 +73,18 @@ export const register = async (email, password, first_name, last_name) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
     };
-    try {
-        const response = await fetch(url, requestOptions);
-        const jsonData = await response.json();
-        localStorage.setItem('authToken', jsonData.token);
-        localStorage.setItem('user', JSON.stringify(response.data));
-    } catch (error) {
-        console.log(error('Register failed:', error));
-    }
+
+    const response = await fetch(url, requestOptions);
+
+    // if (response.ok) {
+    //     const jsonData = await response.json();
+    //     localStorage.setItem('authToken', jsonData.token);
+    //     localStorage.setItem('user', JSON.stringify(response.data));
+    // }
+
+    return response.status;
+    
+    
     
 
 

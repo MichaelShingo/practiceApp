@@ -5,19 +5,21 @@ import Login from './Login';
 import SignUp from './SignUp';
 import Register from './Register';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
 
 function App() {
-
+  const [showNav, setShowNav] = useState(true);
   return (
     <Router>
       <div className="App">
-        <Navbar />
+
+        { showNav && <Navbar /> }
         <div className="content">
           <Routes>
-            <Route path="/practice" element={<Practice />}></Route>
-            <Route path="/login" element={<Login />}></Route>
+            <Route path="/practice" element={<Practice funcNav={setShowNav}/>}></Route>
+            <Route path="/login" element={<Login funcNav={setShowNav}/>}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
-            <Route path="/register" element={<Register />}></Route>
+            <Route path="/register" element={<Register funcNav={setShowNav}/>}></Route>
           </Routes>
         </div>
     </div>
