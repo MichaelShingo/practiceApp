@@ -1,14 +1,12 @@
 Tracks progress on etude books, repertoire, scales
 Sends data to AI to provide next practice recommendations
-Allows marking of how much you mastered it so you can come back later and review ones that had trouble. 
-User authentication
+Allows marking of how much you mastered it so you can comeback later and review ones that had trouble. 
+	- mastery level determines the color/hue of the progress bar
+- search, sort, filter the pieces, and it shows the overall progress based on the filtered items 
 Provides tutorial videos and recordings
 Can it provide notifications (text or email) about practice reminders, practice inspiration.
 
 ***************************
-- User creation React Component.
-- Logout route
-- add dark mode css while things are still simple...
 
 - The table - create a component for each piece category that's like a dropdown menu 
 	- get all categories, THEN for each category, fetch the pieces that are in the category. 

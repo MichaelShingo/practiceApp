@@ -3,7 +3,7 @@ import urls from './services/urls';
 import { logout, checkAuthenticated } from './services/authService';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ( {toggleMode} ) => {
     const navigate = useNavigate();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     useEffect(() => {
@@ -24,6 +24,7 @@ const Navbar = () => {
             <div className="links">
                 <a href="/">Home</a>
                 <a href="/practice">Practice Tracker</a>
+                <button onClick={toggleMode}>ToggleLightDark</button>
                 {(isAuthenticated ? 
                     <div>
                         {/* <p>{localStorage.getItem('user')}</p> */}

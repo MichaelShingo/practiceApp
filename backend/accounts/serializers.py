@@ -16,6 +16,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+        if User.objects.filter(email=validated_data['email']).exists():
+            raise ValueError
         user = User.objects.create_user(validated_data['email'], validated_data['password'], validated_data['first_name'], validated_data['last_name'])
-
         return user

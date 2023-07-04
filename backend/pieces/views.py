@@ -2,8 +2,9 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from knox.auth import TokenAuthentication
+
 from .models import (
     Composer,
     Period,
@@ -25,11 +26,45 @@ from .serializers import (
 import csv, os
 from django.conf import settings
 
-class UserPieceAPIView(APIView):
+
+
+
+class CategoriesAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [AllowAny]
+
     def get(self, request):
-        serializer_class = UserToPiecesSerializer
-        authentication_classes = [TokenAuthentication]
-        permission_classes = [IsAuthenticated]
+        serializer_class = CategorySerializer
+        
+        queryset = Category.objects.all()
+        serializer = CategorySerializer(queryset, many=True)
+
+        return Response(serializer.data, status.HTTP_200_OK)
+    
+categories_view = CategoriesAPIView.as_view()
+
+
+class PiecesDetailView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [AllowAny]
+    def get(self, request):
+        serializer_class = PieceSerializer
+        
+        queryset = Piece.objects.all()
+        serializer = PieceSerializer(queryset, many=True)
+        status_code = status.HTTP_200_OK
+        return Response(serializer.data, status_code)
+
+pieces_detail_view = PiecesDetailView.as_view()
+
+
+class UserPieceAPIView(APIView):
+    serializer_class = UserToPiecesSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        
         user = request.user
         queryset = UserToPieces.objects.filter(user=user)
         serializer = UserToPiecesSerializer(queryset, many=True)
@@ -50,22 +85,9 @@ class UserPieceAPIView(APIView):
         instance.delete()
         return Response(data={'message': 'successfullly deleted'}, status=status.HTTP_204_NO_CONTENT)
 
-        
-
-
 user_piece_view = UserPieceAPIView.as_view()
 
 
-
-class PiecesDetailView(APIView):
-    def get(self, request):
-        serializer_class = PieceSerializer
-        queryset = Piece.objects.all()
-        serializer = PieceSerializer(queryset, many=True)
-        status_code = status.HTTP_200_OK
-        return Response(serializer.data, status_code)
-
-pieces_detail_view = PiecesDetailView.as_view()
 
 class ComposerDetailAPIView(APIView):
     def get(self, request):
@@ -216,16 +238,7 @@ class InsertTechniquesAPIView(APIView):
 
 insert_techniques_view = InsertTechniquesAPIView.as_view()
 
-class CategoriesAPIView(APIView):
-    def get(self, request):
-        serializer_class = CategorySerializer
 
-        queryset = Category.objects.all()
-        serializer = CategorySerializer(queryset, many=True)
-
-        return Response(serializer.data, status.HTTP_200_OK)
-    
-categories_view = CategoriesAPIView.as_view()
 
 
 

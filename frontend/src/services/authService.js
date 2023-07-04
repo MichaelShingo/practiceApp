@@ -82,7 +82,7 @@ export const register = async (email, password, first_name, last_name) => {
     //     localStorage.setItem('user', JSON.stringify(response.data));
     // }
 
-    return response.status;
+    return response;
     
     
     
