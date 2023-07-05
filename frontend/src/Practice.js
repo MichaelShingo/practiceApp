@@ -69,16 +69,42 @@ const Home = ({ funcNav }) => {
     
     
     return ( 
-        <div className="home">
-            <h2>Welcome to Violintice</h2>
-            { categories && pieces && categories.map((category) => (
-                <div>
-                    <h2>{ category.name }</h2>
-                    <PieceList pieces={pieces.filter((piece) => piece.category.name === category.name)}/>
+        <div id="practice-content">
+            <div className="row">
+                <div className="col-1"></div>
+                <div className="col-10">
+                    <div className="table-container">
+                        <div className="row">
+                            <div className="col-0-5"></div>
+                            <div className="col-11">
+                                { categories && pieces && categories.map((category) => (
+                                    <div className="category-row">
+                                        <div className="row">
+                                            <div className="col-6 no-margin">
+                                                <h2>{ category.name }</h2>
+                                            </div>
+                                            <div className="col-6 progress-container no-margin">
+                                                <h2>0/50</h2>
+                                                <div className="progress-bar-container">
+                                                    <div className="progress-bar"></div>
+                                                    <div className="progress-bar-back"></div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                        {/* <PieceList pieces={pieces.filter((piece) => piece.category.name === category.name)}/> */}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="col-0-5"></div>
+                        </div>
+                    </div>
                 </div>
-                
-            ))}
+                <div className="col-1"></div>
+            </div>
             
+        
           
         </div>
      );

@@ -5,7 +5,7 @@ import { login } from './services/authService';
 import { checkAuthenticated } from './services/authService';
 
 const Login = ({ funcNav }) => {
-    funcNav(false);
+    funcNav(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLogging, setIsLogging] = useState(false);
@@ -27,7 +27,7 @@ const Login = ({ funcNav }) => {
             setInvalidLogin(true);
             setIsLogging(false);
         } else {
-            navigate('/Practice');
+            navigate('/practice');
         } 
     }
     

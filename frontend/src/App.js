@@ -33,7 +33,6 @@ function App() {
           <Routes>
             <Route path="/practice" element={<Practice funcNav={setShowNav}/>}></Route>
             <Route path="/login" element={<Login funcNav={setShowNav}/>}></Route>
-            <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/register" element={<Register funcNav={setShowNav}/>}></Route>
           </Routes>
         </div>

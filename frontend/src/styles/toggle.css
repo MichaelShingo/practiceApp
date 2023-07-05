@@ -1,0 +1,71 @@
+@import "./globalStyles.css";
+
+.hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+  
+  .toggle-wrapper {
+    width: 130px;
+    display: block;
+    transform: scale(0.5);
+  }
+  
+  .toggle {
+    height: 65px;
+    width: 130px;
+    background: var(--color-black);
+    border-radius: 40px;
+    padding: 12px;
+    position: relative;
+    margin: auto; 
+    cursor: pointer;
+    background: var(--foreground);
+	transition: var(--default-transition);
+  }
+
+  .toggle::before {
+    content: "";
+    display: block;
+    height: 41px;
+    width: 41px;
+    border-radius: 30px;
+    background: var(--color-white);
+    position: absolute;
+    z-index: 2;
+    transform: translate(0);
+    transition: var(--default-transition);
+    background: var(--background);
+
+  }
+  
+  .toggle.enabled::before {
+    transform: translateX(65px);
+  }
+  
+  .toggle input {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+  }
+
+  .toggle .icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    margin: 0 5px;
+  }
+  
+  .toggle .icons svg {
+    fill: var(--color-white);
+    height: 30px;
+    width: 30px;
+    z-index: 0;
+    fill: var(--background);
+  }

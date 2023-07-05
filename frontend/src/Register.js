@@ -6,7 +6,7 @@ import { checkAuthenticated } from './services/authService';
 
 
 const Register = ({ funcNav }) => {
-    funcNav(false);
+    funcNav(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');

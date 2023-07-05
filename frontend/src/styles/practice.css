@@ -1,0 +1,70 @@
+#practice-content {
+    padding-top: 100px;
+}
+
+.table-container {
+    min-height: 500px;
+    box-shadow: 0px 0px 10px 0px var(--color-black-trans);
+    border-radius: 10px;
+
+}
+
+.category-row {
+    width: 100%;
+    padding: 5px 15px;
+    margin: 10px auto;
+    border-radius: 9px;
+    background-color: var(--color-grey-1);
+    transition: var(--fast-transition);
+}
+
+.category-row:hover {
+    background-color: var(--color-grey-0);
+    color: var(--color-white) !important;
+    box-shadow: 3px 3px 10px 0px var(--color-black-trans);
+    transition: var(--fast-transition);
+    cursor: pointer;
+
+}
+
+.category-row h2 {
+    color: inherit;
+}
+
+
+.progress-bar, progress-bar-back {
+    height: 8px;
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
+    display: visible;
+    
+}
+
+.progress-bar {
+    background-color: var(--color-success);
+    width: 50%; 
+    border-radius: 5px;
+}
+
+.progress-bar-back {
+    background-color: var(--color-grey-2);
+    width: 100%;
+    z-index: 0;
+    grid-column: 1;
+    grid-row: 1;
+    border-radius: 5px;
+}
+
+.progress-container {
+    display: flex;
+}
+
+.progress-bar-container {
+    display: grid;
+    width: 100%;
+    margin: auto 20px;
+}
+.no-margin {
+    padding: 0 !important;
+}

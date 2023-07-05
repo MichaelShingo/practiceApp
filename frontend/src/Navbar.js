@@ -1,14 +1,23 @@
 import { useEffect, useState } from 'react';
 import urls from './services/urls';
 import { logout, checkAuthenticated } from './services/authService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import ThemeToggle from './components/ThemeToggle';
+import './styles/navbar.css';
 
 const Navbar = ( {toggleMode} ) => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [url, setUrl] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+
     useEffect(() => {
         setIsAuthenticated(checkAuthenticated());
-    })
+    }, )
+
+    useEffect(() => {
+        setUrl(location.pathname);
+    }, [location])
 
     const handleLogout = async () => {
         await logout();
@@ -19,22 +28,34 @@ const Navbar = ( {toggleMode} ) => {
     }
     
     return ( 
-        <nav className="navbar">
-            <h1>Violintice</h1>
-            <div className="links">
-                <a href="/">Home</a>
-                <a href="/practice">Practice Tracker</a>
-                <button onClick={toggleMode}>ToggleLightDark</button>
-                {(isAuthenticated ? 
-                    <div>
-                        {/* <p>{localStorage.getItem('user')}</p> */}
-                        <button onClick={handleLogout}>Logout</button>
+        <div className="navbar row">
+            <div className="col-1"></div>
+
+            <div className="col-10 nav-content">
+                <div className="row">
+                    <div className="col-3">
+                        <h1>Violintice</h1>
                     </div>
-                    :
-                    <button href="/login">Login</button>)
-                }
+                    <div className="col-3"></div>
+                    <div className="col-6 links">
+                        <button className="nav-active"></button>
+                        <a className={url === '/practice' ? 'active' : ''} href="/practice">Practice</a>
+                        <a className={url === '/social' ? 'active' : ''} href="/social">Social</a>
+                        <a className={url === '/feedback' ? 'active' : ''} href="/feedback">Feedback</a>
+                        {/* <ThemeToggle /> */}
+                        {(isAuthenticated ? 
+                            <a onClick={handleLogout}>Logout</a>
+                            :
+                            <a className={url === '/login' ? 'active' : ''} href="/login">Login</a>)
+                        }
+                    </div>
+                </div>
             </div>
-        </nav>
+            <div className="col-1"></div>
+        </div>
+            
+
+            
      );
 }
  

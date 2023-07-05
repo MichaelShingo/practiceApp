@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/index.css';
+import './styles/navbar.css';
 import './styles/auth.css';
+import './styles/toggle.css';
+import './styles/globalStyles.css';
+import './styles/practice.css';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
