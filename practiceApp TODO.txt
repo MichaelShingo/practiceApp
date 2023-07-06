@@ -5,6 +5,8 @@ Allows marking of how much you mastered it so you can comeback later and review 
 - search, sort, filter the pieces, and it shows the overall progress based on the filtered items 
 Provides tutorial videos and recordings
 Can it provide notifications (text or email) about practice reminders, practice inspiration.
+- view that shows which techniques you have worked on the most 
+- track last time a piece was practiced 
 
 ***************************
 

@@ -89,24 +89,42 @@ const Home = ({ funcNav }) => {
             const checkedElement = e.target.previousElementSibling;
             checkedElement.classList.toggle('hide-checkmark');
             const pieceRow = checkedElement.parentNode.parentNode;
-            console.log(pieceRow);
+            const categoryID = pieceRow.getAttribute("categoryID").toString();
             const masteryLevel = pieceRow.querySelector('.mastery-rating');
+
+            const fraction = document.querySelector(`.fraction[categoryID="${categoryID}"]`);
+            const fractionText = fraction.textContent;
+            const slashIndex = fractionText.indexOf('/');
+            console.log(fractionText, slashIndex);
+            let numerator = parseInt(fractionText.substring(0, slashIndex));
+            console.log(`numerator = ${numerator}`);
+            const denominator = fractionText.substring(slashIndex + 1, fractionText.length);
+            // console.log(fractionText.indexOf('/'));
+            
+
             if (checkedElement.classList.contains('hide-checkmark')) { 
                 // When you uncheck it decrement mastery
                 console.log('unchecked');
                 masteryLevel.value = 0;
+                numerator = numerator - 1;
+                
+                
+            
             } else {
                 console.log('checked');
                 masteryLevel.value = 10;
-
-                
+                numerator = numerator + 1; 
             }
+            let percentage = numerator / denominator;
+            console.log(`percentage = ${percentage}`);
+            fraction.textContent = numerator.toString() + '/' + denominator.toString();
             // set mastery 
-            // update category count and progress bar
+            // update progress bar - calculate the fraction as a percentage, set inline style for width of progress bar 
             // update database
-        } catch {
+        } catch (error){
             e.target.classList.toggle('hide-checkmark');
             console.log('click is off center');
+            console.log(error.message);
         }
            
         
@@ -135,7 +153,6 @@ const Home = ({ funcNav }) => {
                                         className="category-row" 
                                         key={category.id}
                                         listID={category.id}
-                                        categoryCompetion="50" 
                                         onClick={(e) => togglePieceTable(e, category.id)}
                                     >
                                         <div className="row">
@@ -143,22 +160,20 @@ const Home = ({ funcNav }) => {
                                                 <h2>{ category.name }</h2>
                                             </div>
                                             <div className="col-6 progress-container no-margin">
-                                                <h2>0/{pieces.filter((piece) => piece.category.name === category.name).length}</h2>
+                                                <h2 categoryID={category.id} className="fraction">22/{pieces.filter((piece) => piece.category.name === category.name).length}</h2>
                                                 <div className="progress-bar-container">
-                                                    <div className="progress-bar"></div>
+                                                    <div className="progress-bar" style={{}}></div>
                                                     <div className="progress-bar-back"></div>
                                                 </div>
                                                 
                                             </div>
                                         </div>
                                         <div className="table-body" onClick={(e) => handlePiecesTableClick(e)}>
-
-                                        
                                             <table className="pieces-table hide-pieces-table">
                                                 <thead>
                                                     <tr>
                                                         <th className="title-head">Title</th>
-                                                        <th>Compete</th>
+                                                        <th>Complete</th>
                                                         <th>Difficulty</th>
                                                         <th>Mastery</th>
                                                         <th>More</th>
@@ -167,7 +182,7 @@ const Home = ({ funcNav }) => {
                                                 <tbody>
                                                     {/* <PieceList pieces={pieces.filter((piece) => piece.category.name === category.name)}/> */}
                                                     {pieces.filter((piece) => piece.category.name === category.name).map((piece) => (
-                                                        <tr className="piece-preview" key={piece.id} listID={piece.id} >
+                                                        <tr className="piece-preview" key={piece.id} listID={piece.id} categoryID={category.id} >
                                                             <td className="title-col">{ piece.title }</td>
                                                             <td>
                                                                 <CheckMark 
