@@ -2,17 +2,17 @@ const PieceList = ({pieces}) => {
     // pieces is destructured from props
 
     return ( 
-        <div className="piece-list">
+        <tr className="piece-list">
             {
                 pieces.map((piece) => (
-                    <div className="piece-preview" key={piece.id}>
-                        <h2>{ piece.title }</h2>
-                        <p>{ piece.composer.first_name + ' ' + piece.composer.last_name}</p>
-                        <p>{ piece.type_of_piece.name }</p>
-                    </div>
+                    <tr className="piece-preview" key={piece.id}>
+                        <td>{ piece.title }</td>
+                        <td>{ piece.composer.first_name + ' ' + piece.composer.last_name}</td>
+                        <td>{ piece.type_of_piece.name }</td>
+                    </tr>
                     )) 
             }
-        </div>
+        </tr>
      )
 }
  

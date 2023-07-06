@@ -68,3 +68,154 @@
 .no-margin {
     padding: 0 !important;
 }
+
+
+
+
+/* INNER PIECES TABLE */
+
+.hide-pieces-table {
+    opacity: 0;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    /* display: none; */
+    position: absolute;
+    visibility: hidden;
+    /* transition: var(--default-transition); */
+}
+
+
+
+.pieces-table {
+    background-color: var(--color-white);
+    width: 100%;
+    text-align: center;
+    height: 100px;
+    border-radius: .8rem;
+    overflow: hidden;
+    border: 5px;
+    /* transition: var(--default-transition); */
+}
+
+.pieces-table:hover {
+    cursor:default;
+}
+
+table, th, td {
+    padding: 1rem;
+    border-collapse: collapse;
+    border-bottom: 1px solid var(--color-grey-1);
+}
+
+.title-col {
+    width: 50%;
+    text-align: left;
+}
+
+.title-head {
+    text-align: left;
+}
+
+.table-body {
+    width: 95%;
+    max-height: calc(89% - .8rem);
+    margin: .8rem auto;
+    border-radius: .6rem;
+}
+
+.table-body::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.table-body::-webkit-scrollbar-thumb {
+    border-radius: .5rem;
+    background-color: #0004;
+    visibility: hidden;
+}
+
+.table-body:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    left: 0;
+    
+}
+
+/* tbody tr:nth-child(even) {
+    color: 
+} */
+
+tbody tr:hover {
+    box-shadow: 0px 3px 15px 2px var(--color-black-trans);
+}
+
+.complete-icon {
+    fill: var(--color-success);
+    opacity: 1;
+    max-height: 25px;
+    transition: var(--fast-transition);
+}
+
+
+
+.complete-icon:hover {
+    fill: var(--color-success-hover);
+}
+
+.open-icon {
+    opacity: 1;
+    fill: var(--color-grey-2);
+    max-height: 25px;
+    left: -25px;
+    transition: var(--fast-transition);
+    z-index: 1;
+}
+
+.open-icon:hover {
+    fill: var(--color-grey-1);
+    cursor: pointer;
+}
+
+.open-icon:hover + .complete-icon {
+    fill: var(--color-success-hover);
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.hide-checkmark {
+    opacity: 0;
+    transition: var(--fast-transition);
+}
+
+.plus-icon {
+    fill: var(--color-accent);
+    max-height: 25px;
+}
+
+.plus-icon:hover {
+    fill: var(--color-accent-hover);
+}
+
+.mastery-rating {
+    background-color: var(--color-success);
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    color: var(--color-white);
+    position: relative;
+    text-align: center;
+    text-transform: translateX(10px);
+}
+
+
+
+/* @media (max-width: 1000px) {
+    td:not(:first-of-type) {
+        min-width: 12.1rem;
+    }
+} */

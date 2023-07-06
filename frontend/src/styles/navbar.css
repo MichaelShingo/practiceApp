@@ -22,16 +22,6 @@
   transition: var(--default-transition);
 }
 
-/* .navbar .links a::after {
-  content: "";
-  display:contents;
-  position: relative;
-  background-color: var(--color-accent);
-  width: 150px;
-  height: 50px;
-  border-radius: 25px;
-} */
-
 .navbar .links a:hover {
   color: var(--color-accent);
 }
