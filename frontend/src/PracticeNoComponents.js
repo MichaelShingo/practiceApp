@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-
-
-import Category from './components/Category.js';
+import PieceList from './components/PieceList.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import {ReactComponent as CheckMark} from './svg/circle-check-solid.svg';
+import {ReactComponent as PlusMark} from './svg/circle-plus-solid.svg';
+import {ReactComponent as OpenCircle} from './svg/circle-regular.svg';
 
 const Home = ({ funcNav }) => {
     funcNav(true);
@@ -173,15 +176,71 @@ const Home = ({ funcNav }) => {
                             <div className="col-0-5"></div>
                             <div className="col-11">
                                 { categories && pieces && categories.map((category) => (
-                                    <Category 
-                                        handlePiecesTableClick={handlePiecesTableClick} 
-                                        category={category} 
-                                        pieces={pieces}
-                                        togglePieceTable={togglePieceTable}
-                                        toggleCheckMark={toggleCheckMark}
-                                        handleMasteryChange={handleMasteryChange}
-
-                                    />
+                                    <div 
+                                        className="category-row" 
+                                        key={category.id}
+                                        listID={category.id}
+                                        onClick={(e) => togglePieceTable(e, category.id)}
+                                    >
+                                        <div className="row">
+                                            <div className="col-6 no-margin">
+                                                <h2>{ category.name }</h2>
+                                            </div>
+                                            <div className="col-6 progress-container no-margin">
+                                                <h2 categoryID={category.id} className="fraction">22/{pieces.filter((piece) => piece.category.name === category.name).length}</h2>
+                                                <div className="progress-bar-container">
+                                                    <div categoryID={category.id} className="progress-bar" style={{}}></div>
+                                                    <div className="progress-bar-back"></div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div className="table-body" onClick={(e) => handlePiecesTableClick(e)}>
+                                            <table className="pieces-table hide-pieces-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th className="title-head">Title</th>
+                                                        <th>Complete</th>
+                                                        <th>Difficulty</th>
+                                                        <th>Mastery</th>
+                                                        <th>More</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {/* <PieceList pieces={pieces.filter((piece) => piece.category.name === category.name)}/> */}
+                                                    {pieces.filter((piece) => piece.category.name === category.name).map((piece) => (
+                                                        <tr className="piece-preview" key={piece.id} listID={piece.id} categoryID={category.id} >
+                                                            <td className="title-col">{ piece.title }</td>
+                                                            <td>
+                                                                <CheckMark 
+                                                                    className="complete-icon"
+                                                                    
+                                                                />
+                                                                <OpenCircle 
+                                                                    className="open-icon hide-checkmark" 
+                                                                    onClick={(e) => toggleCheckMark(e)} 
+                                                                />
+                                                                
+                                                            </td>
+                                                            <td>5</td>
+                                                            <td className="mastery-row">
+                                                                <input 
+                                                                    className="mastery-number" 
+                                                                    categoryID={category.id}
+                                                                    type="number"  
+                                                                    min="0" 
+                                                                    max="10"
+                                                                    onChange={(e) => handleMasteryChange(e)}
+                                                                />
+                                                                {/* <div className="mastery-rating"></div> */}
+                                                            </td>
+                                                            <td><PlusMark className="plus-icon" /></td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
                             <div className="col-0-5"></div>

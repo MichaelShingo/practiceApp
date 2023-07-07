@@ -27,8 +27,10 @@
 
 }
 
-.category-row h2 {
+.fraction { 
     color: inherit;
+    width: fit-content;
+    min-width: 50px;
 }
 
 
@@ -39,12 +41,14 @@
     grid-row: 1;
     display: visible;
     
+    
 }
 
 .progress-bar {
     background-color: var(--color-success);
     width: 50%; 
     border-radius: 5px;
+    transition: var(--default-transition);
 }
 
 .progress-bar-back {
@@ -201,16 +205,42 @@ tbody tr:hover {
     fill: var(--color-accent-hover);
 }
 
-.mastery-rating {
+
+
+/* .mastery-rating {
     background-color: var(--color-success);
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    color: var(--color-white);
-    position: relative;
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 35%;
+    z-index: 0;
+} */
+
+.mastery-number {
+    display: inline;
     text-align: center;
-    text-transform: translateX(10px);
+    background-color: var(--color-grey-1);
+    width: 40px;
+    border-radius: 2rem;
+    transition: var(--default-transition);
+
+    color: var(--color-white);
 }
+
+/* .mastery-number:hover {
+    box-shadow: 1px 1px 3px 0px var(--color-black-trans);
+} */
+
+/* .mastery-number::after {
+    content: "";
+    display: block;
+    background-color: green;
+    width: 50px;
+    height: 50px;
+} */
 
 
 
