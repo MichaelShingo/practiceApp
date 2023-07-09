@@ -3,6 +3,10 @@ import {ReactComponent as PlusMark} from '../svg/circle-plus-solid.svg';
 import {ReactComponent as OpenCircle} from '../svg/circle-regular.svg';
 
 const PieceList = ({piece, category, toggleCheckMark, handleMasteryChange}) => {
+
+    const handlePlusClick = () => {
+        console.log(`plus clicked for id ${piece.id}`)
+    }
     return ( 
         <tr className="piece-preview" key={piece.id} listID={piece.id} categoryID={category.id} >
             <td className="title-col">{ piece.title }</td>
@@ -17,7 +21,7 @@ const PieceList = ({piece, category, toggleCheckMark, handleMasteryChange}) => {
                 />
                 
             </td>
-            <td>5</td>
+            <td>{piece.difficulty}</td>
             <td className="mastery-row">
                 <input 
                     className="mastery-number" 
@@ -29,7 +33,7 @@ const PieceList = ({piece, category, toggleCheckMark, handleMasteryChange}) => {
                 />
                 {/* <div className="mastery-rating"></div> */}
             </td>
-            <td><PlusMark className="plus-icon" /></td>
+            <td><PlusMark onClick={handlePlusClick} className="plus-icon" /></td>
         </tr>
      )
 }

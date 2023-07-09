@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 
 import Category from './components/Category.js';
@@ -9,11 +9,22 @@ const Home = ({ funcNav }) => {
     const [categories, setCategories] = useState();
     const [userPieces, setUserPieces] = useState();
 
+    const randomRef = useRef();
+    const categoryRefs = useRef([]);
+    categoryRefs.current = [];
+
     useEffect( () => {
          fetchPieces();
          fetchCategories();
          fetchUserPieces();
     }, []);
+
+    const addCategoryRefs = (element) => {
+        if (element && !categoryRefs.current.includes(element)) {
+            categoryRefs.current.push(element);
+        }
+        console.log(`here's the category ref ${categoryRefs.current}`);
+    }
 
 
     const fetchPieces = async () => {
@@ -25,7 +36,6 @@ const Home = ({ funcNav }) => {
             });
             const jsonData = await response.json();
             setPieces(jsonData);
-            console.log(pieces);
         } catch (error) {
             console.log('Error fetching data:', error);
         }
@@ -40,7 +50,6 @@ const Home = ({ funcNav }) => {
                 });
             const jsonData = await response.json();
             setCategories(jsonData);
-            console.log(categories);
         } catch (error) {
             console.log('Error fetching data:', error);
         }
@@ -60,24 +69,20 @@ const Home = ({ funcNav }) => {
                 });
             const jsonData = await response.json();
             setUserPieces(jsonData);
-            console.log('SUCCESSFULLY FETCHED USER PIECES');
         } catch (error) {
             console.log('Error fetching data:', error);
         }
     }
 
-    const togglePieceTable = (e, categoryKey) => {
-        console.log(e.target);
-        e.stopPropagation();
-        console.log(categoryKey);
-        const categoryElement = document.querySelector(`div[listID='${categoryKey.toString()}']`);
-        const piecesTable = categoryElement.querySelector('table');
-        piecesTable.classList.toggle('hide-pieces-table');
-    }
+    // const togglePieceTable = (e, categoryKey) => {
+    //     e.stopPropagation();
+    //     console.log(e);
+    //     const categoryElement = document.querySelector(`div[listID='${categoryKey.toString()}']`);
+    //     const piecesTable = categoryElement.querySelector('table');
+    //     piecesTable.classList.toggle('hide-pieces-table');
+    // }
 
-    const handlePiecesTableClick = (e) => {
-        e.stopPropagation();
-    }
+    
 
     const toggleCheckMark = (e) => {
         console.log(e.target.name);
@@ -115,8 +120,6 @@ const Home = ({ funcNav }) => {
             console.log(`percentage = ${percentage}`);
             progressBar.style.width = `${percentage.toString()}%`;
             fraction.textContent = numerator.toString() + '/' + denominator.toString();
-            // set mastery 
-            // update progress bar - calculate the fraction as a percentage, set inline style for width of progress bar 
             // update database
         } catch (error){
             e.target.classList.toggle('hide-checkmark');
@@ -157,6 +160,7 @@ const Home = ({ funcNav }) => {
         console.log(hueProgress);
         // get all mastery numbers 
         progressBar.style.backgroundColor = `hsl(${hueProgress}, 100%, 38%)`
+        // update database (but can you timeout before updating the database so that you don't make unecessary calls?)
     }
 
 
@@ -174,13 +178,12 @@ const Home = ({ funcNav }) => {
                             <div className="col-11">
                                 { categories && pieces && categories.map((category) => (
                                     <Category 
-                                        handlePiecesTableClick={handlePiecesTableClick} 
+                                        key={category.id}
                                         category={category} 
                                         pieces={pieces}
-                                        togglePieceTable={togglePieceTable}
                                         toggleCheckMark={toggleCheckMark}
                                         handleMasteryChange={handleMasteryChange}
-
+                                        ref={addCategoryRefs}
                                     />
                                 ))}
                             </div>

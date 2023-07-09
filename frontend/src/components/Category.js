@@ -1,13 +1,40 @@
 import PieceList from './PieceList.js';
+import React from 'react';
+import { useRef } from 'react';
 
 
-const Category = ({ category, pieces, handlePiecesTableClick, togglePieceTable, toggleCheckMark, handleMasteryChange }) => {
+const Category = ({ category, pieces, toggleCheckMark, handleMasteryChange }, ref) => {
+
+    // useRef to select the progress bar and count
+    // can you update them more reliably in this component? 
+
+    const progressRef = useRef(null);
+    const countRef = useRef(null);
+    const pieceTableRef = useRef(null);
+
+    
+
+
+    const togglePieceTable = (e) => {
+        e.stopPropagation();
+        pieceTableRef.current.classList.toggle('hide-pieces-table');
+    }
+
+    const handlePiecesTableClick = (e) => {
+        e.stopPropagation();
+    }
+
+    const updateCategoryCount = () => {
+
+    }
+
     return ( 
         <div 
             className="category-row" 
             key={category.id}
             listID={category.id}
-            onClick={(e) => togglePieceTable(e, category.id)}
+            ref={ref}
+            onClick={(e) => togglePieceTable(e)}
         >
             <div className="row">
                 <div className="col-6 no-margin">
@@ -16,14 +43,14 @@ const Category = ({ category, pieces, handlePiecesTableClick, togglePieceTable, 
                 <div className="col-6 progress-container no-margin">
                     <h2 categoryID={category.id} className="fraction">22/{pieces.filter((piece) => piece.category.name === category.name).length}</h2>
                     <div className="progress-bar-container">
-                        <div categoryID={category.id} className="progress-bar" style={{}}></div>
+                        <div ref={progressRef} categoryID={category.id} className="progress-bar" style={{}}></div>
                         <div className="progress-bar-back"></div>
                     </div>
                     
                 </div>
             </div>
             <div className="table-body" onClick={(e) => handlePiecesTableClick(e)}>
-                <table className="pieces-table hide-pieces-table">
+                <table ref={pieceTableRef} className="pieces-table hide-pieces-table">
                     <thead>
                         <tr>
                             <th className="title-head">Title</th>
@@ -50,5 +77,6 @@ const Category = ({ category, pieces, handlePiecesTableClick, togglePieceTable, 
         </div>
      );
 }
+
+export default React.forwardRef(Category)
  
-export default Category;
