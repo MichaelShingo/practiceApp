@@ -23,7 +23,6 @@ const Home = ({ funcNav }) => {
         if (element && !categoryRefs.current.includes(element)) {
             categoryRefs.current.push(element);
         }
-        console.log(`here's the category ref ${categoryRefs.current}`);
     }
 
 
@@ -55,8 +54,11 @@ const Home = ({ funcNav }) => {
         }
     }
 
+    useEffect(() => {
+        console.log(`userPieces = ${userPieces}`)
+    },[userPieces])
     const fetchUserPieces = async () => {
-        const url = 'http://localhost:8000/api/user-piece/'
+        const url = 'http://localhost:8000/api/user-piece/';
         try {
             const token = localStorage.getItem('authToken');
             const response = await fetch(url,
@@ -69,6 +71,7 @@ const Home = ({ funcNav }) => {
                 });
             const jsonData = await response.json();
             setUserPieces(jsonData);
+            
         } catch (error) {
             console.log('Error fetching data:', error);
         }
@@ -83,8 +86,15 @@ const Home = ({ funcNav }) => {
     // }
 
     
-
-    const toggleCheckMark = (e) => {
+    const updateGlobalProgress = (increment) => {
+        if (increment) {
+            console.log('add');
+        } else {
+            console.log('subtract');
+        }
+        
+    }
+    const oldHandleCheckFunction= (e) => {
         console.log(e.target.name);
         try {
             e.target.classList.toggle('hide-checkmark');
@@ -95,6 +105,8 @@ const Home = ({ funcNav }) => {
             const masteryLevel = pieceRow.querySelector('.mastery-number');
 
             const fraction = document.querySelector(`.fraction[categoryID="${categoryID}"]`);
+
+
             const fractionText = fraction.textContent;
             const slashIndex = fractionText.indexOf('/');
             console.log(fractionText, slashIndex);
@@ -134,7 +146,7 @@ const Home = ({ funcNav }) => {
         return ((y2 - y1) / (x2 - x1)) * value;
     }
 
-    const handleMasteryChange = (e) => {
+    const updateGlobalMastery = (e) => {
         let masteryNumber = e.target;
         const categoryID = masteryNumber.getAttribute('categoryID').toString();        
         let masteryValue = parseInt(masteryNumber.value);
@@ -162,10 +174,6 @@ const Home = ({ funcNav }) => {
         progressBar.style.backgroundColor = `hsl(${hueProgress}, 100%, 38%)`
         // update database (but can you timeout before updating the database so that you don't make unecessary calls?)
     }
-
-
-
-    
     
     return ( 
         <div id="practice-content">
@@ -176,13 +184,14 @@ const Home = ({ funcNav }) => {
                         <div className="row">
                             <div className="col-0-5"></div>
                             <div className="col-11">
-                                { categories && pieces && categories.map((category) => (
+                                { categories && pieces && userPieces && categories.map((category) => (
                                     <Category 
                                         key={category.id}
                                         category={category} 
+                                        userPieces={userPieces}
                                         pieces={pieces}
-                                        toggleCheckMark={toggleCheckMark}
-                                        handleMasteryChange={handleMasteryChange}
+                                        updateGlobalProgress={updateGlobalProgress}
+                                        updateGlobalMastery={updateGlobalMastery}
                                         ref={addCategoryRefs}
                                     />
                                 ))}
@@ -193,9 +202,6 @@ const Home = ({ funcNav }) => {
                 </div>
                 <div className="col-1"></div>
             </div>
-            
-        
-          
         </div>
      );
 }

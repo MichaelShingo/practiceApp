@@ -43,6 +43,10 @@ REST_FRAMEWORK = {
         
     ]
 }
+
+REST_KNOX = {
+    'TOKEN_TTL': None,
+}
 #'rest_framework.permissions.AllowAny'
     # 'rest_framework.permissions.IsAuthenticated',
 

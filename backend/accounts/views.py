@@ -73,5 +73,6 @@ class UserDetailAPIView(APIView):
         queryset = request.user
         serializer = UserSerializer(queryset)
         userData = serializer.data
+        print(f'userdata = {userData}')
 
         return Response(userData, status.HTTP_200_OK)

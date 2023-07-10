@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from knox.auth import TokenAuthentication
+import json
 
 from .models import (
     Composer,
@@ -64,26 +65,38 @@ class UserPieceAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        
         user = request.user
+        print(f' Current User = {user.first_name}')
         queryset = UserToPieces.objects.filter(user=user)
         serializer = UserToPiecesSerializer(queryset, many=True)
         status_code = status.HTTP_200_OK
+        print(f' userPiecesData = {serializer.data}')
         return Response(serializer.data, status_code)
 
     def post(self, request):
-        user = request.user
-        data = request.data
-        piece = Piece.objects.get(id=1)
-        instance = UserToPieces(user=user, piece=piece, mastery_level=5)
-        instance.save()
-        return Response(data={'message': 'success'}, status=status.HTTP_200_OK)
+        try:
+            user = request.user
+            data = request.data
+            print(data)
+            mastery_level = data['mastery_level']
+            piece = Piece.objects.get(id=data['piece'])
+            instance = UserToPieces(user=user, piece=piece, mastery_level=mastery_level)
+            instance.save()
+            serializer = UserToPiecesSerializer(instance)
+            return Response(data=json.dumps(serializer.data), status=status.HTTP_200_OK)
+
+            
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request):
         data = request.data
-        instance = UserToPieces.objects.get(id=data['id'])
+        user = request.user
+        piece = Piece.objects.get(id=data['piece'])
+        instance = UserToPieces.objects.get(user=user, piece=piece)
         instance.delete()
-        return Response(data={'message': 'successfullly deleted'}, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 user_piece_view = UserPieceAPIView.as_view()
 
