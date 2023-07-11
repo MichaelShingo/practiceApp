@@ -8,15 +8,21 @@ const Home = ({ funcNav }) => {
     const [pieces, setPieces] = useState();
     const [categories, setCategories] = useState();
     const [userPieces, setUserPieces] = useState();
+    const [ready, setReady] = useState(false);
+    const [userName, setUserName] = useState('');
+    let [pieceIDSet, setPieceIDSet] = useState();
 
     const randomRef = useRef();
     const categoryRefs = useRef([]);
     categoryRefs.current = [];
 
+    
+
     useEffect( () => {
          fetchPieces();
          fetchCategories();
          fetchUserPieces();
+         setUserName(localStorage.getItem('userFirstName'));
     }, []);
 
     const addCategoryRefs = (element) => {
@@ -54,9 +60,8 @@ const Home = ({ funcNav }) => {
         }
     }
 
-    useEffect(() => {
-        console.log(`userPieces = ${userPieces}`)
-    },[userPieces])
+    
+
     const fetchUserPieces = async () => {
         const url = 'http://localhost:8000/api/user-piece/';
         try {
@@ -70,7 +75,20 @@ const Home = ({ funcNav }) => {
                     }
                 });
             const jsonData = await response.json();
+            console.log(jsonData);
+            
             setUserPieces(jsonData);
+
+            let idSet = new Set();
+            for (let userPiece of jsonData) {
+                console.log(userPiece.piece.id);
+                idSet.add(userPiece.piece.id);
+            }
+            setPieceIDSet(idSet);
+            // can you run above code in a promise, then set state??
+            console.log(`LENGTH = ${userPieces.length}`);
+            // setReady(true);
+            console.log(pieceIDSet);
             
         } catch (error) {
             console.log('Error fetching data:', error);
@@ -180,11 +198,12 @@ const Home = ({ funcNav }) => {
             <div className="row">
                 <div className="col-1"></div>
                 <div className="col-10">
+                    <h2>Hello {userName}!</h2>
                     <div className="table-container">
                         <div className="row">
                             <div className="col-0-5"></div>
                             <div className="col-11">
-                                { categories && pieces && userPieces && categories.map((category) => (
+                                { categories && pieces && userPieces && pieceIDSet && categories.map((category) => (
                                     <Category 
                                         key={category.id}
                                         category={category} 
@@ -193,6 +212,8 @@ const Home = ({ funcNav }) => {
                                         updateGlobalProgress={updateGlobalProgress}
                                         updateGlobalMastery={updateGlobalMastery}
                                         ref={addCategoryRefs}
+                                        pieceIDSet={pieceIDSet}
+                                        setUserPieces={setUserPieces}
                                     />
                                 ))}
                             </div>

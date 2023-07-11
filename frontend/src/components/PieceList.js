@@ -2,10 +2,13 @@ import {ReactComponent as CheckMark} from '../svg/circle-check-solid.svg';
 import {ReactComponent as PlusMark} from '../svg/circle-plus-solid.svg';
 import {ReactComponent as OpenCircle} from '../svg/circle-regular.svg';
 import { useRef, useState, useEffect } from 'react';
+import { fetchMasteryUpdate, fetchRemovePiece, fetchAddPiece } from '../services/fetch.js';
 
 const PieceList = ({piece,
                     updateCategoryCount,
                     userPieces,  
+                    pieceIDSet,
+                    setUserPieces,
                     updateCategoryMastery}) => {
 
     const checkMarkRef = useRef(null);
@@ -14,12 +17,19 @@ const PieceList = ({piece,
 
     const [masteryNum, setMasteryNum] = useState(''); // set based on database value
     const [checked, setChecked] = useState(false);
+    const [userPieceID, setUserPieceID] = useState(0);
 
     // if you update mastery level when it's not checked, automatically check
 
     useEffect(() => {
-        // update dom to reflect userPieces
-       
+        if (pieceIDSet.has(piece.id)) {
+            setChecked(true);
+            setMasteryNum(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
+                .map(filteredPiece => (filteredPiece.mastery_level)));
+                
+            setUserPieceID(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
+                .map(filteredPiece => filteredPiece.id))
+        }
     }, [])
 
     const handlePlusClick = () => {
@@ -28,59 +38,16 @@ const PieceList = ({piece,
 
     const toggleCheckMark = async () => {
         setMasteryNum(10);
-        const url = 'http://localhost:8000/api/user-piece/';
-        const token = localStorage.getItem('authToken');
-        const data = { // userID, pieceID, masteryLevel
-            user: localStorage.getItem('userID'),
-            piece: piece.id,
-            mastery_level: 10
-        }
         updateCategoryCount(!checked);
         if (!checked) { // add to database
-            const response = await fetch(url,
-                {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Token ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-            
-            if (!response.ok) {
-                console.log(`Error saving piece. ${response.status}`)
-            }
-
-            console.log(response.data);
-
-            
+            const jsonData = await fetchAddPiece(piece.id, 10);
+            setUserPieceID(jsonData.id)
+            // setUserPieces(userPieces => usejrPieces.filter)
         } else { //remove from database
-            const data = { // userID, pieceID, masteryLevel
-                piece: piece.id,
-            }
-            console.log('removing from database')
             setMasteryNum('')
-            const response = await fetch(url,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        Authorization: `Token ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-            
-            if (!response.ok) {
-                console.log(`Error deleting piece. ${response.status}`)
-            }
-
-            console.log(response.status);
+            fetchRemovePiece(piece.id);
         }
-
         setChecked(!checked);
-
-
-        
     }
 
     useEffect(() => {
@@ -90,6 +57,9 @@ const PieceList = ({piece,
             const hue = mapColorRange(masteryNum, 1, 1, 10, 118);
             masteryLevel.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
             updateCategoryMastery();
+            if (checked) {
+                fetchMasteryUpdate(userPieceID, masteryNum);
+            } 
         }
     }, [masteryNum])
 
@@ -97,8 +67,16 @@ const PieceList = ({piece,
         return ((y2 - y1) / (x2 - x1)) * value;
     }
 
-    const handleMasteryChange = () => {
-        if (masteryLevel.current.value > 10) {
+    const handleMasteryChange = async () => {
+        if (!checked) {
+            setMasteryNum(masteryLevel.current.value);
+            setChecked(true);
+            updateCategoryCount(true);
+            const jsonData = await fetchAddPiece(piece.id, masteryLevel.current.value);
+            setUserPieceID(jsonData.id) 
+        }
+
+        if (masteryLevel.current.value > 10 || masteryLevel.current.value == NaN) {
             setMasteryNum(10);
         } else if (masteryLevel.current.value < 0) {
             setMasteryNum(0);            

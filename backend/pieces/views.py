@@ -70,14 +70,12 @@ class UserPieceAPIView(APIView):
         queryset = UserToPieces.objects.filter(user=user)
         serializer = UserToPiecesSerializer(queryset, many=True)
         status_code = status.HTTP_200_OK
-        print(f' userPiecesData = {serializer.data}')
         return Response(serializer.data, status_code)
 
     def post(self, request):
         try:
             user = request.user
             data = request.data
-            print(data)
             mastery_level = data['mastery_level']
             piece = Piece.objects.get(id=data['piece'])
             instance = UserToPieces(user=user, piece=piece, mastery_level=mastery_level)
@@ -89,6 +87,22 @@ class UserPieceAPIView(APIView):
         except Exception as e:
             print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+    def put(self, request, pk):
+        try:
+            query = UserToPieces.objects.get(id=pk)
+            print(query)
+        except UserToPieces.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UserToPiecesSerializer(query, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
     
     def delete(self, request):
         data = request.data

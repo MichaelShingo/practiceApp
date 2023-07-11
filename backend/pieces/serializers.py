@@ -77,6 +77,7 @@ class UserToPiecesSerializer(serializers.ModelSerializer):
         model = UserToPieces
         depth = 1
         fields = [
+            'id',
             'user',
             'piece',
             'mastery_level',

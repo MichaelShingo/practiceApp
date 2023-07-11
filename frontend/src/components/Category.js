@@ -1,17 +1,16 @@
 import PieceList from './PieceList.js';
 import React from 'react';
 import { useRef, useState, useEffect } from 'react';
-
+import { mapColorRange } from '../services/helperFunctions.js';
 
 const Category = ({ 
     category, 
     pieces, 
     updateGlobalProgress, 
     userPieces,
+    pieceIDSet,
+    setUserPieces,
     updateGlobalMastery }, ref) => {
-
-    // useRef to select the progress bar and count
-    // can you update them more reliably in this component? 
 
     const calcCSSPercentage = (numerator, denominator) => {
         let percentage = count / totalCount * 100;
@@ -24,23 +23,32 @@ const Category = ({
     const [count, setCount] = useState(0); //set this based on data in database
     const [totalCount, setTotalCount] = useState(pieces.filter((piece) => piece.category.name === category.name).length);
     const [progressPercent, setProgressPercent] = useState('0%');
-
+    const [avgMastery, setAvgMastery] = useState(10);
+    const [masterySum, setMasterySum] = useState(0);
+    
 
     useEffect(() => {
-        //check how many pieces have category.id that matches this category
+        setCount(0);
+        setMasterySum(0);
         for (let userPiece of userPieces) {
-            if (userPiece.piece.category.id === category.id) {
+            if (userPiece.piece.category === category.id) {
                 setCount(count => count + 1);
+                setMasterySum(masterySum => (masterySum + userPiece.mastery_level));
             }
         }
-
     }, []);
 
     useEffect(() => {
+        console.log(`count, masterySum = ${count, masterySum}`)
         setProgressPercent(calcCSSPercentage(count, totalCount));
-        
+        setAvgMastery(masterySum / count);
+    }, [masterySum, count]);
 
-    }, [count]);
+    useEffect(() => {
+        const hue = mapColorRange(avgMastery, 1, 1, 10, 118);
+        console.log(`avgMastery = ${avgMastery}`);
+        progressRef.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
+    }, [avgMastery])
 
 
 
@@ -53,7 +61,6 @@ const Category = ({
         e.stopPropagation();
     }
 
-    
     const updateCategoryCount = (increment) => {
         if (increment) {
             setCount(count => count + 1);
@@ -64,6 +71,10 @@ const Category = ({
     }
 
     const updateCategoryMastery = () => {
+
+        // When you add a new piece, update category mastery mastery
+        // When you update mastery, update category mastery
+
 
     }
 
@@ -109,10 +120,10 @@ const Category = ({
                             updateCategoryMastery={updateCategoryMastery}
                             updateGlobalMastery={updateGlobalMastery}
                             updateCategoryCount={updateCategoryCount}
+                            pieceIDSet={pieceIDSet}
+                            setUserPieces={setUserPieces}
                         />
-                    ))}
-                        
-                        
+                    ))}    
                     </tbody>
                 </table>
             </div>
