@@ -23,13 +23,14 @@ const Category = ({
     const [count, setCount] = useState(0); //set this based on data in database
     const [totalCount, setTotalCount] = useState(pieces.filter((piece) => piece.category.name === category.name).length);
     const [progressPercent, setProgressPercent] = useState('0%');
-    const [avgMastery, setAvgMastery] = useState(10);
+    const [avgMastery, setAvgMastery] = useState(0);
     const [masterySum, setMasterySum] = useState(0);
     
 
     useEffect(() => {
         setCount(0);
         setMasterySum(0);
+        console.log('initial render useEffect() ran')
         for (let userPiece of userPieces) {
             if (userPiece.piece.category === category.id) {
                 setCount(count => count + 1);
@@ -39,9 +40,14 @@ const Category = ({
     }, []);
 
     useEffect(() => {
-        console.log(`count, masterySum = ${count, masterySum}`)
+        console.log(`count, masterySum = ${count}, ${masterySum}`)
         setProgressPercent(calcCSSPercentage(count, totalCount));
-        setAvgMastery(masterySum / count);
+        if (count === 0) {
+            setAvgMastery(0);
+        } else {
+            setAvgMastery(masterySum / count);
+        }
+        
     }, [masterySum, count]);
 
     useEffect(() => {
@@ -61,21 +67,21 @@ const Category = ({
         e.stopPropagation();
     }
 
-    const updateCategoryCount = (increment) => {
-        if (increment) {
+    const updateCategoryCount = (increment, currentMastery) => {
+        if (increment) { //this is only running once...but you're adding 20 each time
+            console.log(`updateCategoryCount ran, currentMastery = ${currentMastery}`)
             setCount(count => count + 1);
+            setMasterySum(masterySum => masterySum + currentMastery);
         } else {
             setCount(count => count - 1);
+            setMasterySum(masterySum => masterySum - currentMastery);
         }
         updateGlobalProgress(increment);
     }
 
-    const updateCategoryMastery = () => {
-
-        // When you add a new piece, update category mastery mastery
-        // When you update mastery, update category mastery
-
-
+    const updateCategoryMastery = (difference) => {
+        console.log(`difference = ${difference}`);
+        setMasterySum(masterySum => masterySum + difference);
     }
 
     return ( 

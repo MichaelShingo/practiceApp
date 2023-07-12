@@ -10,17 +10,22 @@ const PieceList = ({piece,
                     pieceIDSet,
                     setUserPieces,
                     updateCategoryMastery}) => {
-
+    
+    let initialMastery = userPieces.filter(userPiece => userPiece.piece.id === piece.id)
+        .map(filteredPiece => (filteredPiece.mastery_level));
+    if (isNaN(parseInt(initialMastery))) {
+        initialMastery = null;
+    }
+                      
     const checkMarkRef = useRef(null);
     const openCircle = useRef(null);
     const masteryLevel = useRef(null);
+    const prevMasteryNum = useRef(initialMastery);
 
-    const [masteryNum, setMasteryNum] = useState(''); // set based on database value
+    const [masteryNum, setMasteryNum] = useState(initialMastery); // set based on database value
     const [checked, setChecked] = useState(false);
     const [userPieceID, setUserPieceID] = useState(0);
-
-    // if you update mastery level when it's not checked, automatically check
-
+    
     useEffect(() => {
         if (pieceIDSet.has(piece.id)) {
             setChecked(true);
@@ -37,30 +42,36 @@ const PieceList = ({piece,
     }
 
     const toggleCheckMark = async () => {
-        setMasteryNum(10);
-        updateCategoryCount(!checked);
         if (!checked) { // add to database
+            setMasteryNum(10);
             const jsonData = await fetchAddPiece(piece.id, 10);
             setUserPieceID(jsonData.id)
-            // setUserPieces(userPieces => usejrPieces.filter)
+            updateCategoryCount(!checked, 10);
         } else { //remove from database
+            console.log(masteryNum);
+            updateCategoryCount(!checked, masteryNum);
             setMasteryNum('')
             fetchRemovePiece(piece.id);
         }
         setChecked(!checked);
     }
 
-    useEffect(() => {
+    useEffect(() => { 
         if (masteryNum === null || masteryNum === '') {
             masteryLevel.current.style.backgroundColor = '#e6e6e6';
         } else {
             const hue = mapColorRange(masteryNum, 1, 1, 10, 118);
             masteryLevel.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
-            updateCategoryMastery();
             if (checked) {
+                updateCategoryMastery(masteryNum - prevMasteryNum.current);
+                console.log('updateCategoryMastery ran')
+                // what happens when mastery goes from null to 10 and this runs? 
+            }
+            if (checked && userPieceID > 0) { // this is running 
                 fetchMasteryUpdate(userPieceID, masteryNum);
             } 
         }
+        prevMasteryNum.current = masteryNum;
     }, [masteryNum])
 
     const mapColorRange = (value, x1, y1, x2, y2) => {

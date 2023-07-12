@@ -50,6 +50,7 @@ export const fetchRemovePiece = async (pieceID) => {
 }
 
 export const fetchAddPiece = async (pieceID, mastery_level) => {
+    console.log('fetchAddPiece called');
     const url = `${host}/api/user-piece/`;
     const data = { // userID, pieceID, masteryLevel
         user: localStorage.getItem('userID'),

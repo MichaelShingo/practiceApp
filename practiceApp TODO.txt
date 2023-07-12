@@ -10,17 +10,23 @@ Can it provide notifications (text or email) about practice reminders, practice 
 
 ***************************
 
-- The table - create a component for each piece category that's like a dropdown menu 
-	- get all categories, THEN for each category, fetch the pieces that are in the category. 
+- WHAT HAPPENS IF YOU HAVE THE SAME PAGE OPEN ON MULTIPLE TABS/DEVICES? 
+
+
+- when you click on mastery while the entry is not checked yet, it breaks the application
+
+
+- what if you click on mastery or check without authentication? Direct to login page. Or make a popup that let's them click
+
+- reset local storage on logout
+- allow fetching pieces when logged out 
+
+- piece get checked when you edit the mastery level
+- make user data to completion, etc.
+- map progress bar and color to competion/mastery 
 
 
 - Do you need to override rest_framework/serializers
-
-
-
-- Create table that maps users to complete pieces with mastery level
-	- POST endpoint to save this data, UPDATE mastery level
-
 
 
 - Violin Roadmap
@@ -55,12 +61,7 @@ Can it provide notifications (text or email) about practice reminders, practice 
     "last_name":"Single"
 }
 
-{
-    "email":"mian@gmail.com",
-    "password":"mian",
-    "first_name":"Siso",
-    "last_name":"Mian"
-}
+
 
 {
     "email":"mango@gmail.com",
