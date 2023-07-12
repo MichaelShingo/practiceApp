@@ -28,8 +28,6 @@ import csv, os
 from django.conf import settings
 
 
-
-
 class CategoriesAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [AllowAny]

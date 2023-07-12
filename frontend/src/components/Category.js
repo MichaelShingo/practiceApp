@@ -2,6 +2,7 @@ import PieceList from './PieceList.js';
 import React from 'react';
 import { useRef, useState, useEffect } from 'react';
 import { mapColorRange } from '../services/helperFunctions.js';
+import { checkAuthenticated } from '../services/authService.js';
 
 const Category = ({ 
     category, 
@@ -31,12 +32,15 @@ const Category = ({
         setCount(0);
         setMasterySum(0);
         console.log('initial render useEffect() ran')
-        for (let userPiece of userPieces) {
-            if (userPiece.piece.category === category.id) {
-                setCount(count => count + 1);
-                setMasterySum(masterySum => (masterySum + userPiece.mastery_level));
+        if (checkAuthenticated()) {
+            for (let userPiece of userPieces) {
+                if (userPiece.piece.category === category.id) {
+                    setCount(count => count + 1);
+                    setMasterySum(masterySum => (masterySum + userPiece.mastery_level));
+                }
             }
         }
+        
     }, []);
 
     useEffect(() => {

@@ -1,0 +1,33 @@
+
+
+.popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-black);
+    position: absolute;
+    font-size: .9rem;
+    z-index: 10;
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+    min-width: 100px;
+    min-height: 40px;
+    background-color: var(--color-grey-1-trans);
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 10%;
+    transform: translateY(-50%);
+}
+
+.hide-popup {
+    display: none;
+    transition: var(--default-transition);
+}
+
+.show-popup {
+    top: -10%;
+    display: flex;
+    transition: var(--default-transition);
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-
+import { checkAuthenticated } from './services/authService.js';
 import Category from './components/Category.js';
 
 const Home = ({ funcNav }) => {
@@ -21,7 +21,13 @@ const Home = ({ funcNav }) => {
     useEffect( () => {
          fetchPieces();
          fetchCategories();
-         fetchUserPieces();
+         if (checkAuthenticated()) {
+            fetchUserPieces();
+         } else {
+            setUserPieces([{}]);
+            setPieceIDSet(new Set([0]));
+         }
+         
          setUserName(localStorage.getItem('userFirstName'));
     }, []);
 
@@ -41,6 +47,7 @@ const Home = ({ funcNav }) => {
             });
             const jsonData = await response.json();
             setPieces(jsonData);
+            console.log('fetched pieces');
         } catch (error) {
             console.log('Error fetching data:', error);
         }
@@ -55,6 +62,7 @@ const Home = ({ funcNav }) => {
                 });
             const jsonData = await response.json();
             setCategories(jsonData);
+            console.log('fetched categories');
         } catch (error) {
             console.log('Error fetching data:', error);
         }
@@ -75,7 +83,7 @@ const Home = ({ funcNav }) => {
                     }
                 });
             const jsonData = await response.json();
-            console.log(jsonData);
+            console.log(`fetch user pieces json = ${jsonData}`);
             
             setUserPieces(jsonData);
 

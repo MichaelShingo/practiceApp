@@ -163,6 +163,7 @@ tbody tr:hover {
     opacity: 1;
     max-height: 25px;
     transition: var(--fast-transition);
+    left: 12.5px;
 }
 
 
@@ -175,8 +176,10 @@ tbody tr:hover {
     opacity: 1;
     fill: var(--color-grey-2);
     max-height: 25px;
-    left: -25px;
     transition: var(--fast-transition);
+    margin: auto;
+    left: -12.5px;
+    text-align: center;
     z-index: 1;
 }
 

@@ -1,13 +1,13 @@
 import { host } from './urls';
 
-const token = localStorage.getItem('authToken');
 
 export const fetchMasteryUpdate = async (pk, mastery_level) => {
+    const token = localStorage.getItem('authToken');
     const url = `${host}/api/user-piece/${pk}/`;
     const data = {
         'mastery_level': parseInt(mastery_level)
     }
-    console.log(data);
+    console.log(`token is ${token}`)
     const response = await fetch(url, 
         {
             method: 'PUT',
@@ -26,6 +26,8 @@ export const fetchMasteryUpdate = async (pk, mastery_level) => {
 }
 
 export const fetchRemovePiece = async (pieceID) => {
+    const token = localStorage.getItem('authToken');
+
     const url = `${host}/api/user-piece/`;
     const data = { // userID, pieceID, masteryLevel
         piece: pieceID,
@@ -50,6 +52,8 @@ export const fetchRemovePiece = async (pieceID) => {
 }
 
 export const fetchAddPiece = async (pieceID, mastery_level) => {
+    const token = localStorage.getItem('authToken');
+
     console.log('fetchAddPiece called');
     const url = `${host}/api/user-piece/`;
     const data = { // userID, pieceID, masteryLevel

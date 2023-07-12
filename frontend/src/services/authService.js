@@ -52,7 +52,7 @@ export const logout = async () => {
     }
     const response = await fetch(url, requestOptions);
     if (response.ok) {
-        localStorage.removeItem('authToken');
+        localStorage.clear();
         console.log('user logged out');
         
     }
@@ -74,10 +74,11 @@ export const login = async (email, password) => {
     const response = await fetch(url, requestOptions);
     if (response.ok) {
         const jsonData = await response.json();
-        console.log(jsonData);        
+        console.log(`login returned data = ${jsonData}`);   
+        console.log(`auth token = ${jsonData.token}`); 
 
         localStorage.setItem('authToken', jsonData.token);
-
+        console.log(`auth token in storage = ${localStorage.getItem('authToken')}`); 
         const requestUserOptions = {
             method: 'GET',
             headers: { 
