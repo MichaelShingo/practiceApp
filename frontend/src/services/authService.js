@@ -5,13 +5,12 @@ import { useEffect } from 'react';
 
 
 export const checkAuthenticated = () => {
-
     if (localStorage.getItem('authToken') === null) {
-        console.log('no token')
+        // console.log('no token')
         return false;
     }
-    console.log('returning true')
-    console.log(localStorage.getItem('authToken'));
+    // console.log('returning true')
+    // console.log(localStorage.getItem('authToken'));
     return true;
 
     // const url = 'http://localhost:8000/api/user-piece/'

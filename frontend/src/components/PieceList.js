@@ -3,7 +3,7 @@ import {ReactComponent as PlusMark} from '../svg/circle-plus-solid.svg';
 import {ReactComponent as OpenCircle} from '../svg/circle-regular.svg';
 import { useRef, useState, useEffect } from 'react';
 import { fetchMasteryUpdate, fetchRemovePiece, fetchAddPiece } from '../services/fetch.js';
-import { useFirstRender } from '../services/firstRenderHook';
+import { useIsFirstRender } from '../services/firstRenderHook';
 import { checkAuthenticated } from '../services/authService';
 import Popup from './Popup.js';
 
@@ -28,25 +28,30 @@ const PieceList = ({piece,
     const masteryLevel = useRef(null);
     const prevMasteryNum = useRef(initialMastery);
 
+    const isFirst = useIsFirstRender();
+
+
     const [masteryNum, setMasteryNum] = useState(initialMastery); // set based on database value
     const [checked, setChecked] = useState(false);
     const [userPieceID, setUserPieceID] = useState(0);
     const [popupClass, setPopupClass] = useState('popup hide-popup');
     const [popupPosition, setPopupPosition] = useState({x: 0, y: 0});
-
-    const firstRender = useFirstRender();
+    const [runCount, setRunCount] = useState(0);
     
     useEffect(() => {
         if (checkAuthenticated() && pieceIDSet.has(piece.id)) {
             setChecked(true);
             setMasteryNum(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
                 .map(filteredPiece => (filteredPiece.mastery_level)));
+            
+            
                 
             setUserPieceID(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
                 .map(filteredPiece => filteredPiece.id))
         } else {
             masteryLevel.current.disabled = true;
         }
+        
     }, [])
 
     const handlePlusClick = () => {
@@ -60,12 +65,15 @@ const PieceList = ({piece,
                 const jsonData = await fetchAddPiece(piece.id, 10);
                 setUserPieceID(jsonData.id)
                 updateCategoryCount(!checked, 10);
+                updateCategoryMastery(10);
                 
             } else { //remove from database
                 console.log(masteryNum);
                 updateCategoryCount(!checked, masteryNum);
+                updateCategoryMastery(-1 * masteryNum);
                 setMasteryNum('')
                 fetchRemovePiece(piece.id);
+                
             }
             masteryLevel.current.disabled = checked;
             setChecked(!checked);
@@ -84,20 +92,26 @@ const PieceList = ({piece,
     }
 
     useEffect(() => { 
-        console.log(`first render = ${firstRender}`);
+        // console.log(`first render = ${firstRender}`);
         if (masteryNum === null || masteryNum === '') {
             masteryLevel.current.style.backgroundColor = '#e6e6e6';
-        } else {
+        } else { // when you check an entry, update existing mastery, or fetch saved pieces
             const hue = mapColorRange(masteryNum, 1, 1, 10, 118);
             masteryLevel.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
-
-            if (checked) { 
-                updateCategoryMastery(masteryNum - prevMasteryNum.current);
-                console.log('updateCategoryMastery ran')
+            if (runCount === 0 && userPieceID === 0) { 
+                // this is fine if you have at an entry in the category already
+                // When you have 0 entries runCount is 0 after first render....
+                setRunCount(prevRunCount => prevRunCount + 1);
+                console.log(`IS FIRST    masterynum = ${masteryNum}`)
+                // updateCategoryMastery(masteryNum - prevMasteryNum.current);
+                // console.log(fs'updateCategoryMastery ran')
             }
 
-            if (checked && userPieceID > 0) { // update mastery of already checked piece
+            else if (checked && userPieceID > 0) { // update mastery of already checked piece
+                // confirmed that this does not run when you first check something 
+                console.log(`fetched mastery update`)
                 fetchMasteryUpdate(userPieceID, masteryNum);
+                updateCategoryMastery(masteryNum - prevMasteryNum.current);
             } 
         }
         prevMasteryNum.current = masteryNum;

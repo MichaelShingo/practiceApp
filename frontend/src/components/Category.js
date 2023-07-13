@@ -35,8 +35,12 @@ const Category = ({
         if (checkAuthenticated()) {
             for (let userPiece of userPieces) {
                 if (userPiece.piece.category === category.id) {
-                    setCount(count => count + 1);
-                    setMasterySum(masterySum => (masterySum + userPiece.mastery_level));
+                    console.log(`setting mastery: ${userPiece.mastery_level}`)
+                    setCount(prevCount => prevCount + 1);
+                    // setMasterySum(() => {
+                    //     return (masterySum + userPiece.mastery_level);
+                    // });
+                    // setMasterySum(prevSum => prevSum + userPiece.mastery_level);
                 }
             }
         }
@@ -50,6 +54,7 @@ const Category = ({
             setAvgMastery(0);
         } else {
             setAvgMastery(masterySum / count);
+            console.log('setting avg mastsery');
         }
         
     }, [masterySum, count]);
@@ -75,17 +80,18 @@ const Category = ({
         if (increment) { //this is only running once...but you're adding 20 each time
             console.log(`updateCategoryCount ran, currentMastery = ${currentMastery}`)
             setCount(count => count + 1);
-            setMasterySum(masterySum => masterySum + currentMastery);
+            // setMasterySum(prevSum => prevSum + currentMastery);
         } else {
             setCount(count => count - 1);
-            setMasterySum(masterySum => masterySum - currentMastery);
+            // setMasterySum(prevSum => prevSum - currentMastery);
         }
         updateGlobalProgress(increment);
     }
 
     const updateCategoryMastery = (difference) => {
+        // THIS RUNS ONLY ONCE ON RENDER, GOOD 
         console.log(`difference = ${difference}`);
-        setMasterySum(masterySum => masterySum + difference);
+        setMasterySum(prevSum => prevSum + difference);
     }
 
     return ( 

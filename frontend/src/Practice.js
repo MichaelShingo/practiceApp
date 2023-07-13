@@ -5,10 +5,9 @@ import Category from './components/Category.js';
 
 const Home = ({ funcNav }) => {
     funcNav(true);
-    const [pieces, setPieces] = useState();
+    const [pieces, setPieces] = useState(null);
     const [categories, setCategories] = useState();
     const [userPieces, setUserPieces] = useState();
-    const [ready, setReady] = useState(false);
     const [userName, setUserName] = useState('');
     let [pieceIDSet, setPieceIDSet] = useState();
 
