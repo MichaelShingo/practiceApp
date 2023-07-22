@@ -10,7 +10,7 @@ urlpatterns = [
     path('insert-periods/', views.insert_periods_view),
     # path('types/', views.types_detail_view),
     path('insert-types/', views.insert_type_view),
-    # path('techniques/', views.techniques_detail_view),
+    path('techniques/', views.techniques_view),
     path('insert-techniques/', views.insert_techniques_view),
     path('insert-categories/', views.insert_categories_view),
     path('user-piece/', views.user_piece_view),

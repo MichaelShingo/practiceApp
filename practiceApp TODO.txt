@@ -7,23 +7,37 @@ Provides tutorial videos and recordings
 Can it provide notifications (text or email) about practice reminders, practice inspiration.
 - view that shows which techniques you have worked on the most 
 - track last time a piece was practiced 
-
+- data dashboard that shows some useful information
+	- like a github-type calendar that shows days that you completed pieces 
+	- percentages of pieces completed at each difficulty level 
+	- breakdown of composers you've worked on 
+	- which techniques you've worked on the most
 ***************************
+
+- REFACTOR ALL SEARCH/FILTER STATES INTO A REDUCER 
+- function passed down to children should update state in parent component
+	- can/should you use useReducer??
+	
+- when you search, then you clear the search, the color is messed up. '
+- automatically open all categories that have a piece? 
+- make a separate view with no categorization? 
+
+- Create + More dialogue.
+- Create search function - should this switch to no-category view? 
+- Create clickable technique tags 
+- create sorting for [mastery level, difficulty, 
+- see only completed/not completed 
+- search by difficulty level (greater than, less than, equal to)
+- create overall progress bar (can this update based on your search?)
+
+
+- Implement dark theme with useContext?
+
 
 - WHAT HAPPENS IF YOU HAVE THE SAME PAGE OPEN ON MULTIPLE TABS/DEVICES? 
 
+- prevent duplicates based on (pieceID, userID) 
 
-- when you click on mastery while the entry is not checked yet, it breaks the application
-
-
-- what if you click on mastery or check without authentication? Direct to login page. Or make a popup that let's them click
-
-- reset local storage on logout
-- allow fetching pieces when logged out 
-
-- piece get checked when you edit the mastery level
-- make user data to completion, etc.
-- map progress bar and color to competion/mastery 
 
 
 - Do you need to override rest_framework/serializers

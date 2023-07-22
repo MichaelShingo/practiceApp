@@ -85,10 +85,6 @@ const PieceList = ({piece,
             }, 1500);
 
         }
-           
-        
-        
-        
     }
 
     useEffect(() => { 

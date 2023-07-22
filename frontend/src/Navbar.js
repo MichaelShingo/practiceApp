@@ -38,11 +38,12 @@ const Navbar = ( {toggleMode} ) => {
                     </div>
                     <div className="col-3"></div>
                     <div className="col-6 links">
-                        <button className="nav-active"></button>
+                        <ThemeToggle />
+                        {/* <button className="nav-active"></button> */}
                         <a className={url === '/practice' ? 'active' : ''} href="/practice">Practice</a>
                         <a className={url === '/social' ? 'active' : ''} href="/social">Social</a>
                         <a className={url === '/feedback' ? 'active' : ''} href="/feedback">Feedback</a>
-                        {/* <ThemeToggle /> */}
+                        
                         {(isAuthenticated ? 
                             <a onClick={handleLogout}>Logout</a>
                             :

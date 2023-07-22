@@ -263,7 +263,19 @@ class InsertTechniquesAPIView(APIView):
 
 insert_techniques_view = InsertTechniquesAPIView.as_view()
 
+class TechniquesAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [AllowAny]
 
+    def get(self, request):
+        serializer_class = TechniqueSerializer
+        
+        queryset = Technique.objects.all().order_by('name')
+        serializer = TechniqueSerializer(queryset, many=True)
+
+        return Response(serializer.data, status.HTTP_200_OK)
+    
+techniques_view = TechniquesAPIView.as_view()
 
 
 

@@ -1,7 +1,24 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useReducer, useMemo } from 'react';
 
 import { checkAuthenticated } from './services/authService.js';
 import Category from './components/Category.js';
+import Search from './components/Search.js';
+
+export const ACTIONS = {
+    UPDATE_SEARCH: 'update-search',
+    UPDATE_DIFF_PARAM: 'update-diff-param',
+    UPDATE_DIFF_NUM: 'update-diff-num',
+    UPDATE_SORT: 'update-sort',
+    UPDATE_PERIOD: 'update-period',
+    UPDATE_TECHNIQUE: 'update-technique'
+}
+
+const reducer = (state, action) => {
+   switch (action.type) {
+    case ACTIONS.UPDATE_SEARCH:
+        return 
+   }
+}
 
 const Home = ({ funcNav }) => {
     funcNav(true);
@@ -10,12 +27,47 @@ const Home = ({ funcNav }) => {
     const [userPieces, setUserPieces] = useState();
     const [userName, setUserName] = useState('');
     let [pieceIDSet, setPieceIDSet] = useState();
+    const [search, setSearch] = useState('');
+    const [sortBy, setSortBy] = useState('title');
+    const [period, setPeriod] = useState('');
+    const [difficultyComp, setDifficultyComp] = useState('');
+    const [difficultyNum, setDifficultyNum] = useState('');
+    const [techniqueTags, setTechniqueTags] = useState([]);
+
+    const filteredPieces = useMemo(() => {
+        let searched = [];
+        if (search === '') {
+            searched = pieces && pieces;
+        } else {
+            searched = pieces && (pieces.filter(piece => {
+                const pieceString = `${piece.title} 
+                    ${piece.composer.first_name} 
+                    ${piece.composer.last_name}`;
+                return (pieceString.toLowerCase())
+                    .includes(search.toLowerCase())
+        }))};
+        let sorted = []
+        switch (sortBy) {
+            case 'title':
+                sorted = searched && searched.sort((a, b) => a.title > b.title ? 1 : - 1);
+                break;
+            case 'mastery':
+                break;
+            case 'difficulty':
+                break;
+            case 'composer':
+                break;
+            case 'date-updated':
+                break;
+            default:
+                sorted = searched;
+        }
+        return sorted;
+    }, [pieces, search])
 
     const randomRef = useRef();
     const categoryRefs = useRef([]);
     categoryRefs.current = [];
-
-    
 
     useEffect( () => {
          fetchPieces();
@@ -66,8 +118,6 @@ const Home = ({ funcNav }) => {
             console.log('Error fetching data:', error);
         }
     }
-
-    
 
     const fetchUserPieces = async () => {
         const url = 'http://localhost:8000/api/user-piece/';
@@ -161,10 +211,7 @@ const Home = ({ funcNav }) => {
         } catch (error){
             e.target.classList.toggle('hide-checkmark');
             console.log(error.message);
-        }
-           
-        
-        
+        }  
     }
 
     const mapColorRange = (value, x1, y1, x2, y2) => {
@@ -199,28 +246,64 @@ const Home = ({ funcNav }) => {
         progressBar.style.backgroundColor = `hsl(${hueProgress}, 100%, 38%)`
         // update database (but can you timeout before updating the database so that you don't make unecessary calls?)
     }
+
+    const handleSearchChange = (searchValue) => {
+        setSearch(searchValue);
+        console.log(search);
+    }
+
+    const handleSortChange = (sortValue) => {
+        setSortBy(sortValue);
+        console.log(sortValue);
+    }
+
+    const handlePeriodChange = (periodValue) => {
+        setPeriod(periodValue);
+        console.log(periodValue);
+    }
+
+    const handleDifficultyCompChange = (difficultyCompValue) => {
+        setDifficultyComp(difficultyCompValue);
+        console.log(difficultyCompValue);
+    }
+
+    const handleDifficultyNumChange = (difficultyNumValue) => {
+        setDifficultyNum(difficultyNumValue);
+        console.log(difficultyNumValue);
+    }
+
     
     return ( 
         <div id="practice-content">
             <div className="row">
                 <div className="col-1"></div>
                 <div className="col-10">
+                    <Search 
+                        handleSortChange={handleSortChange} 
+                        handleSearchChange={handleSearchChange}
+                        handlePeriodChange={handlePeriodChange}
+                        handleDifficultyCompChange={handleDifficultyCompChange}
+                        handleDifficultyNumChange={handleDifficultyNumChange}
+                        />
                     <h2>Hello {userName}!</h2>
+                    
                     <div className="table-container">
                         <div className="row">
                             <div className="col-0-5"></div>
                             <div className="col-11">
-                                { categories && pieces && userPieces && pieceIDSet && categories.map((category) => (
+                                { categories && pieces && userPieces && filteredPieces && pieceIDSet && categories.map((category) => (
                                     <Category 
                                         key={category.id}
                                         category={category} 
                                         userPieces={userPieces}
                                         pieces={pieces}
+                                        filteredPieces={filteredPieces}
                                         updateGlobalProgress={updateGlobalProgress}
                                         updateGlobalMastery={updateGlobalMastery}
                                         ref={addCategoryRefs}
                                         pieceIDSet={pieceIDSet}
                                         setUserPieces={setUserPieces}
+                                        
                                     />
                                 ))}
                             </div>

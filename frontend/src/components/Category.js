@@ -11,6 +11,7 @@ const Category = ({
     userPieces,
     pieceIDSet,
     setUserPieces,
+    filteredPieces,
     updateGlobalMastery }, ref) => {
 
     const calcCSSPercentage = (numerator, denominator) => {
@@ -126,10 +127,10 @@ const Category = ({
                         </tr>
                     </thead>
                     <tbody>
-                    {pieces.filter((piece) => piece.category.name === category.name).map((piece) => (
+                    {filteredPieces.filter((piece) => piece.category.name === category.name).map((piece) => (
                         <PieceList 
                             key={piece.id}
-                            piece={piece} 
+                            piece={piece}
                             userPieces={userPieces}
                             category={category} 
                             updateGlobalProgress={updateGlobalProgress}
