@@ -40,6 +40,7 @@ class TechniqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Technique
         fields = [
+            'id',
             'name',
             'description',
             'tutorial'

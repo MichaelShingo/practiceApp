@@ -1,10 +1,17 @@
 import { useState } from 'react';
+import { ACTIONS } from '../Practice';
 
-const TechniqueTag = ({ technique }) => {
+const TechniqueTag = ({ technique, searchDispatch }) => {
     const [selected, setSelected] = useState(false);
 
     const handleClick = () => {
+        searchDispatch({
+            type: ACTIONS.UPDATE_TECHNIQUE,
+            payload: {value: technique.id}
+        });
+
         setSelected((selected) => !selected);
+
     }
     return ( 
         <div 

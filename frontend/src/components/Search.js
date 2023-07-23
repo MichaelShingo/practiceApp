@@ -5,11 +5,8 @@ import { host } from '../services/urls';
 import TechniqueTag from './TechniqueTag';
 import {ACTIONS} from '../Practice';
 
-const Search = ({ handleSearchChange, 
-                handleSortChange,
-                handlePeriodChange,
-                handleDifficultyCompChange,
-                handleDifficultyNumChange
+const Search = ({
+                searchDispatch,
             }) => {
 
     const [techniques, setTechniques] = useState();
@@ -44,7 +41,10 @@ const Search = ({ handleSearchChange,
                         <div id="search-input-container">
                             {/* <MagnifyingGlass className="magnifying-glass"/> */}
                             <input 
-                                onChange={(e) => handleSearchChange(e.target.value)}
+                                onChange={(e) => searchDispatch({ 
+                                    type: ACTIONS.UPDATE_SEARCH, 
+                                    payload: {value: e.target.value}})
+                                }
                                 type="text" 
                                 placeholder="Search by title, composer, etc.">
                             </input>
@@ -55,24 +55,43 @@ const Search = ({ handleSearchChange,
                     {/* <label htmlFor="techniques"><h3>Techniques</h3></label> */}
                     <div id="technique-container">
                         {techniques && techniques.map(technique => (
-                            <TechniqueTag technique={technique} />
+                            <TechniqueTag searchDispatch={searchDispatch} technique={technique} />
                         ))}
                     </div>
 
                     <div id="search-flex">
                         <div className="label-input-container">
                             <label id="difficulty-label" htmlFor="difficulty-comparison"><h3>Difficulty</h3></label>
-                            <select onChange={(e) => handleDifficultyCompChange(e.target.value)} id="difficulty-comparison">
+                            <select 
+                                onChange={(e) => searchDispatch({
+                                    type: ACTIONS.UPDATE_DIFF_COMP,
+                                    payload: {value: e.target.value}})} 
+                                id="difficulty-comparison"
+                            >
                                 <option value="eq">equal to</option>
                                 <option value="gt">greater than</option>
                                 <option value="lt">less than</option>
                             </select>
-                            <input onChange={(e) => handleDifficultyNumChange(e.target.value)} id="difficulty-level" type="number" max="10" min="0"></input>
+                            <input 
+                                onChange={(e) => searchDispatch({
+                                    type: ACTIONS.UPDATE_DIFF_NUM,
+                                    payload: {value: e.target.value}})} 
+                                id="difficulty-level" 
+                                type="number" 
+                                max="10" 
+                                min="0">
+                            </input>
                         </div>
 
                         <div className="label-input-container">
                             <label id="sort-label" htmlFor="sort"><h3>Sort By</h3></label>
-                            <select onChange={(e) => handleSortChange(e.target.value)} id="sort" type="select">
+                            <select 
+                                onChange={(e) => searchDispatch({
+                                    type: ACTIONS.UPDATE_SORT,
+                                    payload: {value: e.target.value}})} 
+                                id="sort" 
+                                type="select"
+                            >
                                 <option value="difficulty">Difficulty</option>
                                 <option value="mastery">Mastery Level</option>
                                 <option value="title">Title</option>
@@ -83,7 +102,13 @@ const Search = ({ handleSearchChange,
 
                         <div className="label-input-container">
                             <label id="period-label" htmlFor="period"><h3>Period</h3></label>
-                            <select onChange={(e) => handlePeriodChange(e.target.value)} id="period" type="select">
+                            <select 
+                                onChange={(e) => searchDispatch({
+                                    type: ACTIONS.UPDATE_PERIOD,
+                                    payload: {value: e.target.value}})} 
+                                id="period" 
+                                type="select"
+                            >
                                 <option value="baroque">Baroque</option>
                                 <option value="classical">Classical</option>
                                 <option value="romantic">Romantic</option>

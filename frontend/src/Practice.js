@@ -6,18 +6,38 @@ import Search from './components/Search.js';
 
 export const ACTIONS = {
     UPDATE_SEARCH: 'update-search',
-    UPDATE_DIFF_PARAM: 'update-diff-param',
+    UPDATE_DIFF_COMP: 'update-diff-param',
     UPDATE_DIFF_NUM: 'update-diff-num',
     UPDATE_SORT: 'update-sort',
     UPDATE_PERIOD: 'update-period',
     UPDATE_TECHNIQUE: 'update-technique'
 }
 
-const reducer = (state, action) => {
-   switch (action.type) {
-    case ACTIONS.UPDATE_SEARCH:
-        return 
-   }
+const searchReducer = (state, action) => {
+    switch (action.type) {
+        case ACTIONS.UPDATE_SEARCH:
+            return {...state, search: action.payload.value}
+
+        case ACTIONS.UPDATE_DIFF_COMP:
+            return {...state, difficultyComp: action.payload.value}
+
+        case ACTIONS.UPDATE_DIFF_NUM:
+            return {...state, difficultyNum: action.payload.value}
+
+        case ACTIONS.UPDATE_SORT:
+            return {...state, sortBy: action.payload.value}
+
+        case ACTIONS.UPDATE_PERIOD:
+            return {...state, period: action.payload.value}
+
+        case ACTIONS.UPDATE_TECHNIQUE:
+            const id = action.payload.value;
+            if (state.techniqueTags.has(id)) {
+                return {...state, techniqueTags: state.techniqueTags.delete(id)} 
+            } else {
+                return {...state, techniqueTags: state.techniqueTags.add(id)}
+            }
+        }
 }
 
 const Home = ({ funcNav }) => {
@@ -27,16 +47,27 @@ const Home = ({ funcNav }) => {
     const [userPieces, setUserPieces] = useState();
     const [userName, setUserName] = useState('');
     let [pieceIDSet, setPieceIDSet] = useState();
-    const [search, setSearch] = useState('');
-    const [sortBy, setSortBy] = useState('title');
-    const [period, setPeriod] = useState('');
-    const [difficultyComp, setDifficultyComp] = useState('');
-    const [difficultyNum, setDifficultyNum] = useState('');
-    const [techniqueTags, setTechniqueTags] = useState([]);
+
+    
+
+    const [searchState, searchDispatch] = useReducer(searchReducer, { 
+        search: '',
+        sortBy: 'title',
+        period: '',
+        difficultyComp: '',
+        difficultyNum: '',
+        techniqueTags: new Set()
+    })
+
+
+    useEffect(() => {
+        console.log(searchState);
+
+    }, [searchState])
 
     const filteredPieces = useMemo(() => {
         let searched = [];
-        if (search === '') {
+        if (searchState.search === '') {
             searched = pieces && pieces;
         } else {
             searched = pieces && (pieces.filter(piece => {
@@ -44,10 +75,10 @@ const Home = ({ funcNav }) => {
                     ${piece.composer.first_name} 
                     ${piece.composer.last_name}`;
                 return (pieceString.toLowerCase())
-                    .includes(search.toLowerCase())
+                    .includes(searchState.search.toLowerCase())
         }))};
         let sorted = []
-        switch (sortBy) {
+        switch (searchState.sortBy) {
             case 'title':
                 sorted = searched && searched.sort((a, b) => a.title > b.title ? 1 : - 1);
                 break;
@@ -63,7 +94,7 @@ const Home = ({ funcNav }) => {
                 sorted = searched;
         }
         return sorted;
-    }, [pieces, search])
+    }, [pieces, searchState.search])
 
     const randomRef = useRef();
     const categoryRefs = useRef([]);
@@ -247,30 +278,8 @@ const Home = ({ funcNav }) => {
         // update database (but can you timeout before updating the database so that you don't make unecessary calls?)
     }
 
-    const handleSearchChange = (searchValue) => {
-        setSearch(searchValue);
-        console.log(search);
-    }
 
-    const handleSortChange = (sortValue) => {
-        setSortBy(sortValue);
-        console.log(sortValue);
-    }
 
-    const handlePeriodChange = (periodValue) => {
-        setPeriod(periodValue);
-        console.log(periodValue);
-    }
-
-    const handleDifficultyCompChange = (difficultyCompValue) => {
-        setDifficultyComp(difficultyCompValue);
-        console.log(difficultyCompValue);
-    }
-
-    const handleDifficultyNumChange = (difficultyNumValue) => {
-        setDifficultyNum(difficultyNumValue);
-        console.log(difficultyNumValue);
-    }
 
     
     return ( 
@@ -279,11 +288,7 @@ const Home = ({ funcNav }) => {
                 <div className="col-1"></div>
                 <div className="col-10">
                     <Search 
-                        handleSortChange={handleSortChange} 
-                        handleSearchChange={handleSearchChange}
-                        handlePeriodChange={handlePeriodChange}
-                        handleDifficultyCompChange={handleDifficultyCompChange}
-                        handleDifficultyNumChange={handleDifficultyNumChange}
+                        searchDispatch={searchDispatch}
                         />
                     <h2>Hello {userName}!</h2>
                     

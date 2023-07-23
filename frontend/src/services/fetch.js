@@ -84,20 +84,3 @@ export const fetchAddPiece = async (pieceID, mastery_level) => {
 //http://localhost:8000/api/techniques/
 
 
-export const fetchTechniques = async () => {
-    const url = `${host}/api/techniques/`
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-        });
-        const jsonData = await response.json();
-        if (!response.ok) {
-            return Promise.reject(response.statusText);
-        }
-        console.log('fetched techniques');
-        return jsonData;
-    } catch (error) {
-        console.log('Error fetching data:', error);
-        return Promise.reject(error);
-    }
-};
