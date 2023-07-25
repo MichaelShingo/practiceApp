@@ -12,6 +12,9 @@ const PieceList = ({piece,
                     userPieces,  
                     pieceIDSet,
                     setUserPieces,
+                    filteredPieces,
+                    firstFetch,
+                    setFirstFetch,
                     updateCategoryMastery}) => {
     let initialMastery = null;
     if (checkAuthenticated()) {
@@ -28,7 +31,12 @@ const PieceList = ({piece,
     const masteryLevel = useRef(null);
     const prevMasteryNum = useRef(initialMastery);
 
+    const firstMount = useRef(true);
+
     const isFirst = useIsFirstRender();
+
+    let renderCount = useRef(0);
+    renderCount.current = renderCount.current + 1;
 
 
     const [masteryNum, setMasteryNum] = useState(initialMastery); // set based on database value
@@ -37,26 +45,38 @@ const PieceList = ({piece,
     const [popupClass, setPopupClass] = useState('popup hide-popup');
     const [popupPosition, setPopupPosition] = useState({x: 0, y: 0});
     const [runCount, setRunCount] = useState(0);
+    const [showPiece, setShowPiece] = useState(true);
     
     useEffect(() => {
-        if (checkAuthenticated() && pieceIDSet.has(piece.id)) {
+        if (checkAuthenticated() && pieceIDSet.has(piece.id)) { // set user pieces, checked, mastery level
+            console.log(`this is running after filter????`);
+            // can you get this to run ONLY when you first pull from the database? 
+            // maybe have a state in the top level that sets false after pull? 
             setChecked(true);
             setMasteryNum(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
                 .map(filteredPiece => (filteredPiece.mastery_level)));
-            
-            
-                
+             
             setUserPieceID(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
-                .map(filteredPiece => filteredPiece.id))
+                .map(filteredPiece => filteredPiece.id))            
         } else {
             masteryLevel.current.disabled = true;
         }
-        
     }, [])
 
     const handlePlusClick = () => {
         console.log(`plus clicked for id ${piece.id}`);
     }
+
+    useEffect(() => { // when you filter....can you recalculate the masterySum?
+        
+        
+        if (checked) {
+            console.log(`UPDATING CATEGORY MASTERY`)
+            updateCategoryMastery(masteryNum);
+            updateCategoryCount(true);
+        }
+        
+    }, [filteredPieces])
 
     const toggleCheckMark = async (e) => {
         if (checkAuthenticated()) {
@@ -94,6 +114,7 @@ const PieceList = ({piece,
         } else { // when you check an entry, update existing mastery, or fetch saved pieces
             const hue = mapColorRange(masteryNum, 1, 1, 10, 118);
             masteryLevel.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
+            
             if (runCount === 0 && userPieceID === 0) { 
                 // this is fine if you have at an entry in the category already
                 // When you have 0 entries runCount is 0 after first render....
@@ -104,8 +125,10 @@ const PieceList = ({piece,
             }
 
             else if (checked && userPieceID > 0) { // update mastery of already checked piece
+                console.log(`ya it's RUNNING`)
                 // confirmed that this does not run when you first check something 
                 console.log(`fetched mastery update`)
+                firstMount.current = false;
                 fetchMasteryUpdate(userPieceID, masteryNum);
                 updateCategoryMastery(masteryNum - prevMasteryNum.current);
             } 
@@ -118,7 +141,7 @@ const PieceList = ({piece,
     }
 
     const handleMasteryChange = async () => {
-        if (!checked) {
+        if (!checked) { // when you check 
             setMasteryNum(masteryLevel.current.value);
             setChecked(true);
             updateCategoryCount(true);
@@ -136,7 +159,7 @@ const PieceList = ({piece,
     }
 
     return ( 
-        <tr className="piece-preview" >
+        <tr className="piece-preview"  >
             <td className="title-col">{ piece.title }</td>
             <td>
                 <Popup popupClass={popupClass} position={popupPosition} message="Login first!"/>

@@ -10,7 +10,8 @@ export const ACTIONS = {
     UPDATE_DIFF_NUM: 'update-diff-num',
     UPDATE_SORT: 'update-sort',
     UPDATE_PERIOD: 'update-period',
-    UPDATE_TECHNIQUE: 'update-technique'
+    UPDATE_TECHNIQUE: 'update-technique',
+    UPDATE_TYPE: 'update-type',
 }
 
 const searchReducer = (state, action) => {
@@ -29,13 +30,18 @@ const searchReducer = (state, action) => {
 
         case ACTIONS.UPDATE_PERIOD:
             return {...state, period: action.payload.value}
+        
+        case ACTIONS.UPDATE_TYPE:
+            return {...state, type: action.payload.value}
 
-        case ACTIONS.UPDATE_TECHNIQUE:
+        case ACTIONS.UPDATE_TECHNIQUE: // watch out because set is MUTABLE
             const id = action.payload.value;
             if (state.techniqueTags.has(id)) {
-                return {...state, techniqueTags: state.techniqueTags.delete(id)} 
+                const temp = new Set(state.techniqueTags);
+                temp.delete(id);
+                return {...state, techniqueTags: temp } 
             } else {
-                return {...state, techniqueTags: state.techniqueTags.add(id)}
+                return {...state, techniqueTags: new Set(state.techniqueTags).add(id)}
             }
         }
 }
@@ -47,25 +53,29 @@ const Home = ({ funcNav }) => {
     const [userPieces, setUserPieces] = useState();
     const [userName, setUserName] = useState('');
     let [pieceIDSet, setPieceIDSet] = useState();
-
-    
+    const [pieceCount, setPieceCount] = useState(0);
+    const [firstFetch, setFirstFetch] = useState(true);
+    const [filteredPieceIDs, setFilteredPieceIDs] = useState(new Set());
 
     const [searchState, searchDispatch] = useReducer(searchReducer, { 
         search: '',
         sortBy: 'title',
         period: '',
-        difficultyComp: '',
-        difficultyNum: '',
+        difficultyComp: 'gt',
+        difficultyNum: 1,
+        type: '',
         techniqueTags: new Set()
     })
-
 
     useEffect(() => {
         console.log(searchState);
 
     }, [searchState])
 
-    const filteredPieces = useMemo(() => {
+    
+
+    const filteredPieces = useMemo(() => { // returns list of objects
+        // FILTER BY SEARCH TERM
         let searched = [];
         if (searchState.search === '') {
             searched = pieces && pieces;
@@ -73,11 +83,79 @@ const Home = ({ funcNav }) => {
             searched = pieces && (pieces.filter(piece => {
                 const pieceString = `${piece.title} 
                     ${piece.composer.first_name} 
-                    ${piece.composer.last_name}`;
+                    ${piece.composer.last_name}
+                    ${piece.category.name}`;
                 return (pieceString.toLowerCase())
                     .includes(searchState.search.toLowerCase())
         }))};
-        let sorted = []
+
+        // FILTER BY DIFFICULTY
+        let difficultyFiltered = [];
+
+        if (searchState.difficultyComp === 'gt') {
+            difficultyFiltered = searched && searched.filter(piece => {
+                return piece.difficulty >= parseInt(searchState.difficultyNum)
+            })
+        } else if (searchState.difficultyComp === 'lt') {
+            difficultyFiltered = searched && searched.filter(piece => {
+                return piece.difficulty <= parseInt(searchState.difficultyNum)
+            })
+
+        } else {
+            difficultyFiltered = searched && searched.filter(piece => {
+                return piece.difficulty === parseInt(searchState.difficultyNum)
+            })
+        }
+
+        // FILTER BY PERIOD
+        let periodFiltered;
+        if (searchState.period !== '') {
+            periodFiltered = difficultyFiltered && difficultyFiltered.filter(piece => {
+                console.log(`${piece.period.name} ${searchState.period}`)
+                return piece.period.name === searchState.period
+            })
+        } else {
+            periodFiltered = difficultyFiltered;
+        }
+
+        // FILTER BY TYPE
+        let typeFiltered;
+        if (searchState.type !== '') {
+            typeFiltered = periodFiltered && periodFiltered.filter(piece => {
+                return piece.type_of_piece.name === searchState.type
+            })
+        } else {
+            typeFiltered = periodFiltered;
+        }        
+
+        // FILTER BY TECHNIQUE
+        let techniqueFiltered = [];
+        if (searchState.techniqueTags.size === 0) {
+            techniqueFiltered = typeFiltered;
+        } else {
+            techniqueFiltered = typeFiltered && typeFiltered.filter(piece => {
+                let pieceTechIDs = new Set();
+                for (let technique of piece.techniques) {
+                    pieceTechIDs.add(technique.id);
+                }
+                for (let element of searchState.techniqueTags) {
+                    if (!pieceTechIDs.has(element)) {
+                        return false;
+                    }
+                }
+                return true;
+                })
+            }
+        setPieceCount(techniqueFiltered && techniqueFiltered.length);
+
+     
+        return techniqueFiltered;
+
+        
+
+        
+        // SORTING
+        let sorted = [] // sorting is last
         switch (searchState.sortBy) {
             case 'title':
                 sorted = searched && searched.sort((a, b) => a.title > b.title ? 1 : - 1);
@@ -94,7 +172,20 @@ const Home = ({ funcNav }) => {
                 sorted = searched;
         }
         return sorted;
-    }, [pieces, searchState.search])
+    }, [pieces, searchState])
+
+    useEffect(() => {
+        let idSet = new Set();
+        if (filteredPieces) {
+            for (let piece of filteredPieces) {
+                idSet.add(piece.id);
+                console.log(`TYPE OF IDset ???? = ${typeof piece.id}`);
+            }
+            // console.log(`filteredPieceIDS = ${idSet}`)
+            setFilteredPieceIDs(idSet);
+        }
+    
+    }, [filteredPieces])
 
     const randomRef = useRef();
     const categoryRefs = useRef([]);
@@ -278,20 +369,17 @@ const Home = ({ funcNav }) => {
         // update database (but can you timeout before updating the database so that you don't make unecessary calls?)
     }
 
-
-
-
-    
     return ( 
         <div id="practice-content">
             <div className="row">
                 <div className="col-1"></div>
                 <div className="col-10">
+                    <h2>Hello {userName}!</h2>
                     <Search 
                         searchDispatch={searchDispatch}
+                        searchState={searchState}
+                        pieceCount={pieceCount}
                         />
-                    <h2>Hello {userName}!</h2>
-                    
                     <div className="table-container">
                         <div className="row">
                             <div className="col-0-5"></div>
@@ -307,8 +395,12 @@ const Home = ({ funcNav }) => {
                                         updateGlobalMastery={updateGlobalMastery}
                                         ref={addCategoryRefs}
                                         pieceIDSet={pieceIDSet}
-                                        setUserPieces={setUserPieces}
-                                        
+                                        setUserPieces={setUserPieces} 
+                                        pieceCount={pieceCount} 
+                                        firstFetch={firstFetch}
+                                        setFirstFetch={setFirstFetch}
+                                        searchState={searchState}
+                                        filteredPieceIDs={filteredPieceIDs}
                                     />
                                 ))}
                             </div>

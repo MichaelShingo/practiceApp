@@ -133,8 +133,9 @@ class InsertComposersAPIView(APIView):
         with open(os.path.join(settings.BASE_DIR, 'composers.csv'), 'r', encoding='UTF-8') as file:
             csv_reader = csv.reader(file)
             for row in csv_reader:
-                entry = Composer(first_name=row[0], last_name=row[1])
-                entry.save()
+                if not Composer.objects.filter(first_name=row[0], last_name=row[1]).exists():
+                    entry = Composer(first_name=row[0], last_name=row[1])
+                    entry.save()
         
         file.close()
         status_code = status.HTTP_202_ACCEPTED
@@ -150,6 +151,7 @@ class InsertPiecesAPIView(APIView):
             csv_reader = csv.reader(file)
 
             for row in csv_reader:
+                print(row[1])
                 composer = Composer.objects.get(last_name=row[1])
                 period = Period.objects.get(name=row[2])
                 type_of_piece = TypeOfPiece.objects.get(name=row[9])
@@ -160,7 +162,7 @@ class InsertPiecesAPIView(APIView):
                 techniquesList = row[3].split(',')
                 # print(category.name)
                 try:
-                    toUpdate = Piece.objects.get(composer__last_name=row[1], title=row[0])
+                    toUpdate = Piece.objects.get(composer__last_name=row[1], title=row[0], category=category)
                     toUpdate.period = period
                     toUpdate.difficulty = difficulty
                     toUpdate.recording_link = recording_link
@@ -178,18 +180,19 @@ class InsertPiecesAPIView(APIView):
                         except:
                             continue
                 except:
-                    entry = Piece(title=row[0], composer=composer, period=period, 
-                                difficulty=difficulty, recording_link=recording_link, 
-                                type_of_piece=type_of_piece, category=category,
-                                tutorial_link=tutorial_link)
-                    entry.save()
-                    
-                    for techniqueStr in techniquesList:
-                        try:
-                            techniqueObj = Technique.objects.get(name=techniqueStr)
-                            entry.techniques.add(techniqueObj)
-                        except:
-                            continue
+                    if not Piece.objects.filter(category=category, title=row[0]).exists():
+                        entry = Piece(title=row[0], composer=composer, period=period, 
+                                    difficulty=difficulty, recording_link=recording_link, 
+                                    type_of_piece=type_of_piece, category=category,
+                                    tutorial_link=tutorial_link)
+                        entry.save()
+                        
+                        for techniqueStr in techniquesList:
+                            try:
+                                techniqueObj = Technique.objects.get(name=techniqueStr)
+                                entry.techniques.add(techniqueObj)
+                            except:
+                                continue
      
         file.close()
         status_code = status.HTTP_202_ACCEPTED
@@ -220,9 +223,10 @@ class InsertCategoriesAPIView(APIView):
         with open(os.path.join(settings.BASE_DIR, 'categories.csv'), 'r', encoding='UTF-8') as file:
             csv_reader = csv.reader(file)
             for row in csv_reader:
-                entry = Category(name=row[0])
-                entry.save()
-        
+                if not Category.objects.filter(name=row[0]).exists():
+                    entry = Category(name=row[0])
+                    entry.save()
+            
         file.close()
         status_code = status.HTTP_202_ACCEPTED
         return Response({}, status_code)
