@@ -10,6 +10,7 @@ const Category = ({
     updateGlobalProgress, 
     userPieces,
     pieceIDSet,
+    setPieceIDSet,
     setUserPieces,
     filteredPieces,
     pieceCount,
@@ -24,7 +25,7 @@ const Category = ({
         return `${percentage.toString()}%`;
     }
 
-    const calcCategoryCount = () => {
+    const calcCategoryCount = () => { // sets total count of pieces in category
         let counter = 0;
         for (let piece of filteredPieces) {
             if (piece.category.name === category.name) { 
@@ -32,7 +33,7 @@ const Category = ({
             }
         }
         setCategoryCount(counter);
-        filteredPieces.filter((piece) => piece.category.name === category.name)
+        // filteredPieces.filter((piece) => piece.category.name === category.name)
     }
 
     const progressRef = useRef(null);
@@ -44,29 +45,26 @@ const Category = ({
     const [avgMastery, setAvgMastery] = useState(0);
     const [masterySum, setMasterySum] = useState(0);
     const prevMasterySum = useRef(0);
-    const [categoryCount, setCategoryCount] = useState(0); // for filters + category filtering
+    const [categoryCount, setCategoryCount] = useState(0); // total count of pieces in category, including filters
     
-
-    // useEffect(() => {
-    //     setMasterySum(sum => sum - prevMasterySum.current);
-    // }) inifinite loop on rerender
     useEffect(() => {
         setCount(0);
         // setMasterySum(0); sets it to 0 at beginning...
-
         calcCategoryCount();
 
-        console.log('initial render useEffect() ran')
         if (checkAuthenticated()) {
             for (let userPiece of userPieces) {
                 // console.log(`userPiece.piece.id = ${userPiece.piece.id} ===` )
                 // console.log(`DOES IT HAVE? ${filteredPieceIDs.has(userPiece.piece.id)}`)
                 // console.log(new Array(...filteredPieceIDs).join(' '));
-
+                // console.log(`category = ${userPiece.piece.category}`);
+                // console.log(`USER PIECE = ${userPiece.piece.title}`)
                 if (userPiece.piece.category === category.id && filteredPieceIDs.has(userPiece.piece.id)) {
-                    // can you do this but filter the userpieces as well? 
-                    console.log(`setting mastery: ${userPiece.mastery_level}`)
+                    // console.log(`${userPiece.piece.category} === ${category.id}?`)
                     setCount(prevCount => prevCount + 1);
+                    // can you do this but filter the userpieces as well? 
+                    // console.log(`setting mastery: ${userPiece.mastery_level}`)
+                    
                     // setMasterySum(() => {
                     //     return (masterySum + userPiece.mastery_level);
                     // });
@@ -74,7 +72,6 @@ const Category = ({
                 }
             }
         }
-        
     }, [filteredPieceIDs]);
 
     useEffect(() => {
@@ -177,6 +174,7 @@ const Category = ({
                             updateGlobalMastery={updateGlobalMastery}
                             updateCategoryCount={updateCategoryCount}
                             pieceIDSet={pieceIDSet}
+                            setPieceIDSet={setPieceIDSet}
                             setUserPieces={setUserPieces}
                         />
                     ))}    

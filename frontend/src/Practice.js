@@ -148,7 +148,7 @@ const Home = ({ funcNav }) => {
             }
         setPieceCount(techniqueFiltered && techniqueFiltered.length);
 
-     
+        console.log(userPieces);
         return techniqueFiltered;
 
         
@@ -395,6 +395,7 @@ const Home = ({ funcNav }) => {
                                         updateGlobalMastery={updateGlobalMastery}
                                         ref={addCategoryRefs}
                                         pieceIDSet={pieceIDSet}
+                                        setPieceIDSet={setPieceIDSet}
                                         setUserPieces={setUserPieces} 
                                         pieceCount={pieceCount} 
                                         firstFetch={firstFetch}

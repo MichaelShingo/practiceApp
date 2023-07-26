@@ -11,6 +11,7 @@ const PieceList = ({piece,
                     updateCategoryCount,
                     userPieces,  
                     pieceIDSet,
+                    setPieceIDSet,
                     setUserPieces,
                     filteredPieces,
                     firstFetch,
@@ -33,13 +34,14 @@ const PieceList = ({piece,
 
     const firstMount = useRef(true);
 
-    const isFirst = useIsFirstRender();
-
     let renderCount = useRef(0);
     renderCount.current = renderCount.current + 1;
 
+    const currentUserPiece = userPieces.filter(userPiece => userPiece.piece.id === piece.id);
+    // console.log(`currentUserPiece = ${JSON.stringify(currentUserPiece[0].mastery_level)}`)
 
-    const [masteryNum, setMasteryNum] = useState(initialMastery); // set based on database value
+    // const [masteryNum, setMasteryNum] = useState(initialMastery); // set based on database value
+    const [masteryNum, setMasteryNum] = useState(currentUserPiece.length > 0 ? currentUserPiece[0].mastery_level : null)
     const [checked, setChecked] = useState(false);
     const [userPieceID, setUserPieceID] = useState(0);
     const [popupClass, setPopupClass] = useState('popup hide-popup');
@@ -49,12 +51,12 @@ const PieceList = ({piece,
     
     useEffect(() => {
         if (checkAuthenticated() && pieceIDSet.has(piece.id)) { // set user pieces, checked, mastery level
-            console.log(`this is running after filter????`);
+            // console.log(`this is running after filter????`);
             // can you get this to run ONLY when you first pull from the database? 
             // maybe have a state in the top level that sets false after pull? 
             setChecked(true);
-            setMasteryNum(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
-                .map(filteredPiece => (filteredPiece.mastery_level)));
+            // setMasteryNum(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
+            //     .map(filteredPiece => (filteredPiece.mastery_level))); // set this as intiial value instead
              
             setUserPieceID(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
                 .map(filteredPiece => filteredPiece.id))            
@@ -68,8 +70,6 @@ const PieceList = ({piece,
     }
 
     useEffect(() => { // when you filter....can you recalculate the masterySum?
-        
-        
         if (checked) {
             console.log(`UPDATING CATEGORY MASTERY`)
             updateCategoryMastery(masteryNum);
@@ -79,6 +79,8 @@ const PieceList = ({piece,
     }, [filteredPieces])
 
     const toggleCheckMark = async (e) => {
+        masteryLevel.current.disabled = checked;
+        setChecked(!checked);
         if (checkAuthenticated()) {
             if (!checked) { // add to database
                 setMasteryNum(10);
@@ -86,17 +88,24 @@ const PieceList = ({piece,
                 setUserPieceID(jsonData.id)
                 updateCategoryCount(!checked, 10);
                 updateCategoryMastery(10);
+                console.log(`${jsonData} ${typeof jsonData}`);
+                setUserPieces([...userPieces, jsonData ]);
+                let updatedPieceIDSet = new Set(pieceIDSet);
+                updatedPieceIDSet.add(piece.id);
+                setPieceIDSet(updatedPieceIDSet);
+                console.log(userPieces);
                 
             } else { //remove from database
-                console.log(masteryNum);
                 updateCategoryCount(!checked, masteryNum);
                 updateCategoryMastery(-1 * masteryNum);
                 setMasteryNum('')
                 fetchRemovePiece(piece.id);
-                
+                setUserPieces(userPieces.filter(element => element.piece.id !== piece.id));
+                let updatedPieceIDSet = new Set(pieceIDSet);
+                updatedPieceIDSet.delete(piece.id);
+                setPieceIDSet(updatedPieceIDSet);
             }
-            masteryLevel.current.disabled = checked;
-            setChecked(!checked);
+            
         } else { // if not logged in
             setPopupPosition({x: e.clientX, y: e.clientY});
             setPopupClass('popup show-popup');
@@ -108,7 +117,6 @@ const PieceList = ({piece,
     }
 
     useEffect(() => { 
-        // console.log(`first render = ${firstRender}`);
         if (masteryNum === null || masteryNum === '') {
             masteryLevel.current.style.backgroundColor = '#e6e6e6';
         } else { // when you check an entry, update existing mastery, or fetch saved pieces
@@ -116,21 +124,29 @@ const PieceList = ({piece,
             masteryLevel.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
             
             if (runCount === 0 && userPieceID === 0) { 
-                // this is fine if you have at an entry in the category already
-                // When you have 0 entries runCount is 0 after first render....
                 setRunCount(prevRunCount => prevRunCount + 1);
-                console.log(`IS FIRST    masterynum = ${masteryNum}`)
-                // updateCategoryMastery(masteryNum - prevMasteryNum.current);
-                // console.log(fs'updateCategoryMastery ran')
             }
 
             else if (checked && userPieceID > 0) { // update mastery of already checked piece
-                console.log(`ya it's RUNNING`)
-                // confirmed that this does not run when you first check something 
-                console.log(`fetched mastery update`)
+                console.log('MASTERY UPDATE RAN')
                 firstMount.current = false;
                 fetchMasteryUpdate(userPieceID, masteryNum);
                 updateCategoryMastery(masteryNum - prevMasteryNum.current);
+
+                let userPiecesCopy = [...userPieces];
+                console.log(`userPIeceID = ${userPieceID}`)
+                console.log(JSON.stringify(userPiecesCopy))
+                for (let p of userPiecesCopy) {
+                    console.log(p.id == userPieceID);
+
+                }
+                let pieceIndex = userPiecesCopy.findIndex((element) => (element.id === parseInt(userPieceID)));
+                console.log(`PIECE INDEX = ${pieceIndex}`)
+                const updatedPiece = userPiecesCopy[pieceIndex];
+                updatedPiece.mastery_level = masteryNum;
+
+                userPiecesCopy[pieceIndex] = updatedPiece;
+                setUserPieces(userPiecesCopy);
             } 
         }
         prevMasteryNum.current = masteryNum;
