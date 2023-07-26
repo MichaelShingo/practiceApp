@@ -13,34 +13,20 @@ Can it provide notifications (text or email) about practice reminders, practice 
 	- breakdown of composers you've worked on 
 	- which techniques you've worked on the most
 ***************************
-
-- pieces is filtered to filteredPieces,
-	- filteredPiecesIDs updates when filteredPieces updates
-	- Category setCount runs when filteredPiecesIDs updates
-
-
-- also update the mastery level in the local state
-	- Issue: you're searching through the entire list of userPieces to update
-	a single piece, every single time a user clicks to update mastery
-	- Is this why you need Redux?
-	- You have to stop the updatemastery of existing piece from runnining at the start of the application. 
+	
 
 - when you search, then you clear the search, the color is messed up. '
 	- because every time a piece comes back after being filtered out, initial useEffect() in PIeceList.js runs, adds to mastery level again. 
 	- instead of removing the piece entirely from the list of pieces displayed, can you just set visibility of piece element to hidden? Maybe filter pieces, and if the piece is not in filtered pieces.....hide 
 	- can you subtract from the mastery count when the filter activates??
 	
-
-- when you clear a filter, it make API call to update the piece in the database, same when you first load the application....prevent this 
-- create a separate field "Sorting Title" so the pieces appear in the correct order 
+- create a separate field "Sorting Title" so the pieces appear in the correct order
+- add more data so you know how it's going to run in reality 
 - have different preset views like, Suzuki Books, Essential Elements, major concertos, bach s&p....
 
 - Create + More dialogue.
-- Create search function - should this switch to no-category view? 
-- Create clickable technique tags 
 - create sorting for [mastery level, difficulty, 
 - see only completed/not completed 
-- search by difficulty level (greater than, less than, equal to)
 - create overall progress bar (can this update based on your search?)
 
 

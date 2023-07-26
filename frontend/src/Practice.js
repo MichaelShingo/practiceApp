@@ -179,12 +179,9 @@ const Home = ({ funcNav }) => {
         if (filteredPieces) {
             for (let piece of filteredPieces) {
                 idSet.add(piece.id);
-                console.log(`TYPE OF IDset ???? = ${typeof piece.id}`);
             }
-            // console.log(`filteredPieceIDS = ${idSet}`)
             setFilteredPieceIDs(idSet);
         }
-    
     }, [filteredPieces])
 
     const randomRef = useRef();

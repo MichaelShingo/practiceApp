@@ -17,19 +17,19 @@ const PieceList = ({piece,
                     firstFetch,
                     setFirstFetch,
                     updateCategoryMastery}) => {
-    let initialMastery = null;
+    let initialMastery = '';
     if (checkAuthenticated()) {
         let initialMastery = userPieces.filter(userPiece => userPiece.piece.id === piece.id)
         .map(filteredPiece => (filteredPiece.mastery_level));
     } 
     
     if (isNaN(parseInt(initialMastery))) {
-        initialMastery = null;
+        initialMastery = '';
     }
                       
     const checkMarkRef = useRef(null);
     const openCircle = useRef(null);
-    const masteryLevel = useRef(null);
+    const masteryLevel = useRef('');
     const prevMasteryNum = useRef(initialMastery);
 
     const firstMount = useRef(true);
@@ -41,7 +41,7 @@ const PieceList = ({piece,
     // console.log(`currentUserPiece = ${JSON.stringify(currentUserPiece[0].mastery_level)}`)
 
     // const [masteryNum, setMasteryNum] = useState(initialMastery); // set based on database value
-    const [masteryNum, setMasteryNum] = useState(currentUserPiece.length > 0 ? currentUserPiece[0].mastery_level : null)
+    const [masteryNum, setMasteryNum] = useState(currentUserPiece.length > 0 ? currentUserPiece[0].mastery_level : '')
     const [checked, setChecked] = useState(false);
     const [userPieceID, setUserPieceID] = useState(0);
     const [popupClass, setPopupClass] = useState('popup hide-popup');
@@ -125,28 +125,21 @@ const PieceList = ({piece,
             
             if (runCount === 0 && userPieceID === 0) { 
                 setRunCount(prevRunCount => prevRunCount + 1);
-            }
-
-            else if (checked && userPieceID > 0) { // update mastery of already checked piece
-                console.log('MASTERY UPDATE RAN')
+            } else if (checked && userPieceID > 0) { // update mastery of already checked piece
+                // this is running when you uncheck a piece? 
                 firstMount.current = false;
                 fetchMasteryUpdate(userPieceID, masteryNum);
                 updateCategoryMastery(masteryNum - prevMasteryNum.current);
 
                 let userPiecesCopy = [...userPieces];
-                console.log(`userPIeceID = ${userPieceID}`)
-                console.log(JSON.stringify(userPiecesCopy))
-                for (let p of userPiecesCopy) {
-                    console.log(p.id == userPieceID);
-
-                }
                 let pieceIndex = userPiecesCopy.findIndex((element) => (element.id === parseInt(userPieceID)));
-                console.log(`PIECE INDEX = ${pieceIndex}`)
-                const updatedPiece = userPiecesCopy[pieceIndex];
-                updatedPiece.mastery_level = masteryNum;
-
-                userPiecesCopy[pieceIndex] = updatedPiece;
-                setUserPieces(userPiecesCopy);
+                if (pieceIndex !== -1) {
+                    const updatedPiece = userPiecesCopy[pieceIndex];
+                    updatedPiece.mastery_level = masteryNum;
+                    userPiecesCopy[pieceIndex] = updatedPiece;
+                    setUserPieces(userPiecesCopy);
+                }
+                
             } 
         }
         prevMasteryNum.current = masteryNum;
