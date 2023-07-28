@@ -6,6 +6,7 @@ import { fetchMasteryUpdate, fetchRemovePiece, fetchAddPiece } from '../services
 import { useIsFirstRender } from '../services/firstRenderHook';
 import { checkAuthenticated } from '../services/authService';
 import Popup from './Popup.js';
+import PieceDetail from './PieceDetail';
 
 const PieceList = ({piece,
                     updateCategoryCount,
@@ -14,8 +15,9 @@ const PieceList = ({piece,
                     setPieceIDSet,
                     setUserPieces,
                     filteredPieces,
-                    firstFetch,
-                    setFirstFetch,
+                    setPieceDetailPiece,
+                    showDetail,
+                    setShowDetail,
                     updateCategoryMastery}) => {
     let initialMastery = '';
     if (checkAuthenticated()) {
@@ -65,8 +67,9 @@ const PieceList = ({piece,
         }
     }, [])
 
-    const handlePlusClick = () => {
-        console.log(`plus clicked for id ${piece.id}`);
+    const toggleShowDetail = () => {
+        setPieceDetailPiece(piece);
+        setShowDetail(prev => !prev);
     }
 
     useEffect(() => { // when you filter....can you recalculate the masterySum?
@@ -168,7 +171,7 @@ const PieceList = ({piece,
     }
 
     return ( 
-        <tr className="piece-preview"  >
+        <tr className="piece-preview">
             <td className="title-col">{ piece.title }</td>
             <td>
                 <Popup popupClass={popupClass} position={popupPosition} message="Login first!"/>
@@ -195,7 +198,8 @@ const PieceList = ({piece,
                 />
                 {/* <div className="mastery-rating"></div> */}
             </td>
-            <td><PlusMark onClick={handlePlusClick} className="plus-icon" /></td>
+            <td><PlusMark onClick={toggleShowDetail} className="plus-icon" /></td>
+            {/* <PieceDetail piece={piece} showDetail={showDetail} toggleShowDetail={toggleShowDetail}/> */}
         </tr>
      )
 }

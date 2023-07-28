@@ -7,6 +7,7 @@ import './styles/globalStyles.css';
 import './styles/practice.css';
 import './styles/popup.css';
 import './styles/search.css';
+import './styles/pieceDetail.css';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

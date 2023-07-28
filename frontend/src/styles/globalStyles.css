@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Gurajada&family=Mukta+Vaani:wght@200;300;400;700;800&display=swap');
 
-  
+html, body, #app, #app>div {
+    height: 100%
+  }
+
 [class*=col-] {
     float: left;
     padding: 15px 25px;
@@ -135,7 +138,7 @@ button {
     --color-grey-5: #383838;
     --color-grey-6: #161616;
     
-    --color-red: #ff0000;
+    --color-red: #c63131;
     
     
     --box-shadow-1: 0 3px 15px rgba(0,0,0,0.3);

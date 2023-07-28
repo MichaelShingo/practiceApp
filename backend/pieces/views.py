@@ -56,6 +56,17 @@ class PiecesDetailView(APIView):
 
 pieces_detail_view = PiecesDetailView.as_view()
 
+class PeriodDetailView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [AllowAny]
+    def get(self, request):
+        serializer_class = PeriodSerializer
+        queryset = Period.objects.all()
+        serializer = PeriodSerializer(queryset, many=True)
+        status_code = status.HTTP_200_OK
+        return Response(serializer.data, status_code)
+
+period_detail_view = PeriodDetailView.as_view()
 
 class UserPieceAPIView(APIView):
     serializer_class = UserToPiecesSerializer

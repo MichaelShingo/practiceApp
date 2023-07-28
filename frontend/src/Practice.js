@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useReducer, useMemo } from 'react';
 import { checkAuthenticated } from './services/authService.js';
 import Category from './components/Category.js';
 import Search from './components/Search.js';
+import PieceDetail from './components/PieceDetail.js';
 
 export const ACTIONS = {
     UPDATE_SEARCH: 'update-search',
@@ -52,10 +53,12 @@ const Home = ({ funcNav }) => {
     const [categories, setCategories] = useState();
     const [userPieces, setUserPieces] = useState();
     const [userName, setUserName] = useState('');
-    let [pieceIDSet, setPieceIDSet] = useState();
+    const [pieceIDSet, setPieceIDSet] = useState();
     const [pieceCount, setPieceCount] = useState(0);
     const [firstFetch, setFirstFetch] = useState(true);
     const [filteredPieceIDs, setFilteredPieceIDs] = useState(new Set());
+    const [pieceDetailPiece, setPieceDetailPiece] = useState(null);
+    const [showDetail, setShowDetail] = useState(false);
 
     const [searchState, searchDispatch] = useReducer(searchReducer, { 
         search: '',
@@ -148,11 +151,7 @@ const Home = ({ funcNav }) => {
             }
         setPieceCount(techniqueFiltered && techniqueFiltered.length);
 
-        console.log(userPieces);
         return techniqueFiltered;
-
-        
-
         
         // SORTING
         let sorted = [] // sorting is last
@@ -184,7 +183,6 @@ const Home = ({ funcNav }) => {
         }
     }, [filteredPieces])
 
-    const randomRef = useRef();
     const categoryRefs = useRef([]);
     categoryRefs.current = [];
 
@@ -257,28 +255,13 @@ const Home = ({ funcNav }) => {
 
             let idSet = new Set();
             for (let userPiece of jsonData) {
-                console.log(userPiece.piece.id);
                 idSet.add(userPiece.piece.id);
             }
-            setPieceIDSet(idSet);
-            // can you run above code in a promise, then set state??
-            console.log(`LENGTH = ${userPieces.length}`);
-            // setReady(true);
-            console.log(pieceIDSet);
-            
+            setPieceIDSet(idSet);            
         } catch (error) {
             console.log('Error fetching data:', error);
         }
     }
-
-    // const togglePieceTable = (e, categoryKey) => {
-    //     e.stopPropagation();
-    //     console.log(e);
-    //     const categoryElement = document.querySelector(`div[listID='${categoryKey.toString()}']`);
-    //     const piecesTable = categoryElement.querySelector('table');
-    //     piecesTable.classList.toggle('hide-pieces-table');
-    // }
-
     
     const updateGlobalProgress = (increment) => {
         if (increment) {
@@ -368,6 +351,12 @@ const Home = ({ funcNav }) => {
 
     return ( 
         <div id="practice-content">
+            <PieceDetail 
+                pieceDetailPiece={pieceDetailPiece}
+                showDetail={showDetail}
+                setShowDetail={setShowDetail}
+                userPieces={userPieces}
+            />
             <div className="row">
                 <div className="col-1"></div>
                 <div className="col-10">
@@ -399,6 +388,9 @@ const Home = ({ funcNav }) => {
                                         setFirstFetch={setFirstFetch}
                                         searchState={searchState}
                                         filteredPieceIDs={filteredPieceIDs}
+                                        setPieceDetailPiece={setPieceDetailPiece}
+                                        showDetail={showDetail}
+                                        setShowDetail={setShowDetail}
                                     />
                                 ))}
                             </div>

@@ -13,8 +13,8 @@ Can it provide notifications (text or email) about practice reminders, practice 
 	- breakdown of composers you've worked on 
 	- which techniques you've worked on the most
 ***************************
-	
-
+- to fix mastery color issues, can you do clean up after useEffect when each piece dismounts? 
+- sorting - are you sorting by pieces or by category? Maybe for this you should have a separate view? 
 - when you search, then you clear the search, the color is messed up. '
 	- because every time a piece comes back after being filtered out, initial useEffect() in PIeceList.js runs, adds to mastery level again. 
 	- instead of removing the piece entirely from the list of pieces displayed, can you just set visibility of piece element to hidden? Maybe filter pieces, and if the piece is not in filtered pieces.....hide 

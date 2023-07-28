@@ -6,7 +6,7 @@ urlpatterns = [
     path('composers/', views.composer_detail_view),
     path('pieces/', views.pieces_detail_view),
     path('insert-pieces/', views.insert_pieces_view),
-    # path('periods/', views.period_detail_view),
+    path('periods/', views.period_detail_view),
     path('insert-periods/', views.insert_periods_view),
     # path('types/', views.types_detail_view),
     path('insert-types/', views.insert_type_view),

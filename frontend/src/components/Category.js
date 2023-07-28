@@ -14,10 +14,11 @@ const Category = ({
     setUserPieces,
     filteredPieces,
     pieceCount,
-    firstFetch,
-    setFirstFetch,
     searchState,
     filteredPieceIDs,
+    setPieceDetailPiece,
+    showDetail,
+    setShowDetail,
     updateGlobalMastery }, ref) => {
 
     const calcCSSPercentage = (numerator, denominator) => {
@@ -176,6 +177,9 @@ const Category = ({
                             pieceIDSet={pieceIDSet}
                             setPieceIDSet={setPieceIDSet}
                             setUserPieces={setUserPieces}
+                            setPieceDetailPiece={setPieceDetailPiece}
+                            showDetail={showDetail}
+                            setShowDetail={setShowDetail}
                         />
                     ))}    
                     </tbody>

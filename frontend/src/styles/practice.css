@@ -102,6 +102,11 @@
     /* transition: var(--default-transition); */
 }
 
+/* .piece-preview {
+    z-index: 10;
+    overflow: visible;
+} */
+
 .pieces-table:hover {
     cursor:default;
 }

@@ -44,7 +44,7 @@ const ThemeToggle = () => {
                     id="toggle"
                     name="toggle"
                     type="checkbox"
-                    checked={isEnabled}
+                    defaultChecked={isEnabled}
                     onClick={toggleState}
                 />
             </div>
