@@ -17,6 +17,7 @@ class ComposerSerializer(serializers.ModelSerializer): # get full name
             'first_name',
             'last_name',
             'full_name',
+            'description',
         ]
     
     def get_full_name(self, instance):
@@ -26,7 +27,9 @@ class PeriodSerializer(serializers.ModelSerializer):
     class Meta:
         model = Period
         fields = [
-            'name'
+            'id',
+            'name',
+            'description',
         ]
 
 class TypeOfPieceSerializer(serializers.ModelSerializer):
@@ -34,6 +37,7 @@ class TypeOfPieceSerializer(serializers.ModelSerializer):
         model = TypeOfPiece
         fields = [
             'name'
+            'description',
         ]
 
 class TechniqueSerializer(serializers.ModelSerializer):

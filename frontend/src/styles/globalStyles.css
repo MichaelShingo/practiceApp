@@ -122,6 +122,8 @@ button {
     --color-saturated: #005c07;
     --color-dark: #253c22;
     --color-accent: #046cf3;
+    --color-blue-dark-2: #0e2f5a;
+    --color-blue-dark-1: #2b4687;
     --color-success: #07c400;
     --color-success-hover: #80df7d;
     --color-accent-hover: #659feb;
@@ -142,6 +144,7 @@ button {
     
     
     --box-shadow-1: 0 3px 15px rgba(0,0,0,0.3);
+    --box-shadow-small: 0 3px 5px rgba(0,0,0,0.3);
     --font: Oswald, sans-serif;
     --font-paragraph: Noto Sans;
     --background: var(--color-white);

@@ -13,6 +13,10 @@ Can it provide notifications (text or email) about practice reminders, practice 
 	- breakdown of composers you've worked on 
 	- which techniques you've worked on the most
 ***************************
+
+
+- create additionalData field for period, techniques, composer, type and add tooltip
+
 - to fix mastery color issues, can you do clean up after useEffect when each piece dismounts? 
 - sorting - are you sorting by pieces or by category? Maybe for this you should have a separate view? 
 - when you search, then you clear the search, the color is messed up. '

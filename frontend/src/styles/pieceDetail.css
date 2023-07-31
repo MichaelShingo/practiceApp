@@ -14,13 +14,14 @@
     /* background-color: var(--color-grey-1); */
     /* background-color: rgba(237, 237, 237, 0.95); */
     background: rgb(255,255,255);
-    background: linear-gradient(112deg, rgba(255,255,255,.93) 35%, rgba(231, 231, 231, 0.90) 100%);
+    /* background: linear-gradient(112deg, rgba(255,255,255,.93) 35%, rgba(231, 231, 231, 0.90) 100%); */
     border-radius: 10px;
     top: 15%;
     width: 60vw;
-    height: 70vh;
+    height: 75vh;
     margin: auto;
     padding: 15px 30px 30px 30px;
+    min-width: 775px;
     overflow-y: scroll;
 }
 
@@ -69,12 +70,21 @@
     font-weight: 400;
 }
 
+
 .detail-container .text-container {
     background-color: var(--color-accent);
     border-radius: 50px;
     padding: 5px 25px;
     width: fit-content;
     margin: auto;
+    transition: var(--fast-transition);
+
+}
+
+.detail-container .text-container:hover {
+    transform: scale(105%);
+    transition: var(--fast-transition);
+    cursor: pointer;
 }
 
 .circular-progress-container {
@@ -86,6 +96,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: var(--fast-transition);
+
+    
+}
+
+.circular-progress-container:hover {
+    opacity: .8;
+    cursor: pointer;
+    transition: var(--fast-transition);
+    transform: scale(105%);
 }
 
 .circular-progress {
@@ -185,12 +205,53 @@
     height: fit-content;
     display: flex;
     align-items: center;
+    min-height: 45px;
 }
 
 .technique-detail-container .technique-tag {
     background-color: var(--color-white);
+    transition: var(--fast-transition);
+
 }
 
 .technique-detail-container .technique-tag:hover{
-    cursor:auto;
+    cursor: pointer;
+    box-shadow: none;
+    transform: scale(105%);
+    transition: var(--fast-transition);
 }
+
+.period-container {
+    background-color: var(--color-blue-dark-2);
+    border-radius: 25px;
+    width: 90%;
+    min-width: fit-content;
+    margin: auto;
+}
+
+.period-name {
+    text-align: center;
+    color: var(--color-blue-dark-1);
+    font-weight: 800;
+    font-size: 1.5rem;
+    transition: var(--fast-transition);
+
+}
+
+.period-name:hover {
+    color: var(--color-grey-1);
+    cursor: pointer;
+}
+
+.period-name.match {
+    color: var(--color-white);
+    background-color: var(--color-accent);
+    transition: var(--fast-transition);
+    border-radius: 25px;
+}
+
+.period-name.match:hover {
+    transform: scale(105%);
+    cursor: pointer;
+}
+

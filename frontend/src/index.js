@@ -8,7 +8,10 @@ import './styles/practice.css';
 import './styles/popup.css';
 import './styles/search.css';
 import './styles/pieceDetail.css';
+import './styles/tooltip.css';
 import App from './App';
+import 'react-tooltip/dist/react-tooltip.css'
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

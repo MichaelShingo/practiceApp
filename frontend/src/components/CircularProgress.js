@@ -23,7 +23,7 @@ const CircularProgress = ({ size, strokeWidth, percentage, color }) => {
         r={radius}
         strokeWidth={`${strokeWidth}px`}
       />
-      <circle
+      <circle className="circle-progress"
         fill="none"
         stroke={color}
         cx={size / 2}

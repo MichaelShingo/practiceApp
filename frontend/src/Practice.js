@@ -59,6 +59,7 @@ const Home = ({ funcNav }) => {
     const [filteredPieceIDs, setFilteredPieceIDs] = useState(new Set());
     const [pieceDetailPiece, setPieceDetailPiece] = useState(null);
     const [showDetail, setShowDetail] = useState(false);
+    const [periods, setPeriods] = useState(null)
 
     const [searchState, searchDispatch] = useReducer(searchReducer, { 
         search: '',
@@ -189,6 +190,7 @@ const Home = ({ funcNav }) => {
     useEffect( () => {
          fetchPieces();
          fetchCategories();
+         fetchPeriods();
          if (checkAuthenticated()) {
             fetchUserPieces();
          } else {
@@ -231,6 +233,20 @@ const Home = ({ funcNav }) => {
             const jsonData = await response.json();
             setCategories(jsonData);
             console.log('fetched categories');
+        } catch (error) {
+            console.log('Error fetching data:', error);
+        }
+    }
+
+    const fetchPeriods = async () => {
+        const url = 'http://localhost:8000/api/periods/'
+        try {
+            const response = await fetch(url,
+                {
+                    method: 'GET',
+                });
+            const jsonData = await response.json();
+            setPeriods(jsonData);
         } catch (error) {
             console.log('Error fetching data:', error);
         }
@@ -356,6 +372,7 @@ const Home = ({ funcNav }) => {
                 showDetail={showDetail}
                 setShowDetail={setShowDetail}
                 userPieces={userPieces}
+                periods={periods}
             />
             <div className="row">
                 <div className="col-1"></div>

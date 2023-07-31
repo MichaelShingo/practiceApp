@@ -5,6 +5,7 @@ from core.models import User
 class Composer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    description = models.TextField()
 
     @property
     def full_name(self):
@@ -13,9 +14,11 @@ class Composer(models.Model):
 
 class Period(models.Model):
     name = models.CharField(max_length=50)
+    description = models.TextField()
 
 class TypeOfPiece(models.Model):
     name = models.CharField(max_length=100)
+    description = models.TextField()
 
 class Technique(models.Model):
     name = models.CharField(max_length=100)

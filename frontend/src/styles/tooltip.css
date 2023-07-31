@@ -1,0 +1,16 @@
+.tooltip-container {
+    background-color: var(--color-white);
+    border-radius: 25px;
+    padding: 10px;
+    max-width: 200px;
+    margin: 5px;
+    font-size: 0.8rem;
+    opacity: 0;
+    position: absolute;
+    color: white;
+    /* height: fit-content; */
+    transition: opacity 0.5s, height 0.5s;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: var(--box-shadow-small);
+}
