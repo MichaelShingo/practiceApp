@@ -39,7 +39,7 @@ const PieceList = ({piece,
 
     const currentUserPiece = userPieces.filter(userPiece => userPiece.piece.id === piece.id);
 
-    const [masteryNum, setMasteryNum] = useState(currentUserPiece.length > 0 ? currentUserPiece[0].mastery_level : '')
+    const [masteryNum, setMasteryNum] = useState(currentUserPiece.length > 0 ? currentUserPiece[0].mastery_level : null)
     const [checked, setChecked] = useState(false);
     const [userPieceID, setUserPieceID] = useState(0);
     const [popupClass, setPopupClass] = useState('popup hide-popup');
@@ -86,7 +86,6 @@ const PieceList = ({piece,
                 setUserPieceID(jsonData.id)
                 updateCategoryMastery(10);
                 updateCategoryCount(!checked, 10);
-                console.log(`${jsonData} ${typeof jsonData}`);
                 setUserPieces([...userPieces, jsonData ]);
                 let updatedPieceIDSet = new Set(pieceIDSet);
                 updatedPieceIDSet.add(piece.id);
@@ -96,7 +95,8 @@ const PieceList = ({piece,
             } else { //remove from database
                 updateCategoryCount(!checked, masteryNum);
                 updateCategoryMastery(-1 * masteryNum);
-                setMasteryNum('')
+                setMasteryNum(null)
+                masteryLevel.current.value = '';
                 fetchRemovePiece(piece.id);
                 setUserPieces(userPieces.filter(element => element.piece.id !== piece.id));
                 let updatedPieceIDSet = new Set(pieceIDSet);
@@ -115,9 +115,13 @@ const PieceList = ({piece,
     }
 
     useEffect(() => { 
-        if (masteryNum === null || masteryNum === '') {
+        if (masteryNum === null) {
             masteryLevel.current.style.backgroundColor = '#e6e6e6';
-        } else { // when you check an entry, update existing mastery, or fetch saved pieces
+        }
+        else if (masteryNum === '') {
+            
+        }
+        else { // when you check an entry, update existing mastery, or fetch saved pieces
             const hue = mapColorRange(masteryNum, 1, 1, 10, 118);
             masteryLevel.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
             

@@ -54,26 +54,12 @@ const Category = ({
     
     useEffect(() => {
         setCount(0);
-        // setMasterySum(0); sets it to 0 at beginning...
         calcCategoryCount();
 
         if (checkAuthenticated()) {
             for (let userPiece of userPieces) {
-                // console.log(`userPiece.piece.id = ${userPiece.piece.id} ===` )
-                // console.log(`DOES IT HAVE? ${filteredPieceIDs.has(userPiece.piece.id)}`)
-                // console.log(new Array(...filteredPieceIDs).join(' '));
-                // console.log(`category = ${userPiece.piece.category}`);
-                // console.log(`USER PIECE = ${userPiece.piece.title}`)
                 if (userPiece.piece.category === category.id && filteredPieceIDs.has(userPiece.piece.id)) {
-                    // console.log(`${userPiece.piece.category} === ${category.id}?`)
                     setCount(prevCount => prevCount + 1);
-                    // can you do this but filter the userpieces as well? 
-                    // console.log(`setting mastery: ${userPiece.mastery_level}`)
-                    
-                    // setMasterySum(() => {
-                    //     return (masterySum + userPiece.mastery_level);
-                    // });
-                    // setMasterySum(prevSum => prevSum + userPiece.mastery_level);
                 }
             }
         }
@@ -83,11 +69,6 @@ const Category = ({
         calcCategoryCount();
     }, [pieceCount])
 
-    useEffect(() => { // when you filter....can you recalculate the masterySum?
-        // setMasterySum(0); sets to 0 and keeps at 0 on filter 
-        // how do you reset the count BEFORE, incrementing with updates? 
-        setMasterySum(sum => sum - prevMasterySum.current);
-    }, [searchState])
 
     useEffect(() => {
         console.log(`count, masterySum, totalCount, categoryCount = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
@@ -125,6 +106,12 @@ const Category = ({
         }
         updateGlobalProgress(increment);
     }
+
+    useEffect(() => { // when you filter....can you recalculate the masterySum?
+        // setMasterySum(0); sets to 0 and keeps at 0 on filter 
+        // how do you reset the count BEFORE, incrementing with updates? 
+        setMasterySum(sum => sum - prevMasterySum.current);
+    }, [searchState])
 
     const updateCategoryMastery = (difference) => {
         // THIS RUNS ONLY ONCE ON RENDER, GOOD 
