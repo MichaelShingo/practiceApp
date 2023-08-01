@@ -6,7 +6,6 @@ import { fetchMasteryUpdate, fetchRemovePiece, fetchAddPiece } from '../services
 import { useIsFirstRender } from '../services/firstRenderHook';
 import { checkAuthenticated } from '../services/authService';
 import Popup from './Popup.js';
-import PieceDetail from './PieceDetail';
 
 const PieceList = ({piece,
                     updateCategoryCount,
@@ -16,7 +15,6 @@ const PieceList = ({piece,
                     setUserPieces,
                     filteredPieces,
                     setPieceDetailPiece,
-                    showDetail,
                     setShowDetail,
                     updateCategoryMastery}) => {
     let initialMastery = '';
@@ -40,31 +38,27 @@ const PieceList = ({piece,
     renderCount.current = renderCount.current + 1;
 
     const currentUserPiece = userPieces.filter(userPiece => userPiece.piece.id === piece.id);
-    // console.log(`currentUserPiece = ${JSON.stringify(currentUserPiece[0].mastery_level)}`)
 
-    // const [masteryNum, setMasteryNum] = useState(initialMastery); // set based on database value
     const [masteryNum, setMasteryNum] = useState(currentUserPiece.length > 0 ? currentUserPiece[0].mastery_level : '')
     const [checked, setChecked] = useState(false);
     const [userPieceID, setUserPieceID] = useState(0);
     const [popupClass, setPopupClass] = useState('popup hide-popup');
     const [popupPosition, setPopupPosition] = useState({x: 0, y: 0});
     const [runCount, setRunCount] = useState(0);
-    const [showPiece, setShowPiece] = useState(true);
     
-    useEffect(() => {
+    useEffect(() => { // MOUNT AND UNMOUNT
         if (checkAuthenticated() && pieceIDSet.has(piece.id)) { // set user pieces, checked, mastery level
-            // console.log(`this is running after filter????`);
-            // can you get this to run ONLY when you first pull from the database? 
-            // maybe have a state in the top level that sets false after pull? 
+            updateCategoryMastery(masteryNum);
             setChecked(true);
-            // setMasteryNum(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
-            //     .map(filteredPiece => (filteredPiece.mastery_level))); // set this as intiial value instead
-             
             setUserPieceID(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
                 .map(filteredPiece => filteredPiece.id))            
         } else {
             masteryLevel.current.disabled = true;
         }
+
+        return () =>  {
+        }
+
     }, [])
 
     const toggleShowDetail = () => {
@@ -76,6 +70,7 @@ const PieceList = ({piece,
         if (checked) {
             console.log(`UPDATING CATEGORY MASTERY`)
             updateCategoryMastery(masteryNum);
+
             updateCategoryCount(true);
         }
         
@@ -89,8 +84,8 @@ const PieceList = ({piece,
                 setMasteryNum(10);
                 const jsonData = await fetchAddPiece(piece.id, 10);
                 setUserPieceID(jsonData.id)
-                updateCategoryCount(!checked, 10);
                 updateCategoryMastery(10);
+                updateCategoryCount(!checked, 10);
                 console.log(`${jsonData} ${typeof jsonData}`);
                 setUserPieces([...userPieces, jsonData ]);
                 let updatedPieceIDSet = new Set(pieceIDSet);
@@ -132,7 +127,6 @@ const PieceList = ({piece,
                 // this is running when you uncheck a piece? 
                 firstMount.current = false;
                 fetchMasteryUpdate(userPieceID, masteryNum);
-                updateCategoryMastery(masteryNum - prevMasteryNum.current);
 
                 let userPiecesCopy = [...userPieces];
                 let pieceIndex = userPiecesCopy.findIndex((element) => (element.id === parseInt(userPieceID)));
@@ -196,10 +190,8 @@ const PieceList = ({piece,
                     value={masteryNum}
                     onChange={handleMasteryChange}
                 />
-                {/* <div className="mastery-rating"></div> */}
             </td>
             <td><PlusMark onClick={toggleShowDetail} className="plus-icon" /></td>
-            {/* <PieceDetail piece={piece} showDetail={showDetail} toggleShowDetail={toggleShowDetail}/> */}
         </tr>
      )
 }

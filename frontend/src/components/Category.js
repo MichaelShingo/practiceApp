@@ -37,6 +37,10 @@ const Category = ({
         // filteredPieces.filter((piece) => piece.category.name === category.name)
     }
 
+    // useEffect(() => {
+    //     setMasterySum(0);
+    // }, [filteredPieces])
+
     const progressRef = useRef(null);
     const pieceTableRef = useRef(null);
 
@@ -86,7 +90,7 @@ const Category = ({
     }, [searchState])
 
     useEffect(() => {
-        console.log(`count, masterySum = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
+        console.log(`count, masterySum, totalCount, categoryCount = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
         setProgressPercent(calcCSSPercentage(count, totalCount));
         if (count === 0) {
             setAvgMastery(0);
@@ -175,11 +179,11 @@ const Category = ({
                             updateGlobalMastery={updateGlobalMastery}
                             updateCategoryCount={updateCategoryCount}
                             pieceIDSet={pieceIDSet}
+                            setShowDetail={setShowDetail}
+                            showDetail={showDetail}
                             setPieceIDSet={setPieceIDSet}
                             setUserPieces={setUserPieces}
                             setPieceDetailPiece={setPieceDetailPiece}
-                            showDetail={showDetail}
-                            setShowDetail={setShowDetail}
                         />
                     ))}    
                     </tbody>

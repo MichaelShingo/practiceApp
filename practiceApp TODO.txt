@@ -12,7 +12,6 @@
 ***************************
 
 
-- selecting technique tag causes formatting change....
 - loading animation for the table and detail dialogue, on first load and on search 
 - to fix mastery color issues, can you do clean up after useEffect when each piece dismounts? 
 - sorting - are you sorting by pieces or by category? Maybe for this you should have a separate view? 
