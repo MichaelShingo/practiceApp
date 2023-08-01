@@ -147,20 +147,13 @@ const PieceList = ({piece,
     }
 
     const handleMasteryChange = async () => {
-        if (!checked) { // when you check 
-            setMasteryNum(masteryLevel.current.value);
-            setChecked(true);
-            updateCategoryCount(true);
-            const jsonData = await fetchAddPiece(piece.id, masteryLevel.current.value);
-            setUserPieceID(jsonData.id) 
-        }
-
         if (masteryLevel.current.value > 10 || masteryLevel.current.value == NaN) {
             setMasteryNum(10);
         } else if (masteryLevel.current.value < 0) {
             setMasteryNum(0);            
         } else {
             setMasteryNum(masteryLevel.current.value);
+            updateCategoryMastery(masteryLevel.current.value - prevMasteryNum.current);
         }
     }
 

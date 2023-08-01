@@ -64,6 +64,7 @@ const PieceDetail = ({
             className="detail-background" 
             style={showDetail ? {display: 'block'} : {display: 'none'}}
             onClick={handleClose}
+            key={pieceDetailPiece && pieceDetailPiece.id}
         >
             <Tooltip
                 visible={showTooltip}
