@@ -1,12 +1,9 @@
-Tracks progress on etude books, repertoire, scales
-Sends data to AI to provide next practice recommendations
-Allows marking of how much you mastered it so you can comeback later and review ones that had trouble. 
-	- mastery level determines the color/hue of the progress bar
-- search, sort, filter the pieces, and it shows the overall progress based on the filtered items 
-Provides tutorial videos and recordings
-Can it provide notifications (text or email) about practice reminders, practice inspiration.
-- view that shows which techniques you have worked on the most 
-- track last time a piece was practiced 
+- Sends data to AI to provide next practice recommendations
+- Provides tutorial videos and recordings
+- Can it provide notifications (text or email) about practice reminders, practice inspiration.
+- track last time a user piece object was updated
+- boosted type of feature that times your practice sessions
+- can you add notes about your practice to each piece? 
 - data dashboard that shows some useful information
 	- like a github-type calendar that shows days that you completed pieces 
 	- percentages of pieces completed at each difficulty level 
@@ -15,31 +12,32 @@ Can it provide notifications (text or email) about practice reminders, practice 
 ***************************
 
 
-- create additionalData field for period, techniques, composer, type and add tooltip
-
+- selecting technique tag causes formatting change....
+- loading animation for the table and detail dialogue, on first load and on search 
 - to fix mastery color issues, can you do clean up after useEffect when each piece dismounts? 
 - sorting - are you sorting by pieces or by category? Maybe for this you should have a separate view? 
+
 - when you search, then you clear the search, the color is messed up. '
 	- because every time a piece comes back after being filtered out, initial useEffect() in PIeceList.js runs, adds to mastery level again. 
 	- instead of removing the piece entirely from the list of pieces displayed, can you just set visibility of piece element to hidden? Maybe filter pieces, and if the piece is not in filtered pieces.....hide 
 	- can you subtract from the mastery count when the filter activates??
-	
+
+- loading gif (can you make it music-y?)
 - create a separate field "Sorting Title" so the pieces appear in the correct order
 - add more data so you know how it's going to run in reality 
 - have different preset views like, Suzuki Books, Essential Elements, major concertos, bach s&p....
 
-- Create + More dialogue.
 - create sorting for [mastery level, difficulty, 
 - see only completed/not completed 
 - create overall progress bar (can this update based on your search?)
 
 
 - Implement dark theme with useContext?
-- add a category difficulty field and sort by this default
+- add a category difficulty field and sort by this default (NO BECAUSE IS KREUTZER 1 AS HARD AS KREUTZER 42?)
 
 - WHAT HAPPENS IF YOU HAVE THE SAME PAGE OPEN ON MULTIPLE TABS/DEVICES? 
 
-- prevent duplicates based on (pieceID, userID) 
+- prevent duplicates based on (pieceID, userID) (BACKEND) 
 
 
 
