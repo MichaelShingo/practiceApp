@@ -93,4 +93,6 @@ class UserToPiecesSerializer(serializers.ModelSerializer):
             'user',
             'piece',
             'mastery_level',
+            'created_at',
+            'updated_at',
         ]

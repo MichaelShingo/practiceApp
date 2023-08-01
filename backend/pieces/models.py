@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from core.models import User
+from django.utils import timezone
+
 
 class Composer(models.Model):
     first_name = models.CharField(max_length=100)
@@ -45,12 +47,10 @@ class Piece(models.Model):
         start = -1
         end = -1
         for i, char in enumerate(self.title):
-            
             if char.isdigit() and start == -1:
                 start = i
             elif not char.isdigit() and start != -1:
                 end = i
-            print(i, char, start, end)
         if start == -1:
             return self.title
         
@@ -65,4 +65,6 @@ class UserToPieces(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     piece = models.ForeignKey(Piece, on_delete=models.CASCADE)
     mastery_level = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
