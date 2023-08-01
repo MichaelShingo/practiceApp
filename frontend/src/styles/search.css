@@ -3,6 +3,7 @@
 
 #search-container {
     margin-bottom: 35px;
+    padding: 30px 5%;
 }
 
 #search-flex {
@@ -11,6 +12,7 @@
     flex-wrap: wrap;
     justify-content: space-around; /* space-between | space-around | space-evenly */
     margin: 20px 0px;
+    gap: 15px 10px;
 }
 
 #search-container h3 {
@@ -22,10 +24,6 @@
     white-space: nowrap;
 }
 
-label {
-    /* vertical-align: middle; */
-}
-
 #search-container input, #search-flex select {
     background-color: var(--color-white);
     border: 3px solid var(--color-grey-2);
@@ -35,6 +33,7 @@ label {
     /* margin-right: 15px; */
     font-size: 1rem;
     width: 100%;
+    
 
 }
 

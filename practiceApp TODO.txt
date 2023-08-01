@@ -13,7 +13,6 @@
 
 
 - loading animation for the table and detail dialogue, on first load and on search 
-- to fix mastery color issues, can you do clean up after useEffect when each piece dismounts? 
 - sorting - are you sorting by pieces or by category? Maybe for this you should have a separate view? 
 
 - when you search, then you clear the search, the color is messed up. '
@@ -122,3 +121,52 @@ class TechniquesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Techniques
         fields = '__all__'
+		
+		
+		
+		
+OLD HANDLE CHECK FUNCTION 
+const oldHandleCheckFunction= (e) => {
+        console.log(e.target.name);
+        try {
+            e.target.classList.toggle('hide-checkmark');
+            const checkedElement = e.target.previousElementSibling;
+            checkedElement.classList.toggle('hide-checkmark');
+            const pieceRow = checkedElement.parentNode.parentNode;
+            const categoryID = pieceRow.getAttribute("categoryID").toString();
+            const masteryLevel = pieceRow.querySelector('.mastery-number');
+
+            const fraction = document.querySelector(`.fraction[categoryID="${categoryID}"]`);
+
+
+            const fractionText = fraction.textContent;
+            const slashIndex = fractionText.indexOf('/');
+            console.log(fractionText, slashIndex);
+            let numerator = parseInt(fractionText.substring(0, slashIndex));
+            const denominator = fractionText.substring(slashIndex + 1, fractionText.length);
+            // console.log(fractionText.indexOf('/'));
+            const progressBar = document.querySelector(`.progress-bar[categoryID="${categoryID}"]`);
+            console.log(progressBar);
+            
+
+            if (checkedElement.classList.contains('hide-checkmark')) { 
+                // When you uncheck it decrement mastery
+                console.log('unchecked');
+                // masteryLevel.value = 0;
+                numerator = numerator - 1;
+                console.log(`numerator = ${numerator}`);
+            } else {
+                console.log('checked');
+                // masteryLevel.value = 10;
+                numerator = numerator + 1; 
+            }
+            let percentage = numerator / denominator * 100;
+            console.log(`percentage = ${percentage}`);
+            progressBar.style.width = `${percentage.toString()}%`;
+            fraction.textContent = numerator.toString() + '/' + denominator.toString();
+            // update database
+        } catch (error){
+            e.target.classList.toggle('hide-checkmark');
+            console.log(error.message);
+        }  
+    }

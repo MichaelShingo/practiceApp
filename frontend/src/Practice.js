@@ -287,50 +287,6 @@ const Home = ({ funcNav }) => {
         }
         
     }
-    const oldHandleCheckFunction= (e) => {
-        console.log(e.target.name);
-        try {
-            e.target.classList.toggle('hide-checkmark');
-            const checkedElement = e.target.previousElementSibling;
-            checkedElement.classList.toggle('hide-checkmark');
-            const pieceRow = checkedElement.parentNode.parentNode;
-            const categoryID = pieceRow.getAttribute("categoryID").toString();
-            const masteryLevel = pieceRow.querySelector('.mastery-number');
-
-            const fraction = document.querySelector(`.fraction[categoryID="${categoryID}"]`);
-
-
-            const fractionText = fraction.textContent;
-            const slashIndex = fractionText.indexOf('/');
-            console.log(fractionText, slashIndex);
-            let numerator = parseInt(fractionText.substring(0, slashIndex));
-            const denominator = fractionText.substring(slashIndex + 1, fractionText.length);
-            // console.log(fractionText.indexOf('/'));
-            const progressBar = document.querySelector(`.progress-bar[categoryID="${categoryID}"]`);
-            console.log(progressBar);
-            
-
-            if (checkedElement.classList.contains('hide-checkmark')) { 
-                // When you uncheck it decrement mastery
-                console.log('unchecked');
-                // masteryLevel.value = 0;
-                numerator = numerator - 1;
-                console.log(`numerator = ${numerator}`);
-            } else {
-                console.log('checked');
-                // masteryLevel.value = 10;
-                numerator = numerator + 1; 
-            }
-            let percentage = numerator / denominator * 100;
-            console.log(`percentage = ${percentage}`);
-            progressBar.style.width = `${percentage.toString()}%`;
-            fraction.textContent = numerator.toString() + '/' + denominator.toString();
-            // update database
-        } catch (error){
-            e.target.classList.toggle('hide-checkmark');
-            console.log(error.message);
-        }  
-    }
 
     const mapColorRange = (value, x1, y1, x2, y2) => {
         return ((y2 - y1) / (x2 - x1)) * value;
@@ -384,9 +340,6 @@ const Home = ({ funcNav }) => {
                         pieceCount={pieceCount}
                         />
                     <div className="table-container">
-                        <div className="row">
-                            <div className="col-0-5"></div>
-                            <div className="col-11">
                                 { categories && pieces && userPieces && filteredPieces && pieceIDSet && categories.map((category) => (
                                     <Category 
                                         key={category.id}
@@ -410,9 +363,6 @@ const Home = ({ funcNav }) => {
                                         setShowDetail={setShowDetail}
                                     />
                                 ))}
-                            </div>
-                            <div className="col-0-5"></div>
-                        </div>
                     </div>
                 </div>
                 <div className="col-1"></div>
