@@ -40,6 +40,27 @@ class Piece(models.Model):
     type_of_piece = models.ForeignKey(TypeOfPiece, on_delete=models.CASCADE) # many-to-one - each piece can only have one type, each type can have many pieces
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
 
+    @property
+    def sorting_title(self):
+        start = -1
+        end = -1
+        for i, char in enumerate(self.title):
+            
+            if char.isdigit() and start == -1:
+                start = i
+            elif not char.isdigit() and start != -1:
+                end = i
+            print(i, char, start, end)
+        if start == -1:
+            return self.title
+        
+        if end == -1:
+            end = len(self.title)
+
+        slice = self.title[start:end]
+
+        return str(len(slice)) + slice
+
 class UserToPieces(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     piece = models.ForeignKey(Piece, on_delete=models.CASCADE)

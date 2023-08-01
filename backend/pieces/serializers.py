@@ -59,10 +59,13 @@ class CategorySerializer(serializers.ModelSerializer):
         ]
 
 class PieceSerializer(serializers.ModelSerializer):
+    composer = ComposerSerializer()
+    sorting_title = serializers.SerializerMethodField()
     class Meta:
         model = Piece
         depth = 1
         composer = ComposerSerializer(read_only=True, source='composer')
+        
         fields = [
             'id',
             'category',
@@ -74,8 +77,12 @@ class PieceSerializer(serializers.ModelSerializer):
             'prereqs',
             'recording_link',
             'tutorial_link',
-            'type_of_piece'
+            'type_of_piece',
+            'sorting_title',
         ]
+    
+    def get_sorting_title(self, instance):
+        return instance.sorting_title
 
 class UserToPiecesSerializer(serializers.ModelSerializer):
     class Meta:
