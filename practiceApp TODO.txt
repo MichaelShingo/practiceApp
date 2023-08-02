@@ -10,61 +10,46 @@
 	- breakdown of composers you've worked on 
 	- which techniques you've worked on the most
 ***************************
+Next time you make a component, think about mobile-first design 
 
+SORTING 
+- By category..., avg difficulty, completion percentage 
+	- Can you calculate a map of {categoryID : completionPercentage} and sort based on this? completion percentage is already calculated at the category level, you just need to get that state from each category up to practice component.
+	- category difficulty could be the default category sorting 
+	- Create a useMemo for sortedCategories(), pass sortedCategories as prop into categories and use this for display 
+	
+	- avg difficulty is not dependent on the user: so calculate as @property in django - 
+	
+	
+- checkboxes for Show ONLY completed pieces, show ONLY incomplete pieces
 
-- loading animation for the table and detail dialogue, on first load and on search 
-- sorting - are you sorting by pieces or by category? Maybe for this you should have a separate view? 
+- detail dialogue should show created and updated date 
 
-- when you search, then you clear the search, the color is messed up. '
-	- because every time a piece comes back after being filtered out, initial useEffect() in PIeceList.js runs, adds to mastery level again. 
-	- instead of removing the piece entirely from the list of pieces displayed, can you just set visibility of piece element to hidden? Maybe filter pieces, and if the piece is not in filtered pieces.....hide 
-	- can you subtract from the mastery count when the filter activates??
-
-- loading gif (can you make it music-y?)
-- create a separate field "Sorting Title" so the pieces appear in the correct order
-- add more data so you know how it's going to run in reality 
-- have different preset views like, Suzuki Books, Essential Elements, major concertos, bach s&p....
-
-- create sorting for [mastery level, difficulty, 
-- see only completed/not completed 
 - create overall progress bar (can this update based on your search?)
 
 
+LOADING ANIMATIONS
+- loading animation for the table and detail dialogue, on first load and on search 
+- loading gif (can you make it music-y?)
+
+
+- add more data so you know how it's going to run in reality 
+- have different preset views like, Suzuki Books, Essential Elements, major concertos, bach s&p....
+
+
+
+
 - Implement dark theme with useContext?
-- add a category difficulty field and sort by this default (NO BECAUSE IS KREUTZER 1 AS HARD AS KREUTZER 42?)
+
 
 - WHAT HAPPENS IF YOU HAVE THE SAME PAGE OPEN ON MULTIPLE TABS/DEVICES? 
 
 - prevent duplicates based on (pieceID, userID) (BACKEND) 
 
-
-
 - Do you need to override rest_framework/serializers
 
 
 - Violin Roadmap
-
-
-- Probably should consider how the UI works before creating all the endpoints
-	- Function for filtering and sorting by all fields (composer, period, difficulty, type), sort by difficulty by default, but can specify other sorting parameters
-	- Based on the filtered query, display data in a table divided by category (GET all categories endpoint) 
-	- Overall progress bar
-	
-	
-- Consider all the endpoints you need 
-	- User post piece to completed list with mastery level
-	- User GET completed pieces
-	- User DELETE piece from completed list 
-	- View all pieces that use Technique X
-	- View all Pieces by Composer X
-	- View all pieces from Period X
-	- View pieces by difficulty level
-	- Should be able to combine these queries 
-	- View all Pieces with Type X
-	- Search by custom input
-	- Individual piece view 
-	
-	
 
 
 {

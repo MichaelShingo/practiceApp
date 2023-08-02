@@ -13,6 +13,8 @@ export const ACTIONS = {
     UPDATE_PERIOD: 'update-period',
     UPDATE_TECHNIQUE: 'update-technique',
     UPDATE_TYPE: 'update-type',
+    UPDATE_COMPLETE: 'update-complete',
+    UPDATE_CATEGORY_SORT: 'update-category-sort'
 }
 
 const searchReducer = (state, action) => {
@@ -35,6 +37,12 @@ const searchReducer = (state, action) => {
         case ACTIONS.UPDATE_TYPE:
             return {...state, type: action.payload.value}
 
+        case ACTIONS.UPDATE_COMPLETE:
+            return {...state, complete: action.payload.value}
+        
+        case ACTIONS.UPDATE_CATEGORY_SORT:
+            return {...state, categorySort: action.payload.value}
+
         case ACTIONS.UPDATE_TECHNIQUE: // watch out because set is MUTABLE
             const id = action.payload.value;
             if (state.techniqueTags.has(id)) {
@@ -44,7 +52,9 @@ const searchReducer = (state, action) => {
             } else {
                 return {...state, techniqueTags: new Set(state.techniqueTags).add(id)}
             }
-        }
+        default:
+            break;
+        }   
 }
 
 const Home = ({ funcNav }) => {
@@ -68,15 +78,37 @@ const Home = ({ funcNav }) => {
         difficultyComp: 'gt',
         difficultyNum: 1,
         type: '',
-        techniqueTags: new Set()
+        techniqueTags: new Set(),
+        complete: 'all',
+        categorySort: 'difficulty'
     })
 
     useEffect(() => {
         console.log(searchState);
-
     }, [searchState])
 
-    
+    const sortedCategories = useMemo(() => {
+        let res = [];
+        console.log(searchState.categorySort);
+        switch (searchState.categorySort) {
+            case 'difficulty':
+                res = categories && categories;
+                break;
+            case 'title':
+                res = categories && categories.sort((a, b) => {
+                    return a.name > b.name ? 1 : - 1
+                })
+                break;
+            case 'completion':
+                res = categories && categories.sort((a, b) => {
+                    return a.name < b.name ? 1 : - 1
+                })
+                break;
+            default:
+                break;
+        }
+        return res;
+    }, [categories, searchState])
 
     const filteredPieces = useMemo(() => { // returns list of objects
         // FILTER BY SEARCH TERM
@@ -151,26 +183,88 @@ const Home = ({ funcNav }) => {
                 })
             }
         setPieceCount(techniqueFiltered && techniqueFiltered.length);
-
-        return techniqueFiltered;
         
         // SORTING
         let sorted = [] // sorting is last
         switch (searchState.sortBy) {
             case 'title':
-                sorted = searched && searched.sort((a, b) => a.title > b.title ? 1 : - 1);
+                sorted = (techniqueFiltered && 
+                    techniqueFiltered.sort((a, b) => a.sorting_title > b.sorting_title ? 1 : - 1));
                 break;
             case 'mastery':
+                const masteryMap = new Map();
+                userPieces.forEach((userPiece) => {
+                    masteryMap.set(userPiece.piece.id, userPiece.mastery_level)
+                });
+
+                sorted = techniqueFiltered.sort((pieceA, pieceB) => {
+                    const masteryA = masteryMap.get(pieceA.id);
+                    const masteryB = masteryMap.get(pieceB.id);
+
+                    if (masteryA === undefined && masteryB === undefined) {
+                        return 0;
+                    } else if (masteryA === undefined) {
+                        return 1;
+                    } else if (masteryB === undefined) {
+                        return -1;
+                    }
+                    return parseInt(masteryA) - parseInt(masteryB);
+                });
                 break;
             case 'difficulty':
+                sorted = (techniqueFiltered && 
+                    techniqueFiltered.sort((a, b) => a.difficulty > b.difficulty ? 1 : - 1));
                 break;
             case 'composer':
+                sorted = (techniqueFiltered && 
+                    techniqueFiltered.sort((a, b) => a.composer.last_name > b.composer.last_name ? 1 : - 1));
                 break;
             case 'date-updated':
+                const updatedMap = new Map();
+                userPieces.forEach((userPiece) => {
+                    updatedMap.set(userPiece.piece.id, userPiece.updated_at)
+                });
+                console.log(updatedMap);
+                
+                sorted = techniqueFiltered.sort((pieceA, pieceB) => {
+                    const updatedA = updatedMap.get(pieceA.id);
+                    const updatedB = updatedMap.get(pieceB.id);
+                    
+                    if (!updatedA && !updatedB) {
+                        return 0;
+                    } else if (!updatedA) {
+                        return 1;
+                    } else if (!updatedB) {
+                        return -1;
+                    }
+                    return new Date(updatedA).getTime() - new Date(updatedB).getTime();
+                });
+                break;
+            case 'date-created':
+                const createdMap = new Map();
+                userPieces.forEach((userPiece) => {
+                    createdMap.set(userPiece.piece.id, userPiece.created_at)
+                });
+                console.log(createdMap);
+                
+                sorted = techniqueFiltered.sort((pieceA, pieceB) => {
+                    const createdA = createdMap.get(pieceA.id);
+                    const createdB = createdMap.get(pieceB.id);
+                    
+                    if (!createdA && !createdB) {
+                        return 0;
+                    } else if (!createdA) {
+                        return 1;
+                    } else if (!createdB) {
+                        return -1;
+                    }
+                    return new Date(createdA).getTime() - new Date(createdB).getTime();
+                });
                 break;
             default:
-                sorted = searched;
+                sorted = techniqueFiltered;
         }
+        // console.log(sorted);
         return sorted;
     }, [pieces, searchState])
 
@@ -232,7 +326,6 @@ const Home = ({ funcNav }) => {
                 });
             const jsonData = await response.json();
             setCategories(jsonData);
-            console.log('fetched categories');
         } catch (error) {
             console.log('Error fetching data:', error);
         }
@@ -281,7 +374,7 @@ const Home = ({ funcNav }) => {
     
     const updateGlobalProgress = (increment) => {
         if (increment) {
-            console.log('add');
+            // console.log('add');
         } else {
             console.log('subtract');
         }
@@ -296,7 +389,6 @@ const Home = ({ funcNav }) => {
         let masteryNumber = e.target;
         const categoryID = masteryNumber.getAttribute('categoryID').toString();        
         let masteryValue = parseInt(masteryNumber.value);
-        console.log(typeof masteryValue);
         const hue = mapColorRange(parseInt(masteryNumber.value), 1, 1, 10, 118);
         masteryNumber.setAttribute('style', `background-color: hsl(${hue}, 100%, 38%);`);
 
@@ -311,14 +403,9 @@ const Home = ({ funcNav }) => {
             }
             
         }
-        console.log(masterySum);
         let masteryAverage = masterySum / allMastery.length;
-        console.log(masteryAverage);
         let hueProgress = mapColorRange(masteryAverage, 0, 0, 10, 118);
-        console.log(hueProgress);
-        // get all mastery numbers 
         progressBar.style.backgroundColor = `hsl(${hueProgress}, 100%, 38%)`
-        // update database (but can you timeout before updating the database so that you don't make unecessary calls?)
     }
 
     return ( 
@@ -340,29 +427,29 @@ const Home = ({ funcNav }) => {
                         pieceCount={pieceCount}
                         />
                     <div className="table-container">
-                                { categories && pieces && userPieces && filteredPieces && pieceIDSet && categories.map((category) => (
-                                    <Category 
-                                        key={category.id}
-                                        category={category} 
-                                        userPieces={userPieces}
-                                        pieces={pieces}
-                                        filteredPieces={filteredPieces}
-                                        updateGlobalProgress={updateGlobalProgress}
-                                        updateGlobalMastery={updateGlobalMastery}
-                                        ref={addCategoryRefs}
-                                        pieceIDSet={pieceIDSet}
-                                        setPieceIDSet={setPieceIDSet}
-                                        setUserPieces={setUserPieces} 
-                                        pieceCount={pieceCount} 
-                                        firstFetch={firstFetch}
-                                        setFirstFetch={setFirstFetch}
-                                        searchState={searchState}
-                                        filteredPieceIDs={filteredPieceIDs}
-                                        setPieceDetailPiece={setPieceDetailPiece}
-                                        showDetail={showDetail}
-                                        setShowDetail={setShowDetail}
-                                    />
-                                ))}
+                        { categories && pieces && userPieces && filteredPieces && pieceIDSet && sortedCategories.map((category) => (
+                            <Category 
+                                key={category.id}
+                                category={category} 
+                                userPieces={userPieces}
+                                pieces={pieces}
+                                filteredPieces={filteredPieces}
+                                updateGlobalProgress={updateGlobalProgress}
+                                updateGlobalMastery={updateGlobalMastery}
+                                ref={addCategoryRefs}
+                                pieceIDSet={pieceIDSet}
+                                setPieceIDSet={setPieceIDSet}
+                                setUserPieces={setUserPieces} 
+                                pieceCount={pieceCount} 
+                                firstFetch={firstFetch}
+                                setFirstFetch={setFirstFetch}
+                                searchState={searchState}
+                                filteredPieceIDs={filteredPieceIDs}
+                                setPieceDetailPiece={setPieceDetailPiece}
+                                showDetail={showDetail}
+                                setShowDetail={setShowDetail}
+                            />
+                        ))}
                     </div>
                 </div>
                 <div className="col-1"></div>

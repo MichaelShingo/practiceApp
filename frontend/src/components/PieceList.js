@@ -68,7 +68,7 @@ const PieceList = ({piece,
 
     useEffect(() => { // when you filter....can you recalculate the masterySum?
         if (checked) {
-            console.log(`UPDATING CATEGORY MASTERY`)
+            // console.log(`UPDATING CATEGORY MASTERY`)
             updateCategoryMastery(masteryNum);
 
             updateCategoryCount(true);
@@ -90,7 +90,7 @@ const PieceList = ({piece,
                 let updatedPieceIDSet = new Set(pieceIDSet);
                 updatedPieceIDSet.add(piece.id);
                 setPieceIDSet(updatedPieceIDSet);
-                console.log(userPieces);
+                // console.log(userPieces);
                 
             } else { //remove from database
                 updateCategoryCount(!checked, masteryNum);

@@ -58,7 +58,7 @@ const Search = ({
                     ))}
                 </div>
 
-                <div id="search-flex">
+                <div className="search-flex">
                     <div className="label-input-container">
                         <label id="difficulty-label" htmlFor="difficulty-comparison"><h3>Difficulty</h3></label>
                         <select 
@@ -84,7 +84,7 @@ const Search = ({
                     </div>
 
                     <div className="label-input-container">
-                        <label id="sort-label" htmlFor="sort"><h3>Sort By</h3></label>
+                        <label id="sort-label" htmlFor="sort"><h3>Sort Pieces By</h3></label>
                         <select 
                             onChange={(e) => searchDispatch({
                                 type: ACTIONS.UPDATE_SORT,
@@ -97,6 +97,7 @@ const Search = ({
                             <option value="mastery">Mastery Level</option>
                             <option value="composer">Composer</option>
                             <option value="date-updated">Date Updated</option>
+                            <option value="date-created">Date Created</option>
                         </select>
                     </div>
 
@@ -138,6 +139,37 @@ const Search = ({
                         </select>
                     </div>
                     
+                </div>
+                <div className="search-flex">
+                    <div className="label-input-container">
+                            <label id="complete-label" htmlFor="complete"><h3>Completion</h3></label>
+                            <select 
+                                onChange={(e) => searchDispatch({
+                                    type: ACTIONS.UPDATE_COMPLETE,
+                                    payload: {value: e.target.value}})} 
+                                id="complete" 
+                                type="select"
+                            >
+                                <option value="all">Show All</option>
+                                <option value="complete">Complete Only</option>
+                                <option value="incomplete">Incomplete Only</option>
+                            </select>
+                        </div>
+                        <div className="label-input-container">
+                            <label id="category-label" htmlFor="category-sort"><h3>Sort Categories By</h3></label>
+                            <select 
+                                onChange={(e) => searchDispatch({
+                                    type: ACTIONS.UPDATE_CATEGORY_SORT,
+                                    payload: {value: e.target.value}})} 
+                                id="category-sort" 
+                                type="select"
+                            >
+                                <option value="difficulty">Difficulty</option>
+                                <option value="title">Title</option>
+                                <option value="completion">Completion</option>
+                            </select>
+                        </div>
+
                 </div>
                 <h3>Showing {pieceCount} pieces.</h3>
             </div>

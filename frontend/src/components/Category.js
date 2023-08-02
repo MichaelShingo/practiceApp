@@ -71,19 +71,19 @@ const Category = ({
 
 
     useEffect(() => {
-        console.log(`count, masterySum, totalCount, categoryCount = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
+        // console.log(`count, masterySum, totalCount, categoryCount = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
         setProgressPercent(calcCSSPercentage(count, totalCount));
         if (count === 0) {
             setAvgMastery(0);
         } else {
             setAvgMastery(masterySum / count);
-            console.log('setting avg mastsery');
+            // console.log('setting avg mastsery');
         }
     }, [masterySum, count]);
 
     useEffect(() => {
         const hue = mapColorRange(avgMastery, 1, 1, 10, 118);
-        console.log(`avgMastery = ${avgMastery}`);
+        // console.log(`avgMastery = ${avgMastery}`);
         progressRef.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
     }, [avgMastery])
 
@@ -99,7 +99,7 @@ const Category = ({
 
     const updateCategoryCount = (increment, currentMastery) => {
         if (increment) { 
-            console.log(`updateCategoryCount ran, currentMastery = ${currentMastery}`)
+            // console.log(`updateCategoryCount ran, currentMastery = ${currentMastery}`)
             setCount(count => count + 1);
         } else {
             setCount(count => count - 1);
@@ -115,7 +115,7 @@ const Category = ({
 
     const updateCategoryMastery = (difference) => {
         // THIS RUNS ONLY ONCE ON RENDER, GOOD 
-        console.log(`MASTERY SUM = ${masterySum}`);
+        // console.log(`MASTERY SUM = ${masterySum}`);
         prevMasterySum.current = masterySum;
         setMasterySum(prevSum => parseInt(prevSum) + parseInt(difference));
     }
