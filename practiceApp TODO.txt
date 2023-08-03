@@ -18,7 +18,8 @@ SORTING
 	
 - detail dialogue should show created and updated date 
 - create overall progress bar (can this update based on your search?)
-
+	- when you add or subtract a piece, you need to update global completion
+- when you update mastery, you need to update the date_updated field locally 
 
 LOADING ANIMATIONS
 - loading animation for the table and detail dialogue, on first load and on search 

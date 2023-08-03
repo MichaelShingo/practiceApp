@@ -199,7 +199,7 @@ const Search = ({
 
                 </div>
       
-                <h3>Showing {pieceCount} pieces.</h3>
+                {/* <h3>Showing {pieceCount} pieces.</h3> */}
             </div>
         </div>
      );

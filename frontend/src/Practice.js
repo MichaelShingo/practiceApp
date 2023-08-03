@@ -5,6 +5,8 @@ import Category from './components/Category.js';
 import Search from './components/Search.js';
 import PieceDetail from './components/PieceDetail.js';
 import LoadingIcon from './components/LoadingIcon.js';
+import ProgressBar from './components/ProgressBar';
+
 
 export const ACTIONS = {
     UPDATE_SEARCH: 'update-search',
@@ -89,6 +91,12 @@ const Home = ({ funcNav }) => {
     const [pieceDetailPiece, setPieceDetailPiece] = useState(null);
     const [showDetail, setShowDetail] = useState(false);
     const [periods, setPeriods] = useState(null)
+    const globalProgressRef = useRef(null);
+    const [globalCompletion, setGlobalCompletion] = useState(0);
+    // count={globalCount}
+    // categoryCount={globalTotal}
+    // progressRef={globalProgressRef}
+    // progressPercent={globalProgressPercent}
 
     const [searchState, searchDispatch] = useReducer(searchReducer, defaultSearchState)
 
@@ -312,6 +320,12 @@ const Home = ({ funcNav }) => {
                 idSet.add(piece.id);
             }
             setFilteredPieceIDs(idSet);
+            setGlobalCompletion(0);
+            for (let userPiece of userPieces) {
+                if (idSet.has(userPiece.piece.id)) {
+                    setGlobalCompletion(prev => prev + 1);
+                }
+            }
         }
     }, [filteredPieces])
 
@@ -464,7 +478,26 @@ const Home = ({ funcNav }) => {
                         searchState={searchState}
                         pieceCount={pieceCount}
                     
-                        />
+                    />
+                <div className="row">
+                    <h2 className="fraction global-fraction">{globalCompletion}/{pieceCount}</h2>
+                <div className="progress-container global-progress">
+                    <div className="progress-bar-container">
+                        <div 
+                            ref={globalProgressRef} 
+                            className="progress-bar" 
+                            style={{
+                                width: pieceCount !== 0 ? (globalCompletion / pieceCount * 100).toString() + '%' : 0
+                            }}
+                        
+                        >
+
+                        </div>
+                        <div className="progress-bar-back"></div>
+                    </div>
+                </div>
+                </div>
+                    
                     <div className="table-container">
                         { (categories && pieces && userPieces && filteredPieces && pieceIDSet) ? (sortedCategories.map((category) => (
                             <Category 
@@ -487,6 +520,7 @@ const Home = ({ funcNav }) => {
                                 setPieceDetailPiece={setPieceDetailPiece}
                                 showDetail={showDetail}
                                 setShowDetail={setShowDetail}
+                                setGlobalCompletion={setGlobalCompletion}
                             />
                         ))) : <LoadingIcon />
                     }

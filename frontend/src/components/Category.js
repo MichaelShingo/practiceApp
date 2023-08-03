@@ -1,4 +1,5 @@
 import PieceList from './PieceList.js';
+import ProgressBar from './ProgressBar';
 import React from 'react';
 import { useRef, useState, useEffect } from 'react';
 import { mapColorRange } from '../services/helperFunctions.js';
@@ -19,6 +20,7 @@ const Category = ({
     setPieceDetailPiece,
     showDetail,
     setShowDetail,
+    setGlobalCompletion,
     updateGlobalMastery }, ref) => {
 
     const calcCSSPercentage = (numerator, denominator) => {
@@ -133,14 +135,12 @@ const Category = ({
                 <div className="col-6 no-margin">
                     <h2>{ category.name }</h2>
                 </div>
-                <div className="col-6 progress-container no-margin">
-                    <h2 className="fraction">{count}/{categoryCount}</h2>
-                    <div className="progress-bar-container">
-                        <div ref={progressRef} className="progress-bar" style={{width: progressPercent}}></div>
-                        <div className="progress-bar-back"></div>
-                    </div>
-                    
-                </div>
+                <ProgressBar 
+                    count={count}
+                    categoryCount={categoryCount}
+                    progressRef={progressRef}
+                    progressPercent={progressPercent}
+                />
             </div>
             <div className="table-body" onClick={(e) => handlePiecesTableClick(e)}>
                 <table ref={pieceTableRef} className="pieces-table hide-pieces-table">
@@ -171,6 +171,7 @@ const Category = ({
                             setPieceIDSet={setPieceIDSet}
                             setUserPieces={setUserPieces}
                             setPieceDetailPiece={setPieceDetailPiece}
+                            setGlobalCompletion={setGlobalCompletion}
                         />
                     ))}    
                     </tbody>

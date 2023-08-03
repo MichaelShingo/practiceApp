@@ -16,6 +16,7 @@ const PieceList = ({piece,
                     filteredPieces,
                     setPieceDetailPiece,
                     setShowDetail,
+                    setGlobalCompletion,
                     updateCategoryMastery}) => {
     let initialMastery = '';
     if (checkAuthenticated()) {
@@ -81,6 +82,7 @@ const PieceList = ({piece,
         setChecked(!checked);
         if (checkAuthenticated()) {
             if (!checked) { // add to database
+                setGlobalCompletion(prev => prev + 1);
                 setMasteryNum(10);
                 const jsonData = await fetchAddPiece(piece.id, 10);
                 setUserPieceID(jsonData.id)
@@ -93,6 +95,7 @@ const PieceList = ({piece,
                 // console.log(userPieces);
                 
             } else { //remove from database
+                setGlobalCompletion(prev => prev - 1);
                 updateCategoryCount(!checked, masteryNum);
                 updateCategoryMastery(-1 * masteryNum);
                 setMasteryNum(null)
