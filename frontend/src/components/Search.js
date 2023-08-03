@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { host } from '../services/urls';
 import TechniqueTag from './TechniqueTag';
 import {ACTIONS} from '../Practice';
+import { defaultSearchState } from '../Practice';
 
 const Search = ({
                 searchDispatch,
@@ -11,7 +12,7 @@ const Search = ({
             }) => {
 
     const [techniques, setTechniques] = useState();
-
+    const [techniqueValue, setTechniqueValue] = useState(0);
     useEffect(() => {
         fetchTechniques();
     }, [])
@@ -33,6 +34,13 @@ const Search = ({
         }
     };
 
+    const handleClear = () => {
+        setTechniqueValue(prev => prev + 1);
+        searchDispatch({
+            type: ACTIONS.CLEAR
+        })
+    }
+
     return ( 
         <div id="search-container" className="table-container">
             <div id="search-column">
@@ -45,6 +53,7 @@ const Search = ({
                                 payload: {value: e.target.value}})
                             }
                             type="text" 
+                            value={searchState.search}
                             placeholder="Search by title, composer, etc.">
                         </input>
                         
@@ -54,7 +63,13 @@ const Search = ({
                 {/* <label htmlFor="techniques"><h3>Techniques</h3></label> */}
                 <div id="technique-container">
                     {techniques && techniques.map(technique => (
-                        <TechniqueTag key={technique.id} searchDispatch={searchDispatch} technique={technique} />
+                        <TechniqueTag 
+                            techniqueValue={techniqueValue}
+                            key={technique.id} 
+                            searchDispatch={searchDispatch} 
+                            searchState={searchState}
+                            technique={technique} 
+                        />
                     ))}
                 </div>
 
@@ -66,6 +81,7 @@ const Search = ({
                                 type: ACTIONS.UPDATE_DIFF_COMP,
                                 payload: {value: e.target.value}})} 
                             id="difficulty-comparison"
+                            value={searchState.difficultyComp}
                         >   
                             <option value="gt">≥</option>
                             <option value="lt">≤</option>
@@ -84,20 +100,18 @@ const Search = ({
                     </div>
 
                     <div className="label-input-container">
-                        <label id="sort-label" htmlFor="sort"><h3>Sort Pieces By</h3></label>
+                        <label id="complete-label" htmlFor="complete"><h3>Completion</h3></label>
                         <select 
                             onChange={(e) => searchDispatch({
-                                type: ACTIONS.UPDATE_SORT,
+                                type: ACTIONS.UPDATE_COMPLETE,
                                 payload: {value: e.target.value}})} 
-                            id="sort" 
+                            id="complete" 
                             type="select"
+                            value={searchState.complete}
                         >
-                            <option value="title">Title</option>
-                            <option value="difficulty">Difficulty</option>
-                            <option value="mastery">Mastery Level</option>
-                            <option value="composer">Composer</option>
-                            <option value="date-updated">Date Updated</option>
-                            <option value="date-created">Date Created</option>
+                            <option value="all">Show All</option>
+                            <option value="complete">Complete Only</option>
+                            <option value="incomplete">Incomplete Only</option>
                         </select>
                     </div>
 
@@ -109,6 +123,7 @@ const Search = ({
                                 payload: {value: e.target.value}})} 
                             id="period" 
                             type="select"
+                            value={searchState.period}
                         >
                             <option value=""></option>
                             <option value="Baroque">Baroque</option>
@@ -127,6 +142,7 @@ const Search = ({
                                 payload: {value: e.target.value}})} 
                             id="type" 
                             type="select"
+                            value={searchState.type}
                         >
                             <option value=""></option>
                             <option value="Sonata">Sonata</option>
@@ -142,35 +158,47 @@ const Search = ({
                 </div>
                 <div className="search-flex">
                     <div className="label-input-container">
-                            <label id="complete-label" htmlFor="complete"><h3>Completion</h3></label>
-                            <select 
-                                onChange={(e) => searchDispatch({
-                                    type: ACTIONS.UPDATE_COMPLETE,
-                                    payload: {value: e.target.value}})} 
-                                id="complete" 
-                                type="select"
-                            >
-                                <option value="all">Show All</option>
-                                <option value="complete">Complete Only</option>
-                                <option value="incomplete">Incomplete Only</option>
-                            </select>
-                        </div>
-                        <div className="label-input-container">
-                            <label id="category-label" htmlFor="category-sort"><h3>Sort Categories By</h3></label>
-                            <select 
-                                onChange={(e) => searchDispatch({
-                                    type: ACTIONS.UPDATE_CATEGORY_SORT,
-                                    payload: {value: e.target.value}})} 
-                                id="category-sort" 
-                                type="select"
-                            >
-                                <option value="difficulty">Difficulty</option>
-                                <option value="title">Title</option>
-                                <option value="completion">Completion</option>
-                            </select>
-                        </div>
+                        <label id="category-label" htmlFor="category-sort"><h3>Sort Categories By</h3></label>
+                        <select 
+                            onChange={(e) => searchDispatch({
+                                type: ACTIONS.UPDATE_CATEGORY_SORT,
+                                payload: {value: e.target.value}})} 
+                            id="category-sort" 
+                            type="select"
+                            value={searchState.categorySort}
+                        >
+                            <option value="difficulty">Difficulty</option>
+                            <option value="title">Title</option>
+                            <option value="completion">Completion</option>
+                        </select>
+                    </div>
+
+                    <div className="label-input-container">
+                        <label id="sort-label" htmlFor="sort"><h3>Sort Pieces By</h3></label>
+                        <select 
+                            onChange={(e) => searchDispatch({
+                                type: ACTIONS.UPDATE_SORT,
+                                payload: {value: e.target.value}})} 
+                            id="sort" 
+                            type="select"
+                            value={searchState.sortBy}
+                        >
+                            <option value="title">Title</option>
+                            <option value="difficulty">Difficulty</option>
+                            <option value="mastery">Mastery Level</option>
+                            <option value="composer">Composer</option>
+                            <option value="date-updated">Date Updated</option>
+                            <option value="date-created">Date Created</option>
+                        </select>
+                    </div>
+                    <button onClick={handleClear}>Clear</button>
+
+                    <button onClick={() => searchDispatch({
+                        type: ACTIONS.REFRESH
+                    })}>Refresh</button>
 
                 </div>
+      
                 <h3>Showing {pieceCount} pieces.</h3>
             </div>
         </div>

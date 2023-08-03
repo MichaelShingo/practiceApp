@@ -15,11 +15,29 @@ export const ACTIONS = {
     UPDATE_TECHNIQUE: 'update-technique',
     UPDATE_TYPE: 'update-type',
     UPDATE_COMPLETE: 'update-complete',
-    UPDATE_CATEGORY_SORT: 'update-category-sort'
+    UPDATE_CATEGORY_SORT: 'update-category-sort',
+    CLEAR: 'clear',
+    REFRESH: 'refresh',
+}
+
+export const defaultSearchState = { 
+    search: '',
+    sortBy: 'title',
+    period: '',
+    difficultyComp: 'gt',
+    difficultyNum: 1,
+    type: '',
+    techniqueTags: new Set(),
+    complete: 'all',
+    categorySort: 'difficulty'
 }
 
 const searchReducer = (state, action) => {
     switch (action.type) {
+        case ACTIONS.CLEAR:
+            return defaultSearchState;
+        case ACTIONS.REFRESH:
+            return {...state}
         case ACTIONS.UPDATE_SEARCH:
             return {...state, search: action.payload.value}
 
@@ -72,17 +90,7 @@ const Home = ({ funcNav }) => {
     const [showDetail, setShowDetail] = useState(false);
     const [periods, setPeriods] = useState(null)
 
-    const [searchState, searchDispatch] = useReducer(searchReducer, { 
-        search: '',
-        sortBy: 'title',
-        period: '',
-        difficultyComp: 'gt',
-        difficultyNum: 1,
-        type: '',
-        techniqueTags: new Set(),
-        complete: 'all',
-        categorySort: 'difficulty'
-    })
+    const [searchState, searchDispatch] = useReducer(searchReducer, defaultSearchState)
 
     useEffect(() => {
         console.log(searchState);
@@ -455,6 +463,7 @@ const Home = ({ funcNav }) => {
                         searchDispatch={searchDispatch}
                         searchState={searchState}
                         pieceCount={pieceCount}
+                    
                         />
                     <div className="table-container">
                         { (categories && pieces && userPieces && filteredPieces && pieceIDSet) ? (sortedCategories.map((category) => (

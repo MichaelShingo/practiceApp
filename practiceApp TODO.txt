@@ -14,8 +14,6 @@ Next time you make a component, think about mobile-first design
 
 SORTING 
 - sort descending and ascending? 
-- clear filters
-- refresh filters
 
 	
 - detail dialogue should show created and updated date 

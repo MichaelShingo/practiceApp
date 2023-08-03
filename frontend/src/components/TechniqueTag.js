@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { ACTIONS } from '../Practice';
+import { useEffect } from 'react';
 
-const TechniqueTag = ({ technique, searchDispatch }) => {
+const TechniqueTag = ({ technique, searchDispatch, searchState, techniqueValue }) => {
     const [selected, setSelected] = useState(false);
+    // searchState.techniqueTags.has(technique.id
 
+    useEffect(() => {
+        setSelected(false);
+    }, [techniqueValue])
     const handleClick = () => {
         searchDispatch({
             type: ACTIONS.UPDATE_TECHNIQUE,
