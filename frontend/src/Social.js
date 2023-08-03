@@ -4,26 +4,21 @@ import { useTheme, useThemeUpdate} from './components/ThemeContext';
 import List from './components/Todo';
 import { useLocalStorage } from './components/useLocalStorage';
 import { useUpdateLogger } from './components/useUpdateLogger';
+import LoadingIcon from './components/LoadingIcon';
 
 
 
 
 const Social = ({funcNav, input}) => {
     funcNav(false);
-
-    const LIST_SIZE = 20000;
-    const deferredInput = useDeferredValue(input)
-    const list = useMemo(() => {
-        const l = []
-        for (let i = 0; i < LIST_SIZE; i++) {
-            l.push(<div key={i}>{input}</div>)
-        }
-        return l
-    }, [input])
-
-    return list
+    return (
+        <LoadingIcon />
+        
+    )
 
 }
+
+export default Social;
 
 
 
@@ -225,8 +220,6 @@ const Social = ({funcNav, input}) => {
 //     )
 
 // }
-
-export default Social;
 
 
 

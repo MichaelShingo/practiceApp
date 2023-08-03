@@ -10,9 +10,19 @@ import React from 'react';
 import ThemeProvider from './components/ThemeContext.js';
 export const ThemeContext = React.createContext();
 
+
+
 function App() {
   const [showNav, setShowNav] = useState(true);
   const [theme, setTheme] = useState('light');
+  const [loading, setLoading] = useState(true);
+  window.addEventListener("DOMContentLoaded", (event) => {
+    console.log("DOM fully loaded and parsed");
+  });
+  useEffect(() => {
+    setLoading(false);
+    
+  }, []);
 
 
   const toggleMode = () => {
@@ -29,25 +39,26 @@ function App() {
   }, [theme])
   
   return (
-    <Router>
-      
-    <ThemeProvider>
-        <div className={`App ${theme}`}>
+    <div className="app-wrapper" style={{ visibility: loading ? 'hidden' : 'visible' }}>
+      <Router>    
+      <ThemeProvider>
+          <div className={`App ${theme}`}>
 
-          { showNav && <Navbar toggleMode={toggleMode}/> }
-          
-          <div className="content">
-          
-            <Routes>
-              <Route path="/practice" element={<Practice funcNav={setShowNav}/>}></Route>
-              <Route path="/login" element={<Login funcNav={setShowNav}/>}></Route>
-              <Route path="/register" element={<Register funcNav={setShowNav}/>}></Route>
-              <Route path="/social" element={<Social funcNav={setShowNav}/>}></Route>
-            </Routes>
-          </div>
-      </div>
-      </ThemeProvider>
-    </Router>
+            { showNav && <Navbar toggleMode={toggleMode}/> }
+            
+            <div className="content">
+            
+              <Routes>
+                <Route path="/practice" element={<Practice funcNav={setShowNav}/>}></Route>
+                <Route path="/login" element={<Login funcNav={setShowNav}/>}></Route>
+                <Route path="/register" element={<Register funcNav={setShowNav}/>}></Route>
+                <Route path="/social" element={<Social funcNav={setShowNav}/>}></Route>
+              </Routes>
+            </div>
+        </div>
+        </ThemeProvider>
+      </Router>
+    </div>
 
   );
 }

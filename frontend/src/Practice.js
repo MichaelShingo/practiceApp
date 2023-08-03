@@ -4,6 +4,7 @@ import { checkAuthenticated } from './services/authService.js';
 import Category from './components/Category.js';
 import Search from './components/Search.js';
 import PieceDetail from './components/PieceDetail.js';
+import LoadingIcon from './components/LoadingIcon.js';
 
 export const ACTIONS = {
     UPDATE_SEARCH: 'update-search',
@@ -92,16 +93,31 @@ const Home = ({ funcNav }) => {
         console.log(searchState.categorySort);
         switch (searchState.categorySort) {
             case 'difficulty':
-                res = categories && categories;
+                res = categories && categories.sort((a, b) => {
+                    return a.avg_difficulty > b.avg_difficulty ? 1: -1;
+                });
                 break;
             case 'title':
                 res = categories && categories.sort((a, b) => {
-                    return a.name > b.name ? 1 : - 1
+                    return a.name > b.name ? 1 : -1;
                 })
                 break;
             case 'completion':
+                let categoryToCount = new Map();
+                for (let userPiece of userPieces) {
+                    const id = userPiece.piece.category;
+                    const currentCount = categoryToCount.get(id) || 0;
+                    categoryToCount.set(id, currentCount + 1);
+                }
+                for (let category of categories) {
+                    if (!categoryToCount.get(category.id)) {
+                        categoryToCount.set(category.id, 0);
+                    }
+                }
                 res = categories && categories.sort((a, b) => {
-                    return a.name < b.name ? 1 : - 1
+                    const compA = categoryToCount.get(a.id) / a.count;
+                    const compB = categoryToCount.get(b.id) / b.count;
+                    return (compA < compB) ? 1 : -1;
                 })
                 break;
             default:
@@ -111,12 +127,25 @@ const Home = ({ funcNav }) => {
     }, [categories, searchState])
 
     const filteredPieces = useMemo(() => { // returns list of objects
+        // FILTER BY COMPLETION
+        let completionFiltered = []
+        if (searchState.complete === 'complete') {
+            completionFiltered = pieces && pieces.filter(piece => {
+                return pieceIDSet.has(piece.id) 
+            })
+        } else if (searchState.complete === 'incomplete') {
+            completionFiltered = pieces && pieces.filter(piece => {
+                return !pieceIDSet.has(piece.id) 
+            })
+        } else {
+            completionFiltered = pieces && pieces
+        }
         // FILTER BY SEARCH TERM
         let searched = [];
         if (searchState.search === '') {
-            searched = pieces && pieces;
+            searched = completionFiltered && completionFiltered;
         } else {
-            searched = pieces && (pieces.filter(piece => {
+            searched = completionFiltered && (completionFiltered.filter(piece => {
                 const pieceString = `${piece.title} 
                     ${piece.composer.first_name} 
                     ${piece.composer.last_name}
@@ -325,6 +354,7 @@ const Home = ({ funcNav }) => {
                     method: 'GET',
                 });
             const jsonData = await response.json();
+            console.log('fetched category');
             setCategories(jsonData);
         } catch (error) {
             console.log('Error fetching data:', error);
@@ -427,7 +457,7 @@ const Home = ({ funcNav }) => {
                         pieceCount={pieceCount}
                         />
                     <div className="table-container">
-                        { categories && pieces && userPieces && filteredPieces && pieceIDSet && sortedCategories.map((category) => (
+                        { (categories && pieces && userPieces && filteredPieces && pieceIDSet) ? (sortedCategories.map((category) => (
                             <Category 
                                 key={category.id}
                                 category={category} 
@@ -449,7 +479,8 @@ const Home = ({ funcNav }) => {
                                 showDetail={showDetail}
                                 setShowDetail={setShowDetail}
                             />
-                        ))}
+                        ))) : <LoadingIcon />
+                    }
                     </div>
                 </div>
                 <div className="col-1"></div>

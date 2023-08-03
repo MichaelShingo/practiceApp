@@ -13,18 +13,12 @@
 Next time you make a component, think about mobile-first design 
 
 SORTING 
-- By category..., avg difficulty, completion percentage 
-	- Can you calculate a map of {categoryID : completionPercentage} and sort based on this? completion percentage is already calculated at the category level, you just need to get that state from each category up to practice component.
-	- category difficulty could be the default category sorting 
-	- Create a useMemo for sortedCategories(), pass sortedCategories as prop into categories and use this for display 
-	
-	- avg difficulty is not dependent on the user: so calculate as @property in django - 
-	
-	
-- checkboxes for Show ONLY completed pieces, show ONLY incomplete pieces
+- sort descending and ascending? 
+- clear filters
+- refresh filters
 
+	
 - detail dialogue should show created and updated date 
-
 - create overall progress bar (can this update based on your search?)
 
 
@@ -35,9 +29,10 @@ LOADING ANIMATIONS
 
 - add more data so you know how it's going to run in reality 
 - have different preset views like, Suzuki Books, Essential Elements, major concertos, bach s&p....
+- you'll want to optimize category IF IT'S REALLY SLOW, so you don't recalculate count every single time you load the app 
 
 
-
+- animation when clicking technique tag 
 
 - Implement dark theme with useContext?
 
