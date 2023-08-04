@@ -17,6 +17,7 @@ const PieceList = ({piece,
                     setPieceDetailPiece,
                     setShowDetail,
                     setGlobalCompletion,
+                    updateGlobalMastery,
                     updateCategoryMastery}) => {
     let initialMastery = '';
     if (checkAuthenticated()) {
@@ -50,6 +51,7 @@ const PieceList = ({piece,
     useEffect(() => { // MOUNT AND UNMOUNT
         if (checkAuthenticated() && pieceIDSet.has(piece.id)) { // set user pieces, checked, mastery level
             updateCategoryMastery(masteryNum);
+            updateGlobalMastery(masteryNum);
             setChecked(true);
             setUserPieceID(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
                 .map(filteredPiece => filteredPiece.id))            
@@ -71,7 +73,7 @@ const PieceList = ({piece,
         if (checked) {
             // console.log(`UPDATING CATEGORY MASTERY`)
             updateCategoryMastery(masteryNum);
-
+            updateGlobalMastery(masteryNum);
             updateCategoryCount(true);
         }
         
@@ -87,6 +89,7 @@ const PieceList = ({piece,
                 const jsonData = await fetchAddPiece(piece.id, 10);
                 setUserPieceID(jsonData.id)
                 updateCategoryMastery(10);
+                updateGlobalMastery(10);
                 updateCategoryCount(!checked, 10);
                 setUserPieces([...userPieces, jsonData ]);
                 let updatedPieceIDSet = new Set(pieceIDSet);
@@ -98,6 +101,7 @@ const PieceList = ({piece,
                 setGlobalCompletion(prev => prev - 1);
                 updateCategoryCount(!checked, masteryNum);
                 updateCategoryMastery(-1 * masteryNum);
+                updateGlobalMastery(-1 * masteryNum);
                 setMasteryNum(null)
                 masteryLevel.current.value = '';
                 fetchRemovePiece(piece.id);
@@ -161,6 +165,7 @@ const PieceList = ({piece,
         } else {
             setMasteryNum(masteryLevel.current.value);
             updateCategoryMastery(masteryLevel.current.value - prevMasteryNum.current);
+            updateGlobalMastery(masteryLevel.current.value - prevMasteryNum.current);
         }
     }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import useMousePosition from '../services/useMousePosition';
 
 const Tooltip = ({ visible, message }) => {
@@ -32,11 +32,4 @@ const Tooltip = ({ visible, message }) => {
      );
 }
 
- //style={{bottom: position.x, right: position.y}}
 export default Tooltip;
-
-// set popup styles inside this component
-// position equal to mouse position
-// useEffect runs when parent component showPopup state changes. 
-// in useEffect, change style to opacity 1, on unmount, change opacity to 0
-// onHoverX function in parent sets message text for the popup (stored as state in the parent)

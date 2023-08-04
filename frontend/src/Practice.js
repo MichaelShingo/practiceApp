@@ -93,10 +93,14 @@ const Home = ({ funcNav }) => {
     const [periods, setPeriods] = useState(null)
     const globalProgressRef = useRef(null);
     const [globalCompletion, setGlobalCompletion] = useState(0);
-    // count={globalCount}
-    // categoryCount={globalTotal}
-    // progressRef={globalProgressRef}
-    // progressPercent={globalProgressPercent}
+    const [globalAvgMastery, setGlobalAvgMastery] = useState(0);
+
+    const [globalMasterySum, setGlobalMasterySum] = useState(0);
+    const prevGlobalMasterySum = useRef(0);
+
+    
+
+
 
     const [searchState, searchDispatch] = useReducer(searchReducer, defaultSearchState)
 
@@ -352,6 +356,30 @@ const Home = ({ funcNav }) => {
         }
     }
 
+    useEffect(() => {
+        // console.log(`count, masterySum, totalCount, categoryCount = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
+        if (globalCompletion === 0) {
+            setGlobalAvgMastery(0);
+        } else {
+            setGlobalAvgMastery(globalMasterySum / globalCompletion);
+        }
+    }, [globalMasterySum, globalCompletion]);
+
+    useEffect(() => {
+        const hue = mapColorRange(globalAvgMastery, 1, 1, 10, 118);
+        console.log(`GLOBAL avgMastery = ${globalAvgMastery}`);
+        globalProgressRef.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
+    }, [globalAvgMastery])
+
+    useEffect(() => { // recalc mastery sum when refiltering
+        setGlobalMasterySum(sum => sum - prevGlobalMasterySum.current);
+    }, [searchState])
+
+    const updateGlobalMastery = (difference) => {
+        prevGlobalMasterySum.current = globalMasterySum;
+        setGlobalMasterySum(prevSum => parseInt(prevSum) + parseInt(difference));
+    }
+    
 
     const fetchPieces = async () => {
         const url = 'http://localhost:8000/api/pieces/'
@@ -437,29 +465,6 @@ const Home = ({ funcNav }) => {
         return ((y2 - y1) / (x2 - x1)) * value;
     }
 
-    const updateGlobalMastery = (e) => {
-        let masteryNumber = e.target;
-        const categoryID = masteryNumber.getAttribute('categoryID').toString();        
-        let masteryValue = parseInt(masteryNumber.value);
-        const hue = mapColorRange(parseInt(masteryNumber.value), 1, 1, 10, 118);
-        masteryNumber.setAttribute('style', `background-color: hsl(${hue}, 100%, 38%);`);
-
-        const progressBar = document.querySelector(`.progress-bar[categoryID="${categoryID}"]`);
-        const allMastery = document.querySelectorAll(`.mastery-number[categoryID="${categoryID}"]`)
-        let masterySum = 0;
-        for (let mastery of allMastery) {
-            let value = parseInt(mastery.value);
-            if (typeof value == 'number') {
-                console.log('it a number');
-                masterySum = masterySum + value;
-            }
-            
-        }
-        let masteryAverage = masterySum / allMastery.length;
-        let hueProgress = mapColorRange(masteryAverage, 0, 0, 10, 118);
-        progressBar.style.backgroundColor = `hsl(${hueProgress}, 100%, 38%)`
-    }
-
     return ( 
         <div id="practice-content">
             <PieceDetail 
@@ -487,7 +492,7 @@ const Home = ({ funcNav }) => {
                             ref={globalProgressRef} 
                             className="progress-bar" 
                             style={{
-                                width: pieceCount !== 0 ? (globalCompletion / pieceCount * 100).toString() + '%' : 0
+                                width: pieceCount !== 0 ? (globalCompletion / pieceCount * 100).toString() + '%' : '0%'
                             }}
                         
                         >

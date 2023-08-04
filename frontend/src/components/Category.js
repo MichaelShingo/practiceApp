@@ -109,9 +109,7 @@ const Category = ({
         updateGlobalProgress(increment);
     }
 
-    useEffect(() => { // when you filter....can you recalculate the masterySum?
-        // setMasterySum(0); sets to 0 and keeps at 0 on filter 
-        // how do you reset the count BEFORE, incrementing with updates? 
+    useEffect(() => { // recalc mastery sum when refiltering
         setMasterySum(sum => sum - prevMasterySum.current);
     }, [searchState])
 

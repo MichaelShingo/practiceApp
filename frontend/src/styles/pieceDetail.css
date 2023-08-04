@@ -87,6 +87,7 @@
     cursor: pointer;
 }
 
+
 .circular-progress-container {
     /* background: var(--color-white); */
     border-radius: 8px;
@@ -255,3 +256,7 @@
     cursor: pointer;
 }
 
+.user-piece-date {
+    text-align: center;
+    font-size: 1.1rem;
+}
