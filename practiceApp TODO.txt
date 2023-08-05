@@ -12,24 +12,20 @@
 ***************************
 Next time you make a component, think about mobile-first design 
 
-WORK ON MASTERY COLOR FOR GLOBAL PROGRESS
-
 
 SORTING 
 - sort descending and ascending? 
-
-	
-- detail dialogue should show created and updated date 
-- when you update mastery, you need to update the date_updated field locally
 - maybe have an indicator in teh search component to show all fields that are not equal to default value? Otherwise it's unclear which ones are affecting teh search 
+	- have some indicator that filters are applied, 
+	- maybe "clear" button becomes active when filters are applied 
+	
+- 
 
 LOADING ANIMATIONS
 - loading animation for the table and detail dialogue, on first load and on search 
-- loading gif (can you make it music-y?)
-
 
 - add more data so you know how it's going to run in reality 
-- have different preset views like, Suzuki Books, Essential Elements, major concertos, bach s&p....
+
 - you'll want to optimize category IF IT'S REALLY SLOW, so you don't recalculate count every single time you load the app 
 
 

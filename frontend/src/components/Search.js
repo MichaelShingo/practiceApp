@@ -34,6 +34,21 @@ const Search = ({
         }
     };
 
+
+    const compareObj = (objA, objB) => {
+        let res  = true;
+        console.log(searchState.techniqueTags);
+        Object.keys(objB).forEach(key => {
+            if (key === 'techniqueTags' && (objA.techniqueTags.size !== 0)) {
+                res = false;
+            }
+            else if(key !== 'techniqueTags' && (!objA.hasOwnProperty(key) || objA[key] != objB[key])) {
+                res = false;
+          }
+        })
+        return res;
+      }
+
     const handleClear = () => {
         setTechniqueValue(prev => prev + 1);
         searchDispatch({
@@ -54,6 +69,7 @@ const Search = ({
                             }
                             type="text" 
                             value={searchState.search}
+                            style={{borderColor: searchState.search === defaultSearchState.search ? 'var(--color-grey-2)': 'var(--color-accent)'}}
                             placeholder="Search by title, composer, etc.">
                         </input>
                         
@@ -61,7 +77,12 @@ const Search = ({
                 </div>
 
                 {/* <label htmlFor="techniques"><h3>Techniques</h3></label> */}
-                <div id="technique-container">
+                <div id="technique-container"
+                    style={{borderColor: searchState.techniqueTags.size === 0
+                        ?
+                        'var(--color-grey-2)':
+                         'var(--color-accent)'}}
+                >
                     {techniques && techniques.map(technique => (
                         <TechniqueTag 
                             techniqueValue={techniqueValue}
@@ -71,6 +92,8 @@ const Search = ({
                             technique={technique} 
                         />
                     ))}
+                      
+                  
                 </div>
 
                 <div className="search-flex">
@@ -82,6 +105,10 @@ const Search = ({
                                 payload: {value: e.target.value}})} 
                             id="difficulty-comparison"
                             value={searchState.difficultyComp}
+                            style={{borderColor: searchState.difficultyComp === 
+                                defaultSearchState.difficultyComp ?
+                                'var(--color-grey-2)':
+                                 'var(--color-accent)'}}
                         >   
                             <option value="gt">≥</option>
                             <option value="lt">≤</option>
@@ -95,7 +122,13 @@ const Search = ({
                             type="number"
                             value={searchState.difficultyNum} 
                             max="10" 
-                            min="1">
+                            min="1"
+                            style={{borderColor: searchState.difficultyNum === 
+                                defaultSearchState.difficultyNum ?
+                                'var(--color-grey-2)':
+                                 'var(--color-accent)'}}
+                        >
+                         
                         </input>
                     </div>
 
@@ -108,6 +141,10 @@ const Search = ({
                             id="complete" 
                             type="select"
                             value={searchState.complete}
+                            style={{borderColor: searchState.complete === 
+                                defaultSearchState.complete ?
+                                'var(--color-grey-2)':
+                                 'var(--color-accent)'}}
                         >
                             <option value="all">Show All</option>
                             <option value="complete">Complete Only</option>
@@ -124,6 +161,10 @@ const Search = ({
                             id="period" 
                             type="select"
                             value={searchState.period}
+                            style={{borderColor: searchState.period === 
+                                defaultSearchState.period ?
+                                'var(--color-grey-2)':
+                                 'var(--color-accent)'}}
                         >
                             <option value=""></option>
                             <option value="Baroque">Baroque</option>
@@ -143,6 +184,10 @@ const Search = ({
                             id="type" 
                             type="select"
                             value={searchState.type}
+                            style={{borderColor: searchState.type === 
+                                defaultSearchState.type ?
+                                'var(--color-grey-2)':
+                                 'var(--color-accent)'}}
                         >
                             <option value=""></option>
                             <option value="Sonata">Sonata</option>
@@ -166,6 +211,10 @@ const Search = ({
                             id="category-sort" 
                             type="select"
                             value={searchState.categorySort}
+                            style={{borderColor: searchState.categorySort === 
+                                defaultSearchState.categorySort ?
+                                'var(--color-grey-2)':
+                                 'var(--color-accent)'}}
                         >
                             <option value="difficulty">Difficulty</option>
                             <option value="title">Title</option>
@@ -182,6 +231,10 @@ const Search = ({
                             id="sort" 
                             type="select"
                             value={searchState.sortBy}
+                            style={{borderColor: searchState.sortBy === 
+                                defaultSearchState.sortBy ?
+                                'var(--color-grey-2)':
+                                 'var(--color-accent)'}}
                         >
                             <option value="title">Title</option>
                             <option value="difficulty">Difficulty</option>
@@ -191,7 +244,14 @@ const Search = ({
                             <option value="date-created">Date Created</option>
                         </select>
                     </div>
-                    <button onClick={handleClear}>Clear</button>
+                    <button 
+                        {...searchState === defaultSearchState ? 'disabled' : 'enabled'} 
+                        onClick={handleClear}
+                        style={{backgroundColor: (compareObj(searchState, defaultSearchState)) ? 
+                             'var(--color-grey-2)' : 'var(--color-accent)'}}
+                    >
+                        Clear
+                    </button>
 
                     <button onClick={() => searchDispatch({
                         type: ACTIONS.REFRESH

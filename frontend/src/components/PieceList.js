@@ -167,6 +167,11 @@ const PieceList = ({piece,
             updateCategoryMastery(masteryLevel.current.value - prevMasteryNum.current);
             updateGlobalMastery(masteryLevel.current.value - prevMasteryNum.current);
         }
+        // TAKE UPDATE USERPIECES OBJECT 
+        const updatedUserPieces = userPieces.map((piece) => 
+            piece.id === userPieceID ? {...piece, updated_at: new Date() } : piece
+        );
+        setUserPieces(updatedUserPieces)
     }
 
     return ( 

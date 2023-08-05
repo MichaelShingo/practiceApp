@@ -27,7 +27,7 @@ export const defaultSearchState = {
     sortBy: 'title',
     period: '',
     difficultyComp: 'gt',
-    difficultyNum: 1,
+    difficultyNum: '1',
     type: '',
     techniqueTags: new Set(),
     complete: 'all',
