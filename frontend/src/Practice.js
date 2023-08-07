@@ -270,11 +270,12 @@ const Home = ({ funcNav }) => {
                     techniqueFiltered.sort((a, b) => a.composer.last_name > b.composer.last_name ? 1 : - 1));
                 break;
             case 'date-updated':
+                // console.log(`userPieces = ${JSON.stringify(userPieces)}`);
                 const updatedMap = new Map();
                 userPieces.forEach((userPiece) => {
                     updatedMap.set(userPiece.piece.id, userPiece.updated_at)
                 });
-                console.log(updatedMap);
+                // console.log(`updatedMap = ${updatedMap}`);
                 
                 sorted = techniqueFiltered.sort((pieceA, pieceB) => {
                     const updatedA = updatedMap.get(pieceA.id);
