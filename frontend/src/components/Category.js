@@ -48,7 +48,7 @@ const Category = ({
     const progressRef = useRef(null);
     const pieceTableRef = useRef(null);
 
-    const [count, setCount] = useState(0); //set this based on data in database
+    const [count, setCount] = useState(0); // number of user pieces in category
     const [totalCount, setTotalCount] = useState(pieces.filter((piece) => piece.category.name === category.name).length);
     const [progressPercent, setProgressPercent] = useState('0%');
     const [avgMastery, setAvgMastery] = useState(0);
@@ -76,6 +76,10 @@ const Category = ({
 
     useEffect(() => {
         // console.log(`count, masterySum, totalCount, categoryCount = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
+        console.log(`MASTERY SUM = ${masterySum}`);
+        if (masterySum < 0) {
+            setMasterySum(0);
+        }
         setProgressPercent(calcCSSPercentage(count, totalCount));
         if (count === 0) {
             setAvgMastery(0);
@@ -87,7 +91,7 @@ const Category = ({
 
     useEffect(() => {
         const hue = mapColorRange(avgMastery, 1, 1, 10, 118);
-        // console.log(`avgMastery = ${avgMastery}`);
+        console.log(`avgMastery = ${avgMastery}`);
         progressRef.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
     }, [avgMastery])
 
@@ -112,12 +116,18 @@ const Category = ({
     }
 
     useEffect(() => { // recalc mastery sum when refiltering
-        setMasterySum(sum => sum - prevMasterySum.current);
+        console.log(`pieceCount = ${count}, ${typeof count}`)
+        if (false) {
+            setMasterySum(0);
+        } else {
+            console.log(`masterySum - prevMASTERYSUM = ${masterySum - prevMasterySum.current}`)
+            setMasterySum(sum => sum - prevMasterySum.current);
+        }
     }, [searchState])
 
     const updateCategoryMastery = (difference) => {
         // THIS RUNS ONLY ONCE ON RENDER, GOOD 
-        // console.log(`MASTERY SUM = ${masterySum}`);
+        
         prevMasterySum.current = masterySum;
         setMasterySum(prevSum => parseInt(prevSum) + parseInt(difference));
     }

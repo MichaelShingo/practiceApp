@@ -27,6 +27,8 @@ DESIGN / LOADING ANIMATIONS
 - animation when clicking technique tag 
 - Implement dark theme with useContext?
 
+BUGS
+- Filter for completed only, delete all pieces, filter show all. Check a piece. Mastery is 0 for some reason.
 
 - WHAT HAPPENS IF YOU HAVE THE SAME PAGE OPEN ON MULTIPLE TABS/DEVICES? 
 

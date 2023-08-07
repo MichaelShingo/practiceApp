@@ -106,7 +106,7 @@ const Home = ({ funcNav }) => {
     const [searchState, searchDispatch] = useReducer(searchReducer, defaultSearchState)
 
     useEffect(() => {
-        console.log(searchState);
+        // console.log(searchState);
     }, [searchState])
 
     const sortedCategories = useMemo(() => {
@@ -197,7 +197,6 @@ const Home = ({ funcNav }) => {
         let periodFiltered;
         if (searchState.period !== '') {
             periodFiltered = difficultyFiltered && difficultyFiltered.filter(piece => {
-                console.log(`${piece.period.name} ${searchState.period}`)
                 return piece.period.name === searchState.period
             })
         } else {
@@ -296,7 +295,6 @@ const Home = ({ funcNav }) => {
                 userPieces.forEach((userPiece) => {
                     createdMap.set(userPiece.piece.id, userPiece.created_at)
                 });
-                console.log(createdMap);
                 
                 sorted = techniqueFiltered.sort((pieceA, pieceB) => {
                     const createdA = createdMap.get(pieceA.id);
@@ -315,7 +313,6 @@ const Home = ({ funcNav }) => {
             default:
                 sorted = techniqueFiltered;
         }
-        // console.log(sorted);
         return sorted;
     }, [pieces, searchState])
 
@@ -360,6 +357,9 @@ const Home = ({ funcNav }) => {
 
     useEffect(() => {
         // console.log(`count, masterySum, totalCount, categoryCount = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
+        if (globalMasterySum < 0) {
+            setGlobalMasterySum(0);
+        }
         if (globalCompletion === 0) {
             setGlobalAvgMastery(0);
         } else {
@@ -369,7 +369,7 @@ const Home = ({ funcNav }) => {
 
     useEffect(() => {
         const hue = mapColorRange(globalAvgMastery, 1, 1, 10, 118);
-        console.log(`GLOBAL avgMastery = ${globalAvgMastery}`);
+        // console.log(`GLOBAL avgMastery = ${globalAvgMastery}`);
         globalProgressRef.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
     }, [globalAvgMastery])
 

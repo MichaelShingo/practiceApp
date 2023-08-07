@@ -39,13 +39,11 @@ const Search = ({
     const handleRefresh = () => {
         searchDispatch({type: ACTIONS.REFRESH});
         setRefreshActive(false);
-        console.log('handle refresh ran');
     }
 
 
     const compareObj = (objA, objB) => {
         let res  = true;
-        console.log(searchState.techniqueTags);
         Object.keys(objB).forEach(key => {
             if (key === 'techniqueTags' && (objA.techniqueTags.size !== 0)) {
                 res = false;
