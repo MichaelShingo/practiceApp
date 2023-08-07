@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef, useReducer, useMemo } from 'react';
-
 import { checkAuthenticated } from './services/authService.js';
 import Category from './components/Category.js';
 import Search from './components/Search.js';
 import PieceDetail from './components/PieceDetail.js';
 import LoadingIcon from './components/LoadingIcon.js';
-import ProgressBar from './components/ProgressBar';
-
 
 export const ACTIONS = {
     UPDATE_SEARCH: 'update-search',
@@ -20,6 +17,7 @@ export const ACTIONS = {
     UPDATE_CATEGORY_SORT: 'update-category-sort',
     CLEAR: 'clear',
     REFRESH: 'refresh',
+    TOGGLE_REFRESH: 'toggleRefresh',
 }
 
 export const defaultSearchState = { 
@@ -31,15 +29,21 @@ export const defaultSearchState = {
     type: '',
     techniqueTags: new Set(),
     complete: 'all',
-    categorySort: 'difficulty'
+    categorySort: 'difficulty',
+    refreshActive: false,
 }
 
 const searchReducer = (state, action) => {
     switch (action.type) {
+        case ACTIONS.TOGGLE_REFRESH:
+            return {...state, refreshActive: action.payload.value}
+
         case ACTIONS.CLEAR:
             return defaultSearchState;
+
         case ACTIONS.REFRESH:
             return {...state}
+
         case ACTIONS.UPDATE_SEARCH:
             return {...state, search: action.payload.value}
 
@@ -94,13 +98,10 @@ const Home = ({ funcNav }) => {
     const globalProgressRef = useRef(null);
     const [globalCompletion, setGlobalCompletion] = useState(0);
     const [globalAvgMastery, setGlobalAvgMastery] = useState(0);
+    const [refreshActive, setRefreshActive] = useState(false);
 
     const [globalMasterySum, setGlobalMasterySum] = useState(0);
     const prevGlobalMasterySum = useRef(0);
-
-    
-
-
 
     const [searchState, searchDispatch] = useReducer(searchReducer, defaultSearchState)
 
@@ -482,6 +483,8 @@ const Home = ({ funcNav }) => {
                         searchDispatch={searchDispatch}
                         searchState={searchState}
                         pieceCount={pieceCount}
+                        refreshActive={refreshActive}
+                        setRefreshActive={setRefreshActive}
                     
                     />
                 <div className="row">
@@ -521,11 +524,13 @@ const Home = ({ funcNav }) => {
                                 firstFetch={firstFetch}
                                 setFirstFetch={setFirstFetch}
                                 searchState={searchState}
+                                searchDispatch={searchDispatch}
                                 filteredPieceIDs={filteredPieceIDs}
                                 setPieceDetailPiece={setPieceDetailPiece}
                                 showDetail={showDetail}
                                 setShowDetail={setShowDetail}
                                 setGlobalCompletion={setGlobalCompletion}
+                                setRefreshActive={setRefreshActive}
                             />
                         ))) : <LoadingIcon />
                     }

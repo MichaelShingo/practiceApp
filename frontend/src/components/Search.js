@@ -9,6 +9,8 @@ const Search = ({
                 searchDispatch,
                 searchState,
                 pieceCount,
+                refreshActive,
+                setRefreshActive,
             }) => {
 
     const [techniques, setTechniques] = useState();
@@ -33,6 +35,12 @@ const Search = ({
             console.log('Error fetching data:', error);
         }
     };
+
+    const handleRefresh = () => {
+        searchDispatch({type: ACTIONS.REFRESH});
+        setRefreshActive(false);
+        console.log('handle refresh ran');
+    }
 
 
     const compareObj = (objA, objB) => {
@@ -245,17 +253,22 @@ const Search = ({
                         </select>
                     </div>
                     <button 
-                        {...searchState === defaultSearchState ? 'disabled' : 'enabled'} 
+                        disabled={compareObj(searchState, defaultSearchState)} 
                         onClick={handleClear}
-                        style={{backgroundColor: (compareObj(searchState, defaultSearchState)) ? 
-                             'var(--color-grey-2)' : 'var(--color-accent)'}}
+                        style={{backgroundColor: compareObj(searchState, defaultSearchState) ? 
+                             'var(--color-grey-2)' : 'var(--color-accent)',
+                            cursor: compareObj(searchState, defaultSearchState) ? 'auto' : 'pointer'}}
                     >
                         Clear
                     </button>
 
-                    <button onClick={() => searchDispatch({
-                        type: ACTIONS.REFRESH
-                    })}>Refresh</button>
+                    <button 
+                        onClick={handleRefresh}
+                        disabled={!refreshActive} 
+                        style={{backgroundColor: refreshActive ? 
+                             'var(--color-accent)' : 'var(--color-grey-2)',
+                            cursor: refreshActive ? 'pointer' : 'auto'}}
+                    >Refresh</button>
 
                 </div>
       

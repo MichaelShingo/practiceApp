@@ -16,10 +16,12 @@ const Category = ({
     filteredPieces,
     pieceCount,
     searchState,
+    searchDispatch,
     filteredPieceIDs,
     setPieceDetailPiece,
     showDetail,
     setShowDetail,
+    setRefreshActive,
     setGlobalCompletion,
     updateGlobalMastery }, ref) => {
 
@@ -170,6 +172,9 @@ const Category = ({
                             setUserPieces={setUserPieces}
                             setPieceDetailPiece={setPieceDetailPiece}
                             setGlobalCompletion={setGlobalCompletion}
+                            searchDispatch={searchDispatch}
+                            searchState={searchState}
+                            setRefreshActive={setRefreshActive}
                         />
                     ))}    
                     </tbody>

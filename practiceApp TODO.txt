@@ -1,7 +1,6 @@
 - Sends data to AI to provide next practice recommendations
 - Provides tutorial videos and recordings
 - Can it provide notifications (text or email) about practice reminders, practice inspiration.
-- track last time a user piece object was updated
 - boosted type of feature that times your practice sessions
 - can you add notes about your practice to each piece? 
 - data dashboard that shows some useful information
@@ -15,28 +14,22 @@ Next time you make a component, think about mobile-first design
 
 SORTING 
 - sort descending and ascending? 
-- maybe have an indicator in teh search component to show all fields that are not equal to default value? Otherwise it's unclear which ones are affecting teh search 
-	- have some indicator that filters are applied, 
-	- maybe "clear" button becomes active when filters are applied 
-	
-- 
+- prevent duplicates based on (pieceID, userID) (BACKEND) 
+- check the updated date again and make sure it's actually updating locally
 
-LOADING ANIMATIONS
-- loading animation for the table and detail dialogue, on first load and on search 
-
+OPTIMIZATIONS
+- run compareObj only once when search state updates 
 - add more data so you know how it's going to run in reality 
+- you'll want to optimize category, so you don't recalculate count every single time you load the app 
 
-- you'll want to optimize category IF IT'S REALLY SLOW, so you don't recalculate count every single time you load the app 
-
-
+DESIGN / LOADING ANIMATIONS
+- loading animation for the table and detail dialogue, on first load and on search 
 - animation when clicking technique tag 
-
 - Implement dark theme with useContext?
 
 
 - WHAT HAPPENS IF YOU HAVE THE SAME PAGE OPEN ON MULTIPLE TABS/DEVICES? 
 
-- prevent duplicates based on (pieceID, userID) (BACKEND) 
 
 - Do you need to override rest_framework/serializers
 

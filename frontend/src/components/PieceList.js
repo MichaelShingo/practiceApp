@@ -6,6 +6,7 @@ import { fetchMasteryUpdate, fetchRemovePiece, fetchAddPiece } from '../services
 import { useIsFirstRender } from '../services/firstRenderHook';
 import { checkAuthenticated } from '../services/authService';
 import Popup from './Popup.js';
+import { ACTIONS } from '../Practice';
 
 const PieceList = ({piece,
                     updateCategoryCount,
@@ -16,8 +17,11 @@ const PieceList = ({piece,
                     filteredPieces,
                     setPieceDetailPiece,
                     setShowDetail,
+                    searchDispatch,
+                    searchState,
                     setGlobalCompletion,
                     updateGlobalMastery,
+                    setRefreshActive,
                     updateCategoryMastery}) => {
     let initialMastery = '';
     if (checkAuthenticated()) {
@@ -94,9 +98,7 @@ const PieceList = ({piece,
                 setUserPieces([...userPieces, jsonData ]);
                 let updatedPieceIDSet = new Set(pieceIDSet);
                 updatedPieceIDSet.add(piece.id);
-                setPieceIDSet(updatedPieceIDSet);
-                // console.log(userPieces);
-                
+                setPieceIDSet(updatedPieceIDSet);                
             } else { //remove from database
                 setGlobalCompletion(prev => prev - 1);
                 updateCategoryCount(!checked, masteryNum);
@@ -110,6 +112,14 @@ const PieceList = ({piece,
                 updatedPieceIDSet.delete(piece.id);
                 setPieceIDSet(updatedPieceIDSet);
             }
+            
+            // REFRESH ON ADD/REMOVE PIECE
+            if (searchState.complete !== 'all' ||
+                searchState.categorySort === 'completion' || 
+                new Set(['mastery', 'date-updated', 'date-created'])
+                .has(searchState.sortBy)) {
+                    setRefreshActive(true);
+                }
             
         } else { // if not logged in
             setPopupPosition({x: e.clientX, y: e.clientY});
@@ -135,7 +145,6 @@ const PieceList = ({piece,
             if (runCount === 0 && userPieceID === 0) { 
                 setRunCount(prevRunCount => prevRunCount + 1);
             } else if (checked && userPieceID > 0) { // update mastery of already checked piece
-                // this is running when you uncheck a piece? 
                 firstMount.current = false;
                 fetchMasteryUpdate(userPieceID, masteryNum);
 
@@ -171,6 +180,9 @@ const PieceList = ({piece,
         const updatedUserPieces = userPieces.map((piece) => 
             piece.id === userPieceID ? {...piece, updated_at: new Date() } : piece
         );
+        if (new Set(['mastery', 'date-updated']).has(searchState.sortBy)) {
+            setRefreshActive(true);
+        }
         setUserPieces(updatedUserPieces)
     }
 
