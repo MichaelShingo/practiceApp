@@ -4,6 +4,7 @@
 #search-container {
     margin-bottom: 1%;
     padding: 30px 5%;
+    color: var(--color-black);
 }
 
 .search-flex {
@@ -22,10 +23,12 @@
     height: 100%;
     top: 6px;
     white-space: nowrap;
+    color: var(--color-black);
 }
 
-#search-container input, .search-flex select {
-    background-color: var(--color-white);
+#search-container input, .search-flex select, option {
+    background-color: var(--color-white) !important;
+    color: var(--color-black) !important;
     border: 3px solid var(--color-grey-2);
     border-radius: 10px;
     height: 40px;
@@ -39,7 +42,7 @@
 #search-container button {
     background-color: var(--color-accent);
     padding: 5px 25px 5px 25px;
-    color: var(--color-white);
+    color: white;
     border-radius: 25px;
     transition: var(--default-transition);
 }

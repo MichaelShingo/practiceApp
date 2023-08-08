@@ -3,31 +3,13 @@ import '../styles/toggle.css';
 import { ReactComponent as MoonIcon } from '../icons/moon.svg';
 import { ReactComponent as SunIcon } from '../icons/sun.svg';
 
-const ThemeToggle = () => {
-    const [isEnabled, setIsEnabled] = useState(false);
-
-    useEffect(() => {
-        updateTheme(isEnabled);
-    }, [isEnabled])
+const ThemeToggle = ({ toggleMode }) => {
+    const [isEnabled, setIsEnabled] = useState(true);
 
     const toggleState = () => {
         setIsEnabled((prevState) => !prevState);
-    }
+        toggleMode();
 
-    const updateTheme = (isDarkEnabled) => {
-        const styles = getComputedStyle(document.body); // get all style properties in body
-        const black = styles.getPropertyValue('--color-black'); // get values for variables
-        const white = styles.getPropertyValue('--color-white');
-        const docEl = document.documentElement;
-        if (isDarkEnabled) {
-            docEl.style.setProperty('--background', black);
-            docEl.style.setProperty('--foreground', white);
-            document.querySelector('html').classList.add('darkmode');
-        } else {
-            docEl.style.setProperty('--background', white);
-            docEl.style.setProperty('--foreground', black);
-            document.querySelector('html').classList.remove('darkmode');
-        }
     }
 
     return (
@@ -37,8 +19,20 @@ const ThemeToggle = () => {
                     {isEnabled ? "Enable" : "Disable"}
                 </span>
                 <div className="icons">
-                    <SunIcon />
-                    <MoonIcon />
+                    <SunIcon style={{
+                        transform: isEnabled ? 'translateX(0px)' : 'translateX(50px)',
+                        opacity: isEnabled ? '0' : '1',
+                        transition: '1s',
+                 
+                }}/>
+                    <MoonIcon 
+                        style={{
+                            transform: !isEnabled ? 'translateX(-65px)' : 'translateX(10px)',
+                            opacity: !isEnabled ? '0' : '1',
+                            transition: '1s'
+                    }}
+                    
+                    />
                 </div>
                 <input
                     id="toggle"

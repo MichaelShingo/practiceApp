@@ -104,32 +104,36 @@ button {
   }
   
 :root {
-    --color-transparent: rgba(0, 0, 0, 0);
     --color-youtube: #ff0000;
     --color-github: #2da44e;
     --color-linkedin: #0a66c2;
     --color-facebook: #1877f2;
     --color-review-star: yellow;
+
+    
+    --box-shadow-small: 0 3px 5px rgba(0,0,0,0.3);
+    --font: Oswald, sans-serif;
+    --font-paragraph: Noto Sans;
+
+    --default-transition: all 0.4s ease-in-out;
+    --fast-transition: all .2s ease-in-out;
+    --slow-transition: all 1s ease-in-out;
+    color: var(--color-white);
+}
+.light {
+    --color-transparent: rgba(0, 0, 0, 0);
     --color-black: #000000;
     --color-white: #ffffff;
     --color-transparent: rgba(0, 0, 0, 0);
     --color-black-trans: rgba(0,0,0,0.3);
     --color-white-trans: rgba(255, 255, 255, 0.3);
-    --color-highlight: #bbe4bf;
-    --color-light: #88AB76;
-    --color-light-trans: #88ab76d8;
-    --color-secondary: #367b92;
-    --color-saturated: #005c07;
-    --color-dark: #253c22;
     --color-accent: #046cf3;
     --color-blue-dark-2: #0e2f5a;
     --color-blue-dark-1: #2b4687;
     --color-success: #07c400;
     --color-success-hover: #80df7d;
     --color-accent-hover: #659feb;
-    --color-important: #d34e36;
     --color-accent-light: #fff3b6;
-    
     --color-trans-white: rgba(37, 26, 26, 0);
     --color-grey-0: #f8f8f8;
     --color-grey-1: #e6e6e6;
@@ -139,19 +143,34 @@ button {
     --color-grey-4: #525252;
     --color-grey-5: #383838;
     --color-grey-6: #161616;
-    
     --color-red: #c63131;
-    
-    
     --box-shadow-1: 0 3px 15px rgba(0,0,0,0.3);
-    --box-shadow-small: 0 3px 5px rgba(0,0,0,0.3);
-    --font: Oswald, sans-serif;
-    --font-paragraph: Noto Sans;
-    --background: var(--color-white);
-    --foreground: var(--color-black);
-    --default-transition: all 0.4s ease-in-out;
-    --fast-transition: all .2s ease-in-out;
-    --slow-transition: all 1s ease-in-out;
+}
+.dark {
+    --color-transparent: rgba(0, 0, 0, 0);
+    --color-black: #ffffff;
+    --color-white: #303030;
+    --color-transparent: rgba(0, 0, 0, 0);
+    --color-black-trans: rgba(0,0,0,0.3);
+    --color-white-trans: rgba(255, 255, 255, 0.3);
+    --color-accent: #046cf3;
+    --color-blue-dark-2: #0e2f5a;
+    --color-blue-dark-1: #2b4687;
+    --color-success: #07c400;
+    --color-success-hover: #80df7d;
+    --color-accent-hover: #659feb;
+    --color-accent-light: #fff3b6;
+    --color-trans-white: rgba(37, 26, 26, 0);
+    --color-grey-0:  #161616;
+    --color-grey-1: #383838;
+    --color-grey-1-trans: #e6e6e6d8;
+    --color-grey-2: #525252;
+    --color-grey-3: #818181;
+    --color-grey-4: #cccccc;
+    --color-grey-5: #e6e6e6;
+    --color-grey-6: #f8f8f8;
+    --color-red: #c63131;
+    --box-shadow-1: 0 3px 15px rgba(0,0,0,0.5);
 }
 
 html {

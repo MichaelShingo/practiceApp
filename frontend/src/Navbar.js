@@ -38,7 +38,9 @@ const Navbar = ( {toggleMode} ) => {
                     </div>
                     <div className="col-3"></div>
                     <div className="col-6 links">
-                        <ThemeToggle />
+                        <ThemeToggle 
+                            toggleMode={toggleMode}
+                        />
                         {/* <button className="nav-active"></button> */}
                         <a className={url === '/practice' ? 'active' : ''} href="/practice">Practice</a>
                         <a className={url === '/social' ? 'active' : ''} href="/social">Social</a>

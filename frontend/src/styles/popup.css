@@ -4,7 +4,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--color-black);
     position: absolute;
     font-size: .9rem;
     z-index: 10;
@@ -19,6 +18,10 @@
     margin: auto;
     top: 10%;
     transform: translateY(-50%);
+}
+
+.popup p {
+    color: var(--color-black);
 }
 
 .hide-popup {

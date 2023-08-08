@@ -7,7 +7,7 @@
     font-size: 0.8rem;
     opacity: 0;
     position: absolute;
-    color: white;
+    color: var(--color-black);
     /* height: fit-content; */
     transition: opacity 0.5s, height 0.5s;
     z-index: 2;
