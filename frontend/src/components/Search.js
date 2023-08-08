@@ -57,6 +57,7 @@ const Search = ({
 
     const handleClear = () => {
         setTechniqueValue(prev => prev + 1);
+        setRefreshActive(false);
         searchDispatch({
             type: ACTIONS.CLEAR
         })

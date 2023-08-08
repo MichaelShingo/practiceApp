@@ -1,15 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/navbar.css';
-import './styles/auth.css';
-import './styles/toggle.css';
-import './styles/globalStyles.css';
-import './styles/practice.css';
-import './styles/popup.css';
-import './styles/search.css';
-import './styles/pieceDetail.css';
-import './styles/tooltip.css';
-import './styles/loadingIcon.css';
+
 
 import App from './App';
 import 'react-tooltip/dist/react-tooltip.css'

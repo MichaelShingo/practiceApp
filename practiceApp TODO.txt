@@ -8,6 +8,14 @@
 ***************************
 Next time you make a component, think about mobile-first design 
 
+global filtering progression
+1. filtered pieces changes, useEffect runs - setting global completion 
+Category filtering progression
+1. Filter applies, filtered pieces changes 
+2. useeffect to set Filtered Piece IDS
+3. filteredPieceIDS prop changes, use effect, setCount(0) - should masterySum be set here? 
+- when you update teh filter, there's something that's just adding strings to the masterySum.....
+
 DATA DASHBOARD
  	- like a github-type calendar that shows days that you completed pieces 
 	- percentages of pieces completed at each difficulty level 
@@ -33,7 +41,6 @@ DESIGN / LOADING ANIMATIONS
 BUGS
 - filter incomplete only, add pieces, refresh, add more pieces, color becomes blue 
 - CSS loading delay 
-- Filter for completed only, delete all pieces, filter show all. Check a piece. Mastery is 0 for some reason. It's a category mastery issue. This probably happens with all filters, when you clear filters after deleting all pieces in a category, the category mastery gets set to a negative number?? 
 - It's making a put request to update mastery when you add the piece (after clearing) , but it's not found in the database 
 - global mastery is fine AS long as another category has something in it 
 
