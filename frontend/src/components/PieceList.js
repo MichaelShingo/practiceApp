@@ -55,7 +55,7 @@ const PieceList = ({piece,
     useEffect(() => { // MOUNT AND UNMOUNT
         if (checkAuthenticated() && pieceIDSet.has(piece.id)) { // set user pieces, checked, mastery level
             updateCategoryMastery(masteryNum);
-            updateGlobalMastery(masteryNum);
+            // updateGlobalMastery(masteryNum);
             setChecked(true);
             setUserPieceID(userPieces.filter(userPiece => userPiece.piece.id === piece.id)
                 .map(filteredPiece => filteredPiece.id))            

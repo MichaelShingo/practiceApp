@@ -58,12 +58,14 @@ const Category = ({
     
     useEffect(() => {
         setCount(0);
+        setMasterySum(0);
         calcCategoryCount();
 
         if (checkAuthenticated()) {
             for (let userPiece of userPieces) {
                 if (userPiece.piece.category === category.id && filteredPieceIDs.has(userPiece.piece.id)) {
                     setCount(prevCount => prevCount + 1);
+                    setMasterySum(prev => prev + parseInt(userPiece.mastery_level))
                 }
             }
         }
@@ -76,22 +78,25 @@ const Category = ({
 
     useEffect(() => {
         // console.log(`count, masterySum, totalCount, categoryCount = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
-        console.log(`MASTERY SUM = ${masterySum}`);
+        // console.log(`MASTERY SUM = ${masterySum}, count = ${count}`);
         if (masterySum < 0) {
             setMasterySum(0);
         }
         setProgressPercent(calcCSSPercentage(count, totalCount));
         if (count === 0) {
             setAvgMastery(0);
+            // when count is 0, avg mastery correctly sets to 0, but the masterySum is not 0 
+            // if you set masterySum to 0 here, this whole this will keep running 
+            // console.log('setting avg mastsery');
         } else {
             setAvgMastery(masterySum / count);
-            // console.log('setting avg mastsery');
+            // console.log(`SETTING AVG MASTERY ${masterySum / count}`);
         }
     }, [masterySum, count]);
 
     useEffect(() => {
         const hue = mapColorRange(avgMastery, 1, 1, 10, 118);
-        console.log(`avgMastery = ${avgMastery}`);
+        // console.log(`avgMastery = ${avgMastery}`);
         progressRef.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
     }, [avgMastery])
 
@@ -116,11 +121,12 @@ const Category = ({
     }
 
     useEffect(() => { // recalc mastery sum when refiltering
-        console.log(`pieceCount = ${count}, ${typeof count}`)
-        if (false) {
+        // console.log(`pieceCount = ${count}, ${typeof count}`)
+        if (searchState.complete === 'incomplete' && count === 0) {
+            // console.log(`searchstate is incomplete, count 0`)
             setMasterySum(0);
         } else {
-            console.log(`masterySum - prevMASTERYSUM = ${masterySum - prevMasterySum.current}`)
+            // console.log(`masterySum - prevMASTERYSUM = ${masterySum - prevMasterySum.current}`)
             setMasterySum(sum => sum - prevMasterySum.current);
         }
     }, [searchState])

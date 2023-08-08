@@ -159,8 +159,9 @@ const Home = ({ funcNav }) => {
                 return !pieceIDSet.has(piece.id) 
             })
         } else {
-            completionFiltered = pieces && pieces
+            completionFiltered = pieces && pieces;
         }
+
         // FILTER BY SEARCH TERM
         let searched = [];
         if (searchState.search === '') {
@@ -323,12 +324,17 @@ const Home = ({ funcNav }) => {
                 idSet.add(piece.id);
             }
             setFilteredPieceIDs(idSet);
-            setGlobalCompletion(0);
+            let completion = 0;
+            let sum = 0;
             for (let userPiece of userPieces) {
                 if (idSet.has(userPiece.piece.id)) {
-                    setGlobalCompletion(prev => prev + 1);
+                    completion = completion + 1;
+                    sum = sum + parseInt(userPiece.mastery_level);
                 }
             }
+            setGlobalMasterySum(sum);
+            setGlobalCompletion(completion);
+            console.log(`setting globalMasterySum to ${sum}, globalCompmletion to ${completion}`)
         }
     }, [filteredPieces])
 
@@ -364,18 +370,19 @@ const Home = ({ funcNav }) => {
             setGlobalAvgMastery(0);
         } else {
             setGlobalAvgMastery(globalMasterySum / globalCompletion);
+            console.log(`setting globalAvgMastery to ${globalMasterySum / globalCompletion}`)
         }
     }, [globalMasterySum, globalCompletion]);
 
     useEffect(() => {
         const hue = mapColorRange(globalAvgMastery, 1, 1, 10, 118);
-        // console.log(`GLOBAL avgMastery = ${globalAvgMastery}`);
+        console.log(`GLOBAL avgMastery = ${globalAvgMastery}`);
         globalProgressRef.current.style.backgroundColor = `hsl(${hue}, 100%, 38%)`;
     }, [globalAvgMastery])
 
-    useEffect(() => { // recalc mastery sum when refiltering
-        setGlobalMasterySum(sum => sum - prevGlobalMasterySum.current);
-    }, [searchState])
+    // useEffect(() => { // recalc mastery sum when refiltering
+    //     // setGlobalMasterySum(sum => sum - prevGlobalMasterySum.current);
+    // }, [searchState])
 
     const updateGlobalMastery = (difference) => {
         prevGlobalMasterySum.current = globalMasterySum;
