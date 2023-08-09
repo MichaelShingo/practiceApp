@@ -133,7 +133,7 @@ const PieceList = ({piece,
 
     useEffect(() => { 
         if (masteryNum === null) {
-            masteryLevel.current.style.backgroundColor = '#e6e6e6';
+            masteryLevel.current.style.backgroundColor = 'var(--color-grey-1)';
         }
         else if (masteryNum === '') {
             

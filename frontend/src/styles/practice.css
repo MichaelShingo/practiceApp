@@ -1,8 +1,16 @@
+#main-content {
+    transition: var(--default-transition);
+}
+
 #practice-content {
     padding-top: 100px;
     background-color: var(--color-white);
     color: var(--color-white);
     margin: 0;
+    padding-bottom: 100px;
+    min-height: 105vh;
+    overflow-y: hidden;
+
 }
 
 #practice-content h2 {
@@ -15,7 +23,7 @@
     border-radius: 10px;
     min-height: 400px;
     padding: 10px 5%;
-    /* max-width: 1200px; */
+    height: fit-content;
 
 }
 
@@ -62,8 +70,6 @@
     grid-column: 1;
     grid-row: 1;
     display: visible;
-    
-    
 }
 
 .progress-bar {
@@ -118,7 +124,7 @@
     height: 0;
     width: 0;
     overflow: hidden;
-    /* display: none; */
+    display: none;
     position: absolute;
     visibility: hidden;
     /* transition: var(--default-transition); */
@@ -272,6 +278,50 @@ tbody tr:hover {
     transition: var(--default-transition);
 
     color: white;
+}
+
+
+/* SIDEBAR ICONS */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 5;
+
+}
+.sidebar-icon {
+    margin-block: 10px;
+    height: 60px;
+    width: 60px;
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow-1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--default-transition);
+}
+
+.sidebar-icon:hover {
+    cursor: pointer;
+    transform: translateY(-3px);
+}
+
+.sidebar-icon .icon {
+    height: 40px;
+    width: 40px;
+    position: fixed;
+
+}
+
+#chart-icon {
+    fill: var(--color-accent);
+}
+#ai-icon {
+    fill: #74aa9c;
+    
 }
 
 /* .mastery-number:hover {

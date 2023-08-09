@@ -1,0 +1,11 @@
+.analytics-container {
+    background: green;
+    z-index: 0;
+    transition: var(--default-transition);
+    position: absolute;
+    height: 700px;
+}
+
+.analytics-container h1 {
+    color: green !important;
+}

@@ -4,6 +4,9 @@ import Category from './components/Category.js';
 import Search from './components/Search.js';
 import PieceDetail from './components/PieceDetail.js';
 import LoadingIcon from './components/LoadingIcon.js';
+import {ReactComponent as Chart} from './svg/chart.svg';
+import {ReactComponent as AI} from './svg/openai.svg';
+import Analytics from './components/Analytics.js';
 
 export const ACTIONS = {
     UPDATE_SEARCH: 'update-search',
@@ -99,6 +102,7 @@ const Home = ({ funcNav }) => {
     const [globalCompletion, setGlobalCompletion] = useState(0);
     const [globalAvgMastery, setGlobalAvgMastery] = useState(0);
     const [refreshActive, setRefreshActive] = useState(false);
+    const [showAnalytics, setShowAnalytics] = useState(false);
 
     const [globalMasterySum, setGlobalMasterySum] = useState(0);
     const prevGlobalMasterySum = useRef(0);
@@ -474,6 +478,18 @@ const Home = ({ funcNav }) => {
         return ((y2 - y1) / (x2 - x1)) * value;
     }
 
+    const handleSidebarClick = (name) => {
+        switch (name) {
+            case 'ai':
+                break;
+            case 'chart':
+                setShowAnalytics(prev => !prev);
+                break;
+            default:
+                break;
+        }
+    }
+
     return ( 
         <div id="practice-content">
             <PieceDetail 
@@ -483,6 +499,27 @@ const Home = ({ funcNav }) => {
                 userPieces={userPieces}
                 periods={periods}
             />
+            {/* <Analytics showAnalytics={showAnalytics}/> */}
+            <div className="sidebar">
+                <div onClick={() => handleSidebarClick('ai')} className="sidebar-icon">
+                    <AI className="icon" id="ai-icon"/>
+                </div>
+                <div onClick={() => handleSidebarClick('chart')} className="sidebar-icon">
+                    <Chart className="icon" id="chart-icon"/>
+                </div>
+            </div>
+            <div id="main-content"
+                style={{
+                    transform: showAnalytics ? 'translateX(100vw)' : 'translateX(0vw)',
+                    position: showAnalytics ? 'fixed' : 'relative',
+                    overflow: showAnalytics ? 'hidden' : 'visible'
+                }}
+            >
+
+            
+            
+            
+            
             <div className="row">
                 <div className="col-1"></div>
                 <div className="col-10">
@@ -512,8 +549,7 @@ const Home = ({ funcNav }) => {
                         <div className="progress-bar-back"></div>
                     </div>
                 </div>
-                </div>
-                    
+                </div> 
                     <div className="table-container">
                         { (categories && pieces && userPieces && filteredPieces && pieceIDSet) ? (sortedCategories.map((category) => (
                             <Category 
@@ -546,6 +582,7 @@ const Home = ({ funcNav }) => {
                 </div>
                 <div className="col-1"></div>
             </div>
+        </div>
         </div>
      );
 }
