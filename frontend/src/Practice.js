@@ -499,7 +499,13 @@ const Home = ({ funcNav }) => {
                 userPieces={userPieces}
                 periods={periods}
             />
-            {/* <Analytics showAnalytics={showAnalytics}/> */}
+            {userPieces && 
+                <Analytics 
+                    showAnalytics={showAnalytics}
+                    periods={periods}
+                    userPieces={userPieces}
+                /> 
+            }
             <div className="sidebar">
                 <div onClick={() => handleSidebarClick('ai')} className="sidebar-icon">
                     <AI className="icon" id="ai-icon"/>

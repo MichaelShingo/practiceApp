@@ -63,7 +63,7 @@ const Category = ({
 
         if (checkAuthenticated()) {
             for (let userPiece of userPieces) {
-                if (userPiece.piece.category === category.id && filteredPieceIDs.has(userPiece.piece.id)) {
+                if (userPiece.piece.category.id === category.id && filteredPieceIDs.has(userPiece.piece.id)) {
                     setCount(prevCount => prevCount + 1);
                     setMasterySum(prev => prev + parseInt(userPiece.mastery_level))
                 }

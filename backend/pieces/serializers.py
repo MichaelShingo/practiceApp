@@ -36,7 +36,7 @@ class TypeOfPieceSerializer(serializers.ModelSerializer):
     class Meta:
         model = TypeOfPiece
         fields = [
-            'name'
+            'name',
             'description',
         ]
 
@@ -96,7 +96,7 @@ class PieceSerializer(serializers.ModelSerializer):
 class UserToPiecesSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserToPieces
-        depth = 1
+        depth = 2
         fields = [
             'id',
             'user',

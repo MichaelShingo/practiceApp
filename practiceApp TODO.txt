@@ -3,7 +3,7 @@
 - Can it provide notifications (text or email) about practice reminders, practice inspiration.
 - boosted type of feature that times your practice sessions
 - can you add notes about your practice to each piece? 
-- data dashboard that shows some useful information
+	
 
 ***************************
 Next time you make a component, think about mobile-first design 
@@ -20,7 +20,14 @@ DATA DASHBOARD
  	- like a github-type calendar that shows days that you completed pieces 
 	- percentages of pieces completed at each difficulty level 
 	- breakdown of composers you've worked on 
-	- which techniques you've worked on the most
+	- mastery level of each technique (calculated based on number of pieces you've completed that contain the technique and the mastery level of those pieces) 
+	
+	
+	- number of pieces completed of each TYPE - Doughnut chart 
+	
+	
+	- completed pieces by period - Doughnut chart OR Multi Series Pie? 
+		- Or polar area where you show average mastery per category on the vertical axis 
 SORTING 
 - sort descending and ascending? 
 - prevent duplicates based on (pieceID, userID) (BACKEND) 
