@@ -41,10 +41,10 @@ const PeriodChart = ( {periods, userPieces} ) => {
     `hsl(${colors[3]}, 100%, 38%)`,
     `hsl(${colors[4]}, 100%, 38%)`]
     let rgb = ['#003f5c',
-       '#58508d',
-        '#bc5090',
-        '#ff6361',
-        '#ffa600']
+    '#58508d',
+     '#bc5090',
+     '#ff6361',
+     '#ffa600']
 
     return ( 
         <div className="chart-container">

@@ -4,7 +4,11 @@
 - boosted type of feature that times your practice sessions
 - can you add notes about your practice to each piece? 
 	
-
+AI 
+- Select a technique you want to work on from a list. 
+- App sends to AI a list of pieces with that technique that you've already worked on. 
+- AI will suggest further practice recommendations. 
+- Allow chatting with the AI after this point? (but this could lead to abuse if people just use this as their personal portal) 
 ***************************
 Next time you make a component, think about mobile-first design 
 
