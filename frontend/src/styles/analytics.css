@@ -23,8 +23,12 @@
     display: flex;
     flex-direction: row;
     /* background-color: navy; */
+    width: 100%;
+    height: 100%;
     align-items: center;
     justify-content: center;
+    /* background-color: aliceblue;
+    margin: 5px; */
 }
 
 .chart-container {
@@ -37,4 +41,10 @@
 
 .chart-column {
     margin: 0px 50px;
+}
+
+#bar-chart {
+    width: 700px;
+    height: 350px;
+    /* background-color: brown; */
 }

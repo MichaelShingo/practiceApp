@@ -1,28 +1,39 @@
 import { useEffect, useRef, useState } from 'react';
 import '../styles/analytics.css';
-import PeriodChart from './PeriodChart';
 import { host } from '../services/urls';
 import DoughnutChart from './DoughnutChart';
-
+import BarChart from './BarChart';
 
 const Analytics = ({ 
     showAnalytics,
     periods,
     userPieces
 }) => {
-
     const containerRef = useRef(null);
     const [types, setTypes] = useState([]);
-    let [periodData, setPeriodData] = useState([]);
-
-    let [typesData, setTypesData] = useState([1, 2, 3, 4, 5]);
+    const [periodData, setPeriodData] = useState([]);
+    const [typesData, setTypesData] = useState([1, 2, 3, 4, 5]);
+    const [difficultyData, setDifficultyData] = useState(null);
 
     useEffect(() => {
         fetchTypes();
         calcPeriods();
-
+        calcDifficulties();
     }, [userPieces])
 
+    const calcDifficulties = () => {
+        const difficultyMap = new Map();
+        for (let i = 1; i <= 10; i++) {
+            difficultyMap.set(i, 0);
+        }
+        for (let userPiece of userPieces) {
+            const difficulty = userPiece.piece.difficulty;
+            const difficultyCount = difficultyMap.get(difficulty);
+            difficultyMap.set(difficulty, difficultyCount + 1);
+        }
+        setDifficultyData(Array.from(difficultyMap.values()));
+
+    }
     const calcPeriods = () => {
         let map = new Map();
         let masteryMap = new Map();
@@ -52,7 +63,6 @@ const Analytics = ({
 
             for (let type of arr) {
                 map.set(type, 0);
-                console.log(`types = ${type}`)
             }
             
             for (let entry of userPieces) {
@@ -92,6 +102,14 @@ const Analytics = ({
                     title={'Completion by Type'}
                     colors={['#4b005c', '#aa005e',
                     '#ef4647', '#ff9a19', '#fff100']}
+                />
+                
+            </div>
+            <div className="chart-row">
+                <BarChart 
+                    title='Completion by Difficulty Level'
+                    labels={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
+                    data={difficultyData}
                 />
             </div>
         </div>

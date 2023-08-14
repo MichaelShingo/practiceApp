@@ -21,17 +21,22 @@ Category filtering progression
 - when you update teh filter, there's something that's just adding strings to the masterySum.....
 
 DATA DASHBOARD
- 	- like a github-type calendar that shows days that you completed pieces 
-	- percentages of pieces completed at each difficulty level 
+ 	- like a github-type calendar that shows days that you completed pieces
+		- 365 days in a year, this is the view, always 
+		- num of rows are always 7 
+		- num of colummns are 53 probably 
+		- can you store all the days when you either completed or updated a piece? What if you update a piece multiple times? Isn't that useful information to see? Then set up a new table in database that stores (PieceID, date, updated/created, userID, masteryLVL)
+		- You need to create a list of days. Then go through userUpdates object and add that object to the appropriate day in the list. that contains information about what the user did on that day.  Then map the list to the squares component. 
+		- When you click on the square, it should show which pieces you updated on that day and the mastery level. 
 	- breakdown of composers you've worked on 
-	- mastery level of each technique (calculated based on number of pieces you've completed that contain the technique and the mastery level of those pieces) 
+	- mastery level of each technique (calculated based on number of pieces you've completed that contain the technique and the mastery level of those pieces)
+		- Maintain two maps: (Technique : masterySum and Technique : pieceCount)
+		- Calculate teh average within teh masterySum map, then sort them by average mastery 
+		- What if you create a custom chart that displays all the techniques X by X and the boxes are filled by the mastery color? 
+		- otherwise, you could do this as part of the technique tags. (or display this data in both analytics and main page) 
+		- can you incorporate the difficulty level of each of the pieces into the technique mastery calculation? 
 	
 	
-	- number of pieces completed of each TYPE - Doughnut chart 
-	
-	
-	- completed pieces by period - Doughnut chart OR Multi Series Pie? 
-		- Or polar area where you show average mastery per category on the vertical axis 
 SORTING 
 - sort descending and ascending? 
 - prevent duplicates based on (pieceID, userID) (BACKEND) 
