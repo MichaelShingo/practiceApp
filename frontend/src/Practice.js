@@ -7,6 +7,7 @@ import LoadingIcon from './components/LoadingIcon.js';
 import {ReactComponent as Chart} from './svg/chart.svg';
 import {ReactComponent as AI} from './svg/openai.svg';
 import Analytics from './components/Analytics.js';
+import { host } from './services/urls';
 
 export const ACTIONS = {
     UPDATE_SEARCH: 'update-search',
@@ -103,6 +104,8 @@ const Home = ({ funcNav }) => {
     const [globalAvgMastery, setGlobalAvgMastery] = useState(0);
     const [refreshActive, setRefreshActive] = useState(false);
     const [showAnalytics, setShowAnalytics] = useState(false);
+    const [techniques, setTechniques] = useState();
+
 
     const [globalMasterySum, setGlobalMasterySum] = useState(0);
     const prevGlobalMasterySum = useRef(0);
@@ -349,6 +352,7 @@ const Home = ({ funcNav }) => {
          fetchPieces();
          fetchCategories();
          fetchPeriods();
+         fetchTechniques();
          if (checkAuthenticated()) {
             fetchUserPieces();
          } else {
@@ -393,6 +397,22 @@ const Home = ({ funcNav }) => {
         setGlobalMasterySum(prevSum => parseInt(prevSum) + parseInt(difference));
     }
     
+    const fetchTechniques = async () => {
+        const url = `${host}/api/techniques/`
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+            });
+            const jsonData = await response.json();
+            if (!response.ok) {
+                console.log('error');
+            }
+            console.log('fetched techniques');
+            setTechniques(jsonData);
+        } catch (error) {
+            console.log('Error fetching data:', error);
+        }
+    };
 
     const fetchPieces = async () => {
         const url = 'http://localhost:8000/api/pieces/'
@@ -504,6 +524,7 @@ const Home = ({ funcNav }) => {
                     showAnalytics={showAnalytics}
                     periods={periods}
                     userPieces={userPieces}
+                    techniques={techniques}
                 /> 
             }
             <div className="sidebar">
@@ -536,6 +557,7 @@ const Home = ({ funcNav }) => {
                         pieceCount={pieceCount}
                         refreshActive={refreshActive}
                         setRefreshActive={setRefreshActive}
+                        techniques={techniques}
                     
                     />
                 <div className="row">

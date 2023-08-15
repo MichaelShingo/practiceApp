@@ -22,6 +22,7 @@ const Tooltip = ({ visible, message }) => {
             tooltipRef.current.style.top = mousePosition.y + 'px';
             tooltipRef.current.style.left = mousePosition.x + 'px';
         }
+        // console.log(mousePosition);
     }, [mousePosition])
     
     return ( 

@@ -3,17 +3,34 @@ import '../styles/analytics.css';
 import { host } from '../services/urls';
 import DoughnutChart from './DoughnutChart';
 import BarChart from './BarChart';
+import TechniqueMastery from './TechniqueMastery';
+import Tooltip from './Tooltip.js'; 
+import Calendar from './Calendar';
+
 
 const Analytics = ({ 
     showAnalytics,
     periods,
-    userPieces
+    userPieces,
+    techniques,
 }) => {
     const containerRef = useRef(null);
     const [types, setTypes] = useState([]);
     const [periodData, setPeriodData] = useState([]);
     const [typesData, setTypesData] = useState([1, 2, 3, 4, 5]);
     const [difficultyData, setDifficultyData] = useState(null);
+
+    const [showTooltip, setShowTooltip] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const handleOnMouseEnter = (message) => {
+        setShowTooltip(true);
+        setMessage(message);
+    }
+
+    const handleOnMouseLeave = () => {
+        setShowTooltip(false);
+    }
 
     useEffect(() => {
         fetchTypes();
@@ -88,6 +105,24 @@ const Analytics = ({
                 padding: !showAnalytics ? '0px' : '15px'
             }}
         >
+            <Tooltip
+                visible={showTooltip}
+                message={message}
+            />
+            <div className="chart-row">
+                <Calendar 
+                    userPieces={userPieces}
+                />
+            </div>
+            <div className="chart-row">
+                { techniques && 
+                <TechniqueMastery 
+                    handleOnMouseEnter={handleOnMouseEnter}
+                    handleOnMouseLeave={handleOnMouseLeave}
+                    techniques={techniques}
+                    userPieces={userPieces}
+                />}
+            </div>
             <div className="chart-row">
                 <DoughnutChart 
                     labels={periods.map(period => period.name)}
@@ -112,6 +147,7 @@ const Analytics = ({
                     data={difficultyData}
                 />
             </div>
+            
         </div>
      );
 }

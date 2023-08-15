@@ -1,6 +1,5 @@
 import {ReactComponent as MagnifyingGlass} from '../svg/magnifying-glass-solid.svg';
 import { useState, useEffect } from 'react';
-import { host } from '../services/urls';
 import TechniqueTag from './TechniqueTag';
 import {ACTIONS} from '../Practice';
 import { defaultSearchState } from '../Practice';
@@ -11,30 +10,14 @@ const Search = ({
                 pieceCount,
                 refreshActive,
                 setRefreshActive,
+                techniques,
             }) => {
 
-    const [techniques, setTechniques] = useState();
     const [techniqueValue, setTechniqueValue] = useState(0);
     useEffect(() => {
-        fetchTechniques();
     }, [])
 
-    const fetchTechniques = async () => {
-        const url = `${host}/api/techniques/`
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-            });
-            const jsonData = await response.json();
-            if (!response.ok) {
-                console.log('error');
-            }
-            console.log('fetched techniques');
-            setTechniques(jsonData);
-        } catch (error) {
-            console.log('Error fetching data:', error);
-        }
-    };
+    
 
     const handleRefresh = () => {
         searchDispatch({type: ACTIONS.REFRESH});

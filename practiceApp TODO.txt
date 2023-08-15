@@ -20,6 +20,14 @@ Category filtering progression
 3. filteredPieceIDS prop changes, use effect, setCount(0) - should masterySum be set here? 
 - when you update teh filter, there's something that's just adding strings to the masterySum.....
 
+
+9 many
+10
+11
+1 many
+14 x2
+15
+
 DATA DASHBOARD
  	- like a github-type calendar that shows days that you completed pieces
 		- 365 days in a year, this is the view, always 
@@ -35,6 +43,7 @@ DATA DASHBOARD
 		- What if you create a custom chart that displays all the techniques X by X and the boxes are filled by the mastery color? 
 		- otherwise, you could do this as part of the technique tags. (or display this data in both analytics and main page) 
 		- can you incorporate the difficulty level of each of the pieces into the technique mastery calculation? 
+		YOU NEED THE PARENT CONTAINER TO BE 100VW 100VH OTHERIWISE THE MOUSE POSITION IS OFFSET BY THE AMOUNT THE PARENT CONTAINER IS OFFSET FROM THE SCREEN. 
 	
 	
 SORTING 

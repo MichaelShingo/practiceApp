@@ -37,6 +37,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .chart-column {
@@ -47,4 +48,68 @@
     width: 700px;
     height: 350px;
     /* background-color: brown; */
+}
+
+#technique-chart {
+    max-width: 400px;
+}
+
+.technique-box {
+    background-color: var(--color-grey-2);
+    margin: 2px;
+    border-radius: 50%;
+    height: 75px;
+    width: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding: 20% 2px 20% 2px; */
+}
+
+.technique-box p {
+    color: white;
+    text-align: center;
+    font-size: .8rem;
+    margin: 3px;
+    /* margin: 20% 2px 20% 2px; */
+}
+
+.technique-box:hover {
+    cursor:auto;
+}
+
+.cal-container {
+    display: grid;
+    grid-template-columns: repeat(52, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    grid-auto-flow: column;
+    overflow-x: scroll;
+}
+
+#cal-select {
+    background-color: var(--color-white) !important;
+    color: var(--color-black) !important;
+    border: 3px solid var(--color-grey-2);
+    border-radius: 10px;
+    height: 40px;
+    margin-bottom: 5px;
+    padding: 3px 30px;
+    font-size: 1.2rem;
+    width: fit-content;
+    transition: all .5s linear;
+}
+
+
+.cal-box {
+    width: 15px;
+    height: 15px;
+    border-radius: 1px;
+    background-color: var(--color-grey-1);
+    margin: 2px;
+    transition: var(--fast-transition);
+}
+
+.cal-box:hover {
+    cursor: pointer;
+    border: 2px solid var(--color-accent);
 }
