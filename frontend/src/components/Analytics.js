@@ -94,6 +94,13 @@ const Analytics = ({
     };
     
     return ( 
+        <>
+        <div className="tooltip-outer-screen">
+                <Tooltip
+                    visible={showTooltip}
+                    message={message}
+                />
+            </div>
         <div 
             ref={containerRef}
             className="analytics-container"
@@ -105,15 +112,28 @@ const Analytics = ({
                 padding: !showAnalytics ? '0px' : '15px'
             }}
         >
-            <Tooltip
-                visible={showTooltip}
-                message={message}
-            />
-            <div className="chart-row">
-                <Calendar 
-                    userPieces={userPieces}
-                />
+            
+            <div className="chart-row chart-row-invisible">
+                <div className="chart-row chart-row-doughnut" id="doughnut-left">
+                    <DoughnutChart 
+                        labels={periods.map(period => period.name)}
+                        data={periodData}
+                        title={'Completion by Period'}
+                        colors={['#003f5c', '#58508d',
+                        '#bc5090', '#ff6361', '#ffa600']}
+                    />
+                </div>
+                <div className="chart-row chart-row-doughnut" id="doughnut-right">
+                    <DoughnutChart 
+                        labels={types}
+                        data={typesData}
+                        title={'Completion by Type'}
+                        colors={['#4b005c', '#aa005e',
+                        '#ef4647', '#ff9a19', '#fff100']}
+                    />
+                </div>
             </div>
+          
             <div className="chart-row">
                 { techniques && 
                 <TechniqueMastery 
@@ -124,31 +144,20 @@ const Analytics = ({
                 />}
             </div>
             <div className="chart-row">
-                <DoughnutChart 
-                    labels={periods.map(period => period.name)}
-                    data={periodData}
-                    title={'Completion by Period'}
-                    colors={['#003f5c', '#58508d',
-                     '#bc5090', '#ff6361', '#ffa600']}
-                />
-                <DoughnutChart 
-                    labels={types}
-                    data={typesData}
-                    title={'Completion by Type'}
-                    colors={['#4b005c', '#aa005e',
-                    '#ef4647', '#ff9a19', '#fff100']}
-                />
-                
-            </div>
-            <div className="chart-row">
                 <BarChart 
                     title='Completion by Difficulty Level'
                     labels={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
                     data={difficultyData}
                 />
             </div>
+            <div className="chart-row">
+                <Calendar 
+                    userPieces={userPieces}
+                />
+            </div>
             
         </div>
+        </>
      );
 }
  

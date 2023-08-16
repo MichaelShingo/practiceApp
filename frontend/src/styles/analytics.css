@@ -1,13 +1,15 @@
 .analytics-container {
     background: var(--color-white);
-    box-shadow: var(--box-shadow-1);
+    /* box-shadow: var(--box-shadow-1); */
     z-index: 0;
     transition: var(--default-transition);
     transition-delay: 0.5s;
     position: relative;
     height: fit-content;
     margin: 15px;
-    
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     border-radius: 10px;
 
 }
@@ -23,13 +25,33 @@
     display: flex;
     flex-direction: row;
     /* background-color: navy; */
+    border-radius: 10px;
     width: 100%;
-    height: 100%;
+    height: fit-content;
     align-items: center;
     justify-content: center;
-    /* background-color: aliceblue;
-    margin: 5px; */
+    box-shadow: var(--box-shadow-1);
+    margin: 10px 0px;
+    padding: 25px;
 }
+
+.chart-row-invisible {
+    box-shadow: none !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    /* background-color: aliceblue !important; */
+}
+
+#doughnut-left {
+    margin-right: 10px;
+    margin-left: 0px !important;
+}
+
+#doughnut-right {
+    margin-left: 10px;
+    margin-right: 0px !important;
+}
+
 
 .chart-container {
     height: fit-content;
@@ -51,11 +73,11 @@
 }
 
 #technique-chart {
-    max-width: 400px;
+    width: 100%;
 }
 
 .technique-box {
-    background-color: var(--color-grey-2);
+    background-color: var(--color-grey-5);
     margin: 2px;
     border-radius: 50%;
     height: 75px;
@@ -63,7 +85,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    /* border: 2px solid var(--color-accent-hover); */
+    transition: var(--fast-transition);
     /* padding: 20% 2px 20% 2px; */
+}
+
+.technique-box:hover {
+    border: 3px solid var(--color-accent-hover);
+    cursor: pointer;
 }
 
 .technique-box p {
@@ -74,16 +103,21 @@
     /* margin: 20% 2px 20% 2px; */
 }
 
-.technique-box:hover {
-    cursor:auto;
-}
+
 
 .cal-container {
     display: grid;
     grid-template-columns: repeat(52, 1fr);
     grid-template-rows: repeat(7, 1fr);
     grid-auto-flow: column;
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
+}
+
+.calendar-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
 
 #cal-select {
@@ -92,11 +126,21 @@
     border: 3px solid var(--color-grey-2);
     border-radius: 10px;
     height: 40px;
-    margin-bottom: 5px;
+    margin: 5px 0px;
     padding: 3px 30px;
     font-size: 1.2rem;
     width: fit-content;
     transition: all .5s linear;
+}
+
+#calendar-date {
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.calendar-paragraph {
+    text-align: center;
 }
 
 
@@ -112,4 +156,19 @@
 .cal-box:hover {
     cursor: pointer;
     border: 2px solid var(--color-accent);
+}
+
+#calendar-detail {
+    color: var(--color-black);
+}
+
+.tooltip-outer-screen {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: -75px;
+    /* background-color: rgba(43, 43, 43, 0.2); */
+    pointer-events: none;
+    visibility: visible;
+    display: block;
 }

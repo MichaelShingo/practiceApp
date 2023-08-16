@@ -4,6 +4,15 @@
 - boosted type of feature that times your practice sessions
 - can you add notes about your practice to each piece? 
 	
+DATA DASHBOARD
+	- can you incorporate the difficulty level of each of the pieces into the technique mastery calculation? 
+	- figure out the overall layout
+	- figure out exactly how each chart is supposed to look 
+	- calendar needs a tooltip 
+	
+	What if the tooltip element is in the top level app component, then you store state in useContext and you can set it from anywhere in the app? !!!!!!!
+		
+	
 AI 
 - Select a technique you want to work on from a list. 
 - App sends to AI a list of pieces with that technique that you've already worked on. 
@@ -12,39 +21,9 @@ AI
 ***************************
 Next time you make a component, think about mobile-first design 
 
-global filtering progression
-1. filtered pieces changes, useEffect runs - setting global completion 
-Category filtering progression
-1. Filter applies, filtered pieces changes 
-2. useeffect to set Filtered Piece IDS
-3. filteredPieceIDS prop changes, use effect, setCount(0) - should masterySum be set here? 
-- when you update teh filter, there's something that's just adding strings to the masterySum.....
 
 
-9 many
-10
-11
-1 many
-14 x2
-15
 
-DATA DASHBOARD
- 	- like a github-type calendar that shows days that you completed pieces
-		- 365 days in a year, this is the view, always 
-		- num of rows are always 7 
-		- num of colummns are 53 probably 
-		- can you store all the days when you either completed or updated a piece? What if you update a piece multiple times? Isn't that useful information to see? Then set up a new table in database that stores (PieceID, date, updated/created, userID, masteryLVL)
-		- You need to create a list of days. Then go through userUpdates object and add that object to the appropriate day in the list. that contains information about what the user did on that day.  Then map the list to the squares component. 
-		- When you click on the square, it should show which pieces you updated on that day and the mastery level. 
-	- breakdown of composers you've worked on 
-	- mastery level of each technique (calculated based on number of pieces you've completed that contain the technique and the mastery level of those pieces)
-		- Maintain two maps: (Technique : masterySum and Technique : pieceCount)
-		- Calculate teh average within teh masterySum map, then sort them by average mastery 
-		- What if you create a custom chart that displays all the techniques X by X and the boxes are filled by the mastery color? 
-		- otherwise, you could do this as part of the technique tags. (or display this data in both analytics and main page) 
-		- can you incorporate the difficulty level of each of the pieces into the technique mastery calculation? 
-		YOU NEED THE PARENT CONTAINER TO BE 100VW 100VH OTHERIWISE THE MOUSE POSITION IS OFFSET BY THE AMOUNT THE PARENT CONTAINER IS OFFSET FROM THE SCREEN. 
-	
 	
 SORTING 
 - sort descending and ascending? 
