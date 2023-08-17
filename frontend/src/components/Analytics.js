@@ -4,7 +4,6 @@ import { host } from '../services/urls';
 import DoughnutChart from './DoughnutChart';
 import BarChart from './BarChart';
 import TechniqueMastery from './TechniqueMastery';
-import Tooltip from './Tooltip.js'; 
 import Calendar from './Calendar';
 
 
@@ -19,18 +18,6 @@ const Analytics = ({
     const [periodData, setPeriodData] = useState([]);
     const [typesData, setTypesData] = useState([1, 2, 3, 4, 5]);
     const [difficultyData, setDifficultyData] = useState(null);
-
-    const [showTooltip, setShowTooltip] = useState(false);
-    const [message, setMessage] = useState('');
-
-    const handleOnMouseEnter = (message) => {
-        setShowTooltip(true);
-        setMessage(message);
-    }
-
-    const handleOnMouseLeave = () => {
-        setShowTooltip(false);
-    }
 
     useEffect(() => {
         fetchTypes();
@@ -95,12 +82,7 @@ const Analytics = ({
     
     return ( 
         <>
-        <div className="tooltip-outer-screen">
-                <Tooltip
-                    visible={showTooltip}
-                    message={message}
-                />
-            </div>
+      
         <div 
             ref={containerRef}
             className="analytics-container"
@@ -137,8 +119,6 @@ const Analytics = ({
             <div className="chart-row">
                 { techniques && 
                 <TechniqueMastery 
-                    handleOnMouseEnter={handleOnMouseEnter}
-                    handleOnMouseLeave={handleOnMouseLeave}
                     techniques={techniques}
                     userPieces={userPieces}
                 />}

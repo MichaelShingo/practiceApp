@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {ReactComponent as CloseIcon} from '../svg/x-solid.svg';
 import CircularProgress from './CircularProgress';
 import { mapColorRange } from '../services/helperFunctions';
 import Periods from './Periods';
-import Tooltip from './Tooltip';
+import { TooltipContext } from '../App';
+
 
 
 const PieceDetail = ({
@@ -15,8 +16,7 @@ const PieceDetail = ({
 }) => {
 
     const [mastery, setMastery] = useState(null);
-    const [message, setMessage] = useState('');
-    const [showTooltip, setShowTooltip] = useState(false);
+    const [setShowTooltip, setMessage] = useContext(TooltipContext);
     const [created, setCreated] = useState('null');
     const [updated, setUpdated] = useState('null');
 
@@ -93,10 +93,7 @@ const PieceDetail = ({
             onClick={handleClose}
             key={pieceDetailPiece && pieceDetailPiece.id}
         >
-            <Tooltip
-                visible={showTooltip}
-                message={message}
-            />
+          
             {pieceDetailPiece && (
                 <div className="detail-container" onClick={(e) => handleContainerClick(e)}>
                     <CloseIcon className="close-icon" onClick={handleClose}/>
@@ -202,7 +199,6 @@ const PieceDetail = ({
             </div>
             )}
         </div>
-    
      );
 }
  

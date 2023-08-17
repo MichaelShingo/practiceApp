@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import TechniqueBox from "./TechniqueBox";
-import Tooltip from './Tooltip.js'; 
-
 
 const TechniqueMastery = ({ techniques, userPieces, handleOnMouseEnter, handleOnMouseLeave }) => {
     const [averages, setAverages] = useState(new Map());
