@@ -171,4 +171,5 @@
     pointer-events: none;
     visibility: visible;
     display: block;
+    z-index: 5;
 }

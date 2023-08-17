@@ -33,7 +33,6 @@ const TechniqueMastery = ({ techniques, userPieces, handleOnMouseEnter, handleOn
     }
 
     
-
     return ( 
         <div className="chart-column" id="technique-chart">
             

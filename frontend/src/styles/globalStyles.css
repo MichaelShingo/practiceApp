@@ -172,7 +172,7 @@ button {
     --color-red: #c63131;
     --box-shadow-1: 0 3px 15px rgba(0,0,0,0.5);
     --box-shadow-2: 0 7px 17px rgba(0,0,0,0.5);
-    --hsl: hsl(250, .5, 100%);
+    --hsl: hsl(204, 93%, 43%);
 }
 
 html {

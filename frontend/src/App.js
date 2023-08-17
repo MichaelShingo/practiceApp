@@ -19,15 +19,23 @@ import './styles/search.css';
 import './styles/pieceDetail.css';
 import './styles/tooltip.css';
 import './styles/loadingIcon.css';
-import LoadingIcon from './components/LoadingIcon.js';
+import './styles/analytics.css';
+
+import Tooltip from './components/Tooltip.js';
 
 
 export const ThemeContext = React.createContext();
+
+export const TooltipContext = React.createContext();
 
 function App() {
   const [showNav, setShowNav] = useState(true);
   const [theme, setTheme] = useState('light');
   const [loading, setLoading] = useState(true);
+
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [message, setMessage] = useState('');
+
   window.addEventListener("DOMContentLoaded", (event) => {
     console.log("DOM fully loaded and parsed");
   });
@@ -39,6 +47,10 @@ function App() {
     
   }, []);
 
+  useEffect(() => {
+    console.log(showTooltip);
+    console.log(message)
+  }, [showTooltip])
 
   const toggleMode = () => {
     if (theme === 'light') {
@@ -62,11 +74,18 @@ function App() {
         <div className="app-wrapper" style={{ visibility: loading ? 'hidden' : 'visible' }}>
           <Router>    
           <ThemeProvider>
+            <TooltipContext.Provider value={[setShowTooltip, setMessage]}>
               <div className={`App ${theme}`}>
 
                 { showNav && <Navbar toggleMode={toggleMode}/> }
                 
                 <div className="content">
+                <div className="tooltip-outer-screen">
+                  <Tooltip
+                      visible={showTooltip}
+                      message={message}
+                  />
+                </div>
                 
                   <Routes>
                     <Route path="/practice" element={<Practice funcNav={setShowNav}/>}></Route>
@@ -76,6 +95,7 @@ function App() {
                   </Routes>
                 </div>
             </div>
+            </TooltipContext.Provider>
             </ThemeProvider>
           </Router>
       </div>

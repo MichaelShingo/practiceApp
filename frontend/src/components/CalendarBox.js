@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { TooltipContext } from '../App';
 
 const CalendarBox = ({ 
     day, 
@@ -11,8 +12,9 @@ const CalendarBox = ({
     const [matchedPieces, setMatchedPieces] = useState([]);
     const [isSelected, setIsSelected] = useState(false);
 
+    const [setShowTooltip, setMessage] = useContext(TooltipContext);
+
     useEffect(() => {
-        console.log('selectedDate changed');
         let selected = selectedDate ? (selectedDate.getMonth() === day.getMonth() 
             && selectedDate.getDate() === day.getDate()) : false;
         setIsSelected(selected);
@@ -29,8 +31,8 @@ const CalendarBox = ({
             const dayMatch = date.getDate() === day.getDate();
 
             if (yearMatch && monthMatch && dayMatch) {
-                    matches.push(userPiece);
-                    active = true;
+                matches.push(userPiece);
+                active = true;
             }
         }
         setMatchedPieces(matches);
@@ -41,11 +43,16 @@ const CalendarBox = ({
         <div 
             className="cal-box"
             onClick={() => handleBoxClick(matchedPieces, day)}
+            onMouseEnter={() => {
+                console.log('mouse enter')
+                setShowTooltip(true); 
+                setMessage(`${matchedPieces.length} pieces completed on ${day.toLocaleString(
+                    'en-US', {weekday: 'long', month: 'long', day: 'numeric'})}, ${year}`)}}
+            onMouseLeave={() => setShowTooltip(false)}
             style={{
                 backgroundColor: isActive ? 'var(--color-accent)' : 'var(--color-grey-1',
-                transform: isSelected ? 'rotate(45deg)' : 'rotate(0deg)'
-            }}
-            
+                transform: isSelected ? 'rotate(45deg)' : 'rotate(0deg)',
+            }} 
         >
         </div>
      );

@@ -15,6 +15,7 @@ const Tooltip = ({ visible, message }) => {
         } else {
             tooltipRef.current.style.opacity = 0;
         }
+        console.log("visibiity cahnge")
     }, [visible])
    
     useEffect(() => {
