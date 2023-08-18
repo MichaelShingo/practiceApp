@@ -4,11 +4,7 @@
 - can you add notes about your practice to each piece? 
 	
 DATA DASHBOARD
-	- can you incorporate the difficulty level of each of the pieces into the technique mastery calculation? 
-	- calendar needs a tooltip 
-	
-		- What if the tooltip element is in the top level app component, then you store state in useContext and you can set it from anywhere in the app? !!!!!!!
-	- check that each chart is updating when you update pieces (calendar does not when you have a day selected already and add/remove piece from that day. 
+	- can you incorporate the difficulty level of each of the pieces into the technique mastery calculation? 		
 		
 	
 AI 

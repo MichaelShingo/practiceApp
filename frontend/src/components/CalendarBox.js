@@ -39,12 +39,17 @@ const CalendarBox = ({
         setIsActive(active);
     }, [year, userPieces])
 
+    useEffect(() => {
+        if (isSelected) {
+            handleBoxClick(matchedPieces, day)
+        }
+    }, [matchedPieces])
+
     return ( 
         <div 
             className="cal-box"
             onClick={() => handleBoxClick(matchedPieces, day)}
             onMouseEnter={() => {
-                console.log('mouse enter')
                 setShowTooltip(true); 
                 setMessage(`${matchedPieces.length} pieces completed on ${day.toLocaleString(
                     'en-US', {weekday: 'long', month: 'long', day: 'numeric'})}, ${year}`)}}

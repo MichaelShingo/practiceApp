@@ -82,7 +82,6 @@ const Analytics = ({
     
     return ( 
         <>
-      
         <div 
             ref={containerRef}
             className="analytics-container"

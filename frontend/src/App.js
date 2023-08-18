@@ -47,11 +47,6 @@ function App() {
     
   }, []);
 
-  useEffect(() => {
-    console.log(showTooltip);
-    console.log(message)
-  }, [showTooltip])
-
   const toggleMode = () => {
     if (theme === 'light') {
       setTheme('dark');

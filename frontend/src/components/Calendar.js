@@ -9,6 +9,8 @@ const Calendar = ({ userPieces }) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [datePieceList, setDatePieceList] = useState([]);
 
+    const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const weekdayLabels = ['Sun', 'Wed', 'Sat'];
     useEffect(() => {
         populateDays();
     }, []);
@@ -34,16 +36,25 @@ const Calendar = ({ userPieces }) => {
     
     const handleBoxClick = (matchedPieces, day) => {        
         setSelectedDate(day);
-        setDatePieceList(matchedPieces);
+        if (matchedPieces.length > 0 ){
+            setDatePieceList(matchedPieces.sort((a, b) => a.piece.category.name
+            .localeCompare(b.piece.category.name)));
+        }
     }
 
-
     return ( 
-        <div className="chart-column">
+        <div className="chart-column" id="calendar-column">
             <h1>Calendar</h1>
-                
-            
+            <div id="month-row">
+                {monthLabels.map((month) => (
+                    <p>{month}</p>
+                ))}
+            </div>
+            <div id="weekday-col">
+                {weekdayLabels.map((weekday) => <p>{weekday}</p>)}
+            </div>
             <div className="cal-container">
+                
                 {days.map(day => (
                     <CalendarBox
                         day={day}
@@ -60,7 +71,7 @@ const Calendar = ({ userPieces }) => {
                         setYear(e.target.value);
                         setSelectedDate(null);
                         setDatePieceList([]);
-                    } 
+                        } 
                     }
                     ref={selectRef} 
                     id="cal-select"
@@ -68,7 +79,7 @@ const Calendar = ({ userPieces }) => {
                     {yearList.map(year => (
                         <option value={year}>{year}</option>
                     ))}
-                </select>
+            </select>
             <div id="calendar-detail">
                 {selectedDate ? 
                     <div>
@@ -76,26 +87,20 @@ const Calendar = ({ userPieces }) => {
                             {`${selectedDate.toLocaleString(
                                 'en-US', {weekday: 'long', month: 'long', day: 'numeric'})}, ${year}`}
                         </p>
-                        <div id="technique-container">
-                        {(selectedDate && datePieceList.length !== 0) ? datePieceList.map(datePiece => (
-                            <div className="technique-tag">
-                                <p>{`${datePiece.piece.category.name} - ${datePiece.piece.title}`}</p>
-
-                            </div>
-                        )) :
-                        <p className="calendar-paragraph">No pieces completed on this day.</p>
-                        }
+                        <div id="calendar-technique-container">
+                            {(selectedDate && datePieceList.length !== 0) ? datePieceList.map(datePiece => (
+                                <div className="technique-tag">
+                                    <p>{`${datePiece.piece.category.name} - ${datePiece.piece.title}`}</p>
+                                </div>
+                            )) :
+                            <p className="calendar-paragraph">No pieces completed on this day.</p>
+                            }
                         </div>
                     </div>
                     :
                     <p className="calendar-paragraph">Please select a date on the calendar.</p>
-                }
-
-
-
-                
+                }   
             </div>
-
         </div>
      );
 }

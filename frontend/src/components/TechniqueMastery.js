@@ -4,7 +4,6 @@ import TechniqueBox from "./TechniqueBox";
 const TechniqueMastery = ({ techniques, userPieces, handleOnMouseEnter, handleOnMouseLeave }) => {
     const [averages, setAverages] = useState(new Map());
     
-
     useEffect(() => {
         calcTechniqueMastery();
     }, [userPieces])
@@ -30,10 +29,8 @@ const TechniqueMastery = ({ techniques, userPieces, handleOnMouseEnter, handleOn
         setAverages(averageMap);
     }
 
-    
     return ( 
         <div className="chart-column" id="technique-chart">
-            
             <h1>Technique by Mastery Level</h1>
             <div className="chart-container">
                 {techniques.map(technique => (
