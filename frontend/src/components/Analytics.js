@@ -5,6 +5,7 @@ import DoughnutChart from './DoughnutChart';
 import BarChart from './BarChart';
 import TechniqueMastery from './TechniqueMastery';
 import Calendar from './Calendar';
+import '../styles/analyticsMediaQueries.css';
 
 
 const Analytics = ({ 

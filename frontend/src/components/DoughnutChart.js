@@ -25,6 +25,7 @@ const DoughnutChart = ( {labels, colors, data, title} ) => {
                     }]
                 }}
                 options={{
+                    maintainAspectRatio: true,
                     plugins: {
                         legend: {
                             display: showLegend,

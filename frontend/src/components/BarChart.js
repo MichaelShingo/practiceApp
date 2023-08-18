@@ -15,7 +15,7 @@ ChartJS.register(
 )
 
 const BarChart = ( {title, labels, data} ) => {
-    const dataddd = {
+    const chartData = {
         labels: labels,
         datasets: [
             {
@@ -27,6 +27,8 @@ const BarChart = ( {title, labels, data} ) => {
     }
 
     const options = {
+        maintainAspectRatio: true,
+
     };
     
     return ( 
@@ -34,7 +36,7 @@ const BarChart = ( {title, labels, data} ) => {
             <h1>{title}</h1>
             <div className="chart-container" id="bar-chart">
                 <Bar 
-                    data={dataddd}
+                    data={chartData}
                     options={options}
                 />
             </div>

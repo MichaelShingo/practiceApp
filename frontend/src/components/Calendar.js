@@ -36,25 +36,23 @@ const Calendar = ({ userPieces }) => {
     
     const handleBoxClick = (matchedPieces, day) => {        
         setSelectedDate(day);
-        if (matchedPieces.length > 0 ){
-            setDatePieceList(matchedPieces.sort((a, b) => a.piece.category.name
+        setDatePieceList(matchedPieces.sort((a, b) => a.piece.category.name
             .localeCompare(b.piece.category.name)));
-        }
     }
 
     return ( 
         <div className="chart-column" id="calendar-column">
             <h1>Calendar</h1>
-            <div id="month-row">
-                {monthLabels.map((month) => (
-                    <p>{month}</p>
-                ))}
-            </div>
-            <div id="weekday-col">
-                {weekdayLabels.map((weekday) => <p>{weekday}</p>)}
-            </div>
+            
             <div className="cal-container">
-                
+                <div id="month-row">
+                    {monthLabels.map((month) => (
+                        <p>{month}</p>
+                    ))}
+                </div>
+                <div id="weekday-col">
+                    {weekdayLabels.map((weekday) => <p>{weekday}</p>)}
+                </div>
                 {days.map(day => (
                     <CalendarBox
                         day={day}
@@ -65,21 +63,24 @@ const Calendar = ({ userPieces }) => {
                     />
                 ))}
             </div>
-            <select 
-                    value={year} 
-                    onChange={(e) => {
-                        setYear(e.target.value);
-                        setSelectedDate(null);
-                        setDatePieceList([]);
-                        } 
-                    }
-                    ref={selectRef} 
-                    id="cal-select"
-                >
-                    {yearList.map(year => (
-                        <option value={year}>{year}</option>
-                    ))}
-            </select>
+            <div className="select-container">
+                <select 
+                        value={year} 
+                        onChange={(e) => {
+                            setYear(e.target.value);
+                            setSelectedDate(null);
+                            setDatePieceList([]);
+                            } 
+                        }
+                        ref={selectRef} 
+                        id="cal-select"
+                    >
+                        {yearList.map(year => (
+                            <option value={year}>{year}</option>
+                        ))}
+                </select>
+            </div>
+            
             <div id="calendar-detail">
                 {selectedDate ? 
                     <div>

@@ -33,6 +33,8 @@
     box-shadow: var(--box-shadow-1);
     margin: 10px 0px;
     padding: 25px 50px;
+    /* background-color: aliceblue !important; */
+
 }
 
 .chart-column {
@@ -42,19 +44,48 @@
     flex-direction: column;
     justify-content: center;
     width: 100%;
+    height: 100%;
+    /* background-color:rgb(255, 201, 120); */
 }
 
 #calendar-column {
-    margin: auto;
-    width: 1007px;
+    /* padding: 20%; */
+    width: 100%;
     display: inline-block;
+}
+
+#calendar-column h1 {
+    margin-bottom: 20px;
 }
 
 .chart-row-invisible {
     box-shadow: none !important;
     padding: 0px !important;
     margin: 0px !important;
-    /* background-color: aliceblue !important; */
+}
+
+.chart-container {
+    /* height: 100%; */
+    width: 90% !important;
+    margin: 0px auto;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* background-color: beige; */
+    height: 90%;
+}
+
+.chart-row-doughnut {
+    height: 30vw;
+    min-height: 320px;
+    /* background-color: bisque; */
+}
+
+.chart-container canvas {
+    /* background-color: red; */
+  
 }
 
 #doughnut-left {
@@ -68,14 +99,7 @@
 }
 
 
-.chart-container {
-    height: fit-content;
-    width: 100%; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-}
+
 
 
 
@@ -127,20 +151,26 @@
     overflow-x: auto;
     overflow-y: hidden;
     margin: 0px auto;
+    padding-top: 20px;
+    padding-left: 35px;
 }
 
 .calendar-header-row {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 10px;
 }
 
 #month-row {
     display: flex;
+    position: absolute;
+    top: -5px;
 }
 
 #month-row p {
     margin-right: 58px;
+    left: 35px;
     color: var(--color-black);
 }
 
@@ -153,18 +183,22 @@
 
 #weekday-col p {
     margin-bottom: 30px;
-    left: -35px;
-    top: -4px;
+    left: 2px;
+    top: 15px;
     text-align: right;
 }
 
+#calendar-column .select-container {
+    margin: 1px auto -35px auto;
+    max-width: 1000px;
+}
 #calendar-technique-container {
     background-color: var(--color-white);
     border: 3px solid var(--color-grey-2);
-    max-width: 100%;
+    max-width: 1000px;
     min-height: 100px;
     border-radius: 10px;
-    margin: 15px 0px;
+    margin: 15px auto;
     transition: all .5s linear;
     display: flex;
     flex-wrap: wrap;

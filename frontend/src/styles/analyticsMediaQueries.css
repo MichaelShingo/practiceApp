@@ -1,0 +1,20 @@
+@media (max-width: 870px) {
+    .chart-row-invisible {
+        flex-direction: column;
+    }
+    .chart-row-doughnut {
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 450px) {
+    .chart-row {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 640px) {
+    #calendar-column .select-container {
+        margin-bottom: 0px !important;
+    }
+}
