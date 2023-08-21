@@ -4,8 +4,10 @@ import { Chart as ChartJS,
     LinearScale,
     Tooltip,
     Legend } from 'chart.js';
+import { useContext } from 'react';
 
 import { Bar } from 'react-chartjs-2';
+import { ThemeContext } from '../App';
 ChartJS.register(
     BarElement, 
     CategoryScale, 
@@ -15,6 +17,7 @@ ChartJS.register(
 )
 
 const BarChart = ( {title, labels, data} ) => {
+    const [theme] = useContext(ThemeContext);
     const chartData = {
         labels: labels,
         datasets: [
@@ -26,8 +29,29 @@ const BarChart = ( {title, labels, data} ) => {
         ]
     }
 
+    const labelColor = theme === 'light' ? 'black' : 'white';
+
     const options = {
         maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: labelColor
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: labelColor
+                }
+            },
+            y: {
+                ticks: {
+                    color: labelColor
+                }
+            }
+        }
 
     };
     

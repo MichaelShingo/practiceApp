@@ -2,8 +2,8 @@
     background: var(--color-white);
     /* box-shadow: var(--box-shadow-1); */
     z-index: 0;
+    transition-property: background-color;
     transition: var(--default-transition);
-    transition-delay: 0.5s;
     position: relative;
     height: fit-content;
     margin: 15px;
@@ -83,11 +83,6 @@
     /* background-color: bisque; */
 }
 
-.chart-container canvas {
-    /* background-color: red; */
-  
-}
-
 #doughnut-left {
     margin-right: 10px;
     margin-left: 0px !important;
@@ -97,10 +92,6 @@
     margin-left: 10px;
     margin-right: 0px !important;
 }
-
-
-
-
 
 
 #bar-chart {
@@ -153,6 +144,7 @@
     margin: 0px auto;
     padding-top: 20px;
     padding-left: 35px;
+    padding-right: 5px;
 }
 
 .calendar-header-row {
@@ -191,6 +183,7 @@
 #calendar-column .select-container {
     margin: 1px auto -35px auto;
     max-width: 1000px;
+    z-index: 2;
 }
 #calendar-technique-container {
     background-color: var(--color-white);

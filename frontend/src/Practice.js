@@ -550,7 +550,7 @@ const Home = ({ funcNav }) => {
             <div className="row">
                 <div className="col-1"></div>
                 <div className="col-10">
-                    <h2>Hello {userName}!</h2>
+                    <h2 id="user-greeting">Hello {userName}!</h2>
                     <Search 
                         searchDispatch={searchDispatch}
                         searchState={searchState}

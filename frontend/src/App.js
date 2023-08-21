@@ -7,7 +7,7 @@ import Register from './Register';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import ThemeProvider from './components/ThemeContext.js';
+// import ThemeProvider from './components/ThemeContext.js';
 
 import './styles/navbar.css';
 import './styles/auth.css';
@@ -20,6 +20,7 @@ import './styles/pieceDetail.css';
 import './styles/tooltip.css';
 import './styles/loadingIcon.css';
 import './styles/analytics.css';
+import './styles/practiceMediaQueries.css';
 
 import Tooltip from './components/Tooltip.js';
 
@@ -68,7 +69,7 @@ function App() {
         </div>
         <div className="app-wrapper" style={{ visibility: loading ? 'hidden' : 'visible' }}>
           <Router>    
-          <ThemeProvider>
+            <ThemeContext.Provider value={[theme]}>
             <TooltipContext.Provider value={[setShowTooltip, setMessage]}>
               <div className={`App ${theme}`}>
 
@@ -91,7 +92,7 @@ function App() {
                 </div>
             </div>
             </TooltipContext.Provider>
-            </ThemeProvider>
+            </ThemeContext.Provider>
           </Router>
       </div>
     </>

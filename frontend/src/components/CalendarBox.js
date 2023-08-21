@@ -57,6 +57,7 @@ const CalendarBox = ({
             style={{
                 backgroundColor: isActive ? 'var(--color-accent)' : 'var(--color-grey-1',
                 transform: isSelected ? 'rotate(45deg)' : 'rotate(0deg)',
+                border: isSelected ? '2px solid var(--color-accent)' : ''
             }} 
         >
         </div>

@@ -1,0 +1,60 @@
+@media (max-width: 800px) {
+    .col-10 {
+        padding: 0px !important;
+        width: 100% !important;
+    }
+    .col-1 {
+        width: 1% !important;
+    }
+    #practice-content h2 {
+        font-size: 1.2rem;
+    }    
+}
+
+@media (max-width: 840px) {
+    /* piece detail break point */
+    .detail-container {
+        width: 70% !important;
+        min-width: fit-content;
+    }
+    .detail-container .row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .detail-container .col-4 {
+        width: fit-content;
+    }
+    .detail-container .col-6 {
+        width: 100%;
+    }
+    
+    
+}
+
+@media (max-width: 550px) {
+    #practice-content h2 {
+        font-size: 1.0rem;
+    }
+    .fraction { 
+        margin-left: 5px;
+        margin-right: -25px;
+    }
+    .pieces-table {
+        font-size: 0.8rem;
+    }
+   
+    .technique-tag p {
+        font-size: 0.8rem !important;
+    }
+    .search-flex h3 {
+        font-size: 1rem !important;
+    }
+
+    .search-flex select, .search-flex input {
+        font-size: 0.9rem !important;
+    }
+
+      
+}

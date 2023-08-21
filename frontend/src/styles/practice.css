@@ -3,7 +3,7 @@
 }
 
 #practice-content {
-    padding-top: 100px;
+    padding-top: 65px;
     background-color: var(--color-white);
     color: var(--color-white);
     margin: 0;
@@ -15,7 +15,12 @@
 
 #practice-content h2 {
     color: var(--color-black);
+}
 
+#user-greeting {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 9px;
 }
 
 .table-container {
@@ -111,7 +116,8 @@
 }
 
 .global-fraction {
-    margin: 0px auto;
+    margin: 0px auto !important;
+    font-size: 1.6rem !important;
 }
 
 
@@ -141,13 +147,15 @@
     overflow: hidden;
     border: 5px;
     color: var(--color-black);
-    /* transition: var(--default-transition); */
+    overflow-x: scroll;
 }
 
-/* .piece-preview {
-    z-index: 10;
-    overflow: visible;
-} */
+.pieces-table tr td:first-child {
+    width: 0.1% !important;
+    white-space: nowrap !important;    
+    /* background-color: red; */
+}
+
 
 .pieces-table:hover {
     cursor:default;
@@ -173,6 +181,7 @@ table, th, td {
     max-height: calc(89% - .8rem);
     margin: .8rem auto;
     border-radius: .6rem;
+    overflow-x: auto;
 }
 
 .table-body::-webkit-scrollbar {
@@ -191,7 +200,7 @@ table, th, td {
 }
 
 thead th {
-    position: sticky;
+    /* position: sticky; */
     top: 0;
     left: 0;
     

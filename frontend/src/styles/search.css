@@ -142,10 +142,10 @@
 }
 
 .selected {
-    background-color: var(--color-success);
+    background-color: var(--color-accent);
 }
 
 .selected p {
-    color: var(--color-white);
+    color: white !important;
 }
 
