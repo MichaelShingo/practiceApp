@@ -9,10 +9,11 @@ DATA DASHBOARD
 Responsiveness / Design
 - search difficulty number can't be accessed lol, should be dropdown
 - the highlight color on dropdown, and highlighting text
-- nav bar responsiveness 
+- ************nav bar responsiveness 
 - double stops circle.....incease padding a bit to match inner border 
 - is register and login responsive? 
-- dark mode should be retained regardless of page, loading icon is black against grey 
+- dark mode should be retained regardless of page, 
+- loading icon is black against grey 
 - the tooltip for analytics shows up in practice..... below the table MAYBE???
 - mastery selection should just be a select/options element, it's weird on mobile 
 - first donut container is misaligned on mobile 

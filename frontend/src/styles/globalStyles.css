@@ -145,6 +145,8 @@ button {
     --color-grey-6: #161616;
     --color-red: #c63131;
     --box-shadow-1: 0 3px 15px rgba(0,0,0,0.3);
+    --box-shadow-bottom: 0 5px 7px rgba(0,0,0,0.3);
+
 }
 .dark {
     --color-transparent: rgba(0, 0, 0, 0);
