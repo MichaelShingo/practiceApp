@@ -29,24 +29,8 @@ class Technique(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-
-    @property
-    def avg_difficulty(self):
-        queryset = Piece.objects.all()
-        sum = 0
-        count = 0
-        for piece in queryset:
-            if piece.category.id == self.id:
-                sum += piece.difficulty
-                count += 1
-        if count == 0:
-            return 0
-        return sum / count 
-    
-    @property
-    def count(self):
-        queryset = Piece.objects.filter(category__id=self.id)
-        return len(queryset)
+    avg_difficulty = models.IntegerField()
+    count = models.IntegerField()
     
 class Piece(models.Model):
     title = models.CharField(max_length=150)

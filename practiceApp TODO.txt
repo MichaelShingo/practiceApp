@@ -13,7 +13,7 @@ DATA DASHBOARD
 Responsiveness / Design
 - Create Postgres database online, hook it up to local django 
 	- global completion does not update on first load 
-	- add all pieces and make sure it still works
+	- adding a piece is slow, probably because it awaits api call 
 - deploy django to railway and test with local react 
 - deploy react to gcloud 
 - add all etude data

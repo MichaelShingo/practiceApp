@@ -51,8 +51,6 @@ class TechniqueSerializer(serializers.ModelSerializer):
         ]
 
 class CategorySerializer(serializers.ModelSerializer):
-    avg_difficulty = serializers.SerializerMethodField()
-    count = serializers.SerializerMethodField()
     class Meta:
         model = Category
         fields = [
@@ -61,11 +59,6 @@ class CategorySerializer(serializers.ModelSerializer):
             'avg_difficulty',
             'count',
         ]
-    def get_avg_difficulty(self, instance):
-        return instance.avg_difficulty
-
-    def get_count(self, instance):
-        return instance.count
 
 class PieceSerializer(serializers.ModelSerializer):
     composer = ComposerSerializer()

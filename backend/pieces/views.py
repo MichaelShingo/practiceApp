@@ -49,7 +49,11 @@ class PiecesDetailView(APIView):
     def get(self, request):
         serializer_class = PieceSerializer
         
-        queryset = Piece.objects.all()
+        queryset = Piece.objects.select_related('composer', 
+            'period', 
+            'type_of_piece', 
+            'category').prefetch_related(
+                'techniques', 'prereqs').all()
         serializer = PieceSerializer(queryset, many=True)
         status_code = status.HTTP_200_OK
         return Response(serializer.data, status_code)
@@ -247,7 +251,7 @@ class InsertCategoriesAPIView(APIView):
             csv_reader = csv.reader(file)
             for row in csv_reader:
                 if not Category.objects.filter(name=row[0]).exists():
-                    entry = Category(name=row[0])
+                    entry = Category(name=row[0], avg_difficulty=row[1], count=row[2])
                     entry.save()
             
         file.close()
