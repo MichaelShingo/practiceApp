@@ -284,9 +284,10 @@ const Home = ({ funcNav }) => {
         break;
       case 'mastery':
         const masteryMap = new Map();
-        userPieces.forEach((userPiece) => {
-          masteryMap.set(userPiece.piece.id, userPiece.mastery_level);
-        });
+        userPieces &&
+          userPieces.forEach((userPiece) => {
+            masteryMap.set(userPiece.piece.id, userPiece.mastery_level);
+          });
 
         sorted = techniqueFiltered.sort((pieceA, pieceB) => {
           const masteryA = masteryMap.get(pieceA.id);
@@ -319,9 +320,10 @@ const Home = ({ funcNav }) => {
       case 'date-updated':
         // console.log(`userPieces = ${JSON.stringify(userPieces)}`);
         const updatedMap = new Map();
-        userPieces.forEach((userPiece) => {
-          updatedMap.set(userPiece.piece.id, userPiece.updated_at);
-        });
+        userPieces &&
+          userPieces.forEach((userPiece) => {
+            updatedMap.set(userPiece.piece.id, userPiece.updated_at);
+          });
         // console.log(`updatedMap = ${updatedMap}`);
 
         sorted = techniqueFiltered.sort((pieceA, pieceB) => {
@@ -340,9 +342,10 @@ const Home = ({ funcNav }) => {
         break;
       case 'date-created':
         const createdMap = new Map();
-        userPieces.forEach((userPiece) => {
-          createdMap.set(userPiece.piece.id, userPiece.created_at);
-        });
+        userPieces &&
+          userPieces.forEach((userPiece) => {
+            createdMap.set(userPiece.piece.id, userPiece.created_at);
+          });
 
         sorted = techniqueFiltered.sort((pieceA, pieceB) => {
           const createdA = createdMap.get(pieceA.id);
@@ -373,12 +376,15 @@ const Home = ({ funcNav }) => {
       setFilteredPieceIDs(idSet);
       let completion = 0;
       let sum = 0;
-      for (let userPiece of userPieces) {
-        if (idSet.has(userPiece.piece.id)) {
-          completion = completion + 1;
-          sum = sum + parseInt(userPiece.mastery_level);
+      if (userPieces) {
+        for (let userPiece of userPieces) {
+          if (idSet.has(userPiece.piece.id)) {
+            completion = completion + 1;
+            sum = sum + parseInt(userPiece.mastery_level);
+          }
         }
       }
+
       setGlobalMasterySum(sum);
       setGlobalCompletion(completion);
       console.log(
@@ -619,11 +625,8 @@ const Home = ({ funcNav }) => {
               </div>
             </div>
             <div className="table-container">
-              {categories &&
-              pieces &&
-              userPieces &&
-              filteredPieces &&
-              pieceIDSet ? (
+              {pieces && userPieces && filteredPieces && pieceIDSet ? (
+                sortedCategories &&
                 sortedCategories.map((category) => (
                   <Category
                     key={category.id}

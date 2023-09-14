@@ -1,3 +1,7 @@
+deployed database superuser - mcrawford5376@gmail.com
+Michael Crawford
+m0n0AWARE
+
 - Sends data to AI to provide next practice recommendations
 - Can it provide notifications (text or email) about practice reminders, practice inspiration.
 - boosted type of feature that times your practice sessions
@@ -8,13 +12,19 @@ DATA DASHBOARD
 
 Responsiveness / Design
 - Create Postgres database online, hook it up to local django 
+	- global completion does not update on first load 
+	- add all pieces and make sure it still works
 - deploy django to railway and test with local react 
 - deploy react to gcloud 
 - add all etude data
 - when you go to another page, then try loggin out from that page, it doesn't log out properly ??? is this still an issue 
 - favicon
+- what happens when a user has no pieces saved? 
 
-
+- when you make api requests with deployed database....
+	- these paths do not work 
+		- pieces/
+		- categories/
 
 
 

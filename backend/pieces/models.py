@@ -39,7 +39,8 @@ class Category(models.Model):
             if piece.category.id == self.id:
                 sum += piece.difficulty
                 count += 1
-        
+        if count == 0:
+            return 0
         return sum / count 
     
     @property
