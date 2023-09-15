@@ -13,7 +13,8 @@ DATA DASHBOARD
 Responsiveness / Design
 - Create Postgres database online, hook it up to local django 
 	- global completion does not update on first load 
-	- adding a piece is slow, probably because it awaits api call 
+	- adding a piece is slow, probably because it awaits api call
+		- when you remove a piece, mastery field is null instead of 0 
 - deploy django to railway and test with local react 
 - deploy react to gcloud 
 - add all etude data

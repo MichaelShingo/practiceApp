@@ -92,8 +92,25 @@ class UserPieceAPIView(APIView):
     def get(self, request):
         user = request.user
         print(f' Current User = {user.first_name}')
-        queryset = UserToPieces.objects.filter(user=user)
+        queryset = UserToPieces.objects.filter(user=user).select_related('user', 'piece')
+
+        queryset = Piece.objects.select_related('composer', 
+            'period', 
+            'type_of_piece', 
+            'category').prefetch_related(
+                'techniques', 'prereqs').all()
+        
+        queryset = UserToPieces.objects.select_related( 
+            'piece', 
+            'piece__composer',
+            'piece__period',
+            'piece__type_of_piece',
+            'piece__category').prefetch_related(
+            'piece__techniques',
+            'piece__prereqs')
+        
         serializer = UserToPiecesSerializer(queryset, many=True)
+
         status_code = status.HTTP_200_OK
         return Response(serializer.data, status_code)
 

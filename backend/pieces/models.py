@@ -64,8 +64,8 @@ class Piece(models.Model):
         return str(len(slice)) + slice
 
 class UserToPieces(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    piece = models.ForeignKey(Piece, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
+    piece = models.ForeignKey(Piece, on_delete=models.CASCADE, db_index=True)
     mastery_level = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

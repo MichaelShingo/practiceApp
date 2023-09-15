@@ -105,15 +105,17 @@ const PieceList = ({
         // add to database
         setGlobalCompletion((prev) => prev + 1);
         setMasteryNum(10);
-        const jsonData = await fetchAddPiece(piece.id, 10);
-        setUserPieceID(jsonData.id);
+
         updateCategoryMastery(10);
         updateGlobalMastery(10);
         updateCategoryCount(!checked, 10);
-        setUserPieces([...userPieces, jsonData]);
+
         let updatedPieceIDSet = new Set(pieceIDSet);
         updatedPieceIDSet.add(piece.id);
         setPieceIDSet(updatedPieceIDSet);
+        const jsonData = await fetchAddPiece(piece.id, 10);
+        setUserPieceID(jsonData.id);
+        setUserPieces([...userPieces, jsonData]);
       } else {
         //remove from database
         setGlobalCompletion((prev) => prev - 1);
