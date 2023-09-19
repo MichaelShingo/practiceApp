@@ -1,8 +1,9 @@
 import { ReactComponent as MagnifyingGlass } from '../svg/magnifying-glass-solid.svg';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import TechniqueTag from './TechniqueTag';
-import { ACTIONS } from '../Practice';
+import { ACTIONS, UserPieceLoadingContext } from '../Practice';
 import { defaultSearchState } from '../Practice';
+import LoadingIcon from './LoadingIcon';
 
 const Search = ({
   searchDispatch,
@@ -13,6 +14,9 @@ const Search = ({
   techniques,
 }) => {
   const [techniqueValue, setTechniqueValue] = useState(0);
+  const [updatingUserPiece, setUpdatingUserPiece] = useContext(
+    UserPieceLoadingContext
+  );
   useEffect(() => {}, []);
 
   const handleRefresh = () => {
@@ -46,6 +50,16 @@ const Search = ({
   return (
     <div id="search-container" className="table-container">
       <div id="search-column">
+        {/* <div
+          className="search-loading-container"
+          style={{
+            opacity: updatingUserPiece ? 1 : 0,
+            pointerEvents: updatingUserPiece ? 'auto' : 'none',
+          }}
+        >
+          <LoadingIcon />
+        </div> */}
+
         <div id="search-box-container">
           <div id="search-input-container">
             {/* <MagnifyingGlass className="magnifying-glass"/> */}

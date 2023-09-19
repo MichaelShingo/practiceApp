@@ -37,24 +37,24 @@ export const checkAuthenticated = () => {
 export const logout = async () => {
   const token = localStorage.getItem('authToken');
   console.log('logging out');
-  const url = `${host}/api/logout/`;
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      Authorization: `Token ${token}`,
-      'Content-Type': 'application/json',
-    },
-  };
-  const response = await fetch(url, requestOptions);
-  if (response.ok) {
-    console.log('successfully logged out, and clearing local storage');
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userID');
-    localStorage.removeItem('userFirstName');
-    localStorage.removeItem('userLastName');
-    localStorage.removeItem('userEmail');
-    console.log('user logged out');
-  }
+  // const url = `${host}/api/logout/`;
+  // const requestOptions = {
+  //   method: 'POST',
+  //   headers: {
+  //     Authorization: `Token ${token}`,
+  //     'Content-Type': 'application/json',
+  //   },
+  // };
+  // const response = await fetch(url, requestOptions);
+  // if (response.ok) {
+  console.log('successfully logged out, and clearing local storage');
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('userID');
+  localStorage.removeItem('userFirstName');
+  localStorage.removeItem('userLastName');
+  localStorage.removeItem('userEmail');
+  console.log('user logged out');
+  // }
 };
 
 export const login = async (email, password) => {
@@ -74,27 +74,26 @@ export const login = async (email, password) => {
   if (response.ok) {
     const jsonData = await response.json();
     console.log(`login returned data = ${jsonData}`);
-    console.log(`auth token = ${jsonData.token}`);
-
-    localStorage.setItem('authToken', jsonData.token);
+    console.log(`auth token = ${jsonData.access}`);
+    localStorage.setItem('authToken', jsonData.access);
     console.log(`auth token in storage = ${localStorage.getItem('authToken')}`);
     const requestUserOptions = {
       method: 'GET',
       headers: {
-        Authorization: `Token ${jsonData.token}`,
+        Authorization: `Token ${jsonData.access}`,
         'Content-Type': 'application/json',
       },
     };
 
-    const userDataResponse = await fetch(userUrl, requestUserOptions);
-    if (userDataResponse.ok) {
-      const userDataJson = await userDataResponse.json();
-      console.log(userDataJson);
-      localStorage.setItem('userID', userDataJson.id);
-      localStorage.setItem('userFirstName', userDataJson.first_name);
-      localStorage.setItem('userLastName', userDataJson.last_name);
-      localStorage.setItem('userEmail', userDataJson.email);
-    }
+    // const userDataResponse = await fetch(userUrl, requestUserOptions);
+    // if (userDataResponse.ok) {
+    //   const userDataJson = await userDataResponse.json();
+    //   console.log(userDataJson);
+    //   localStorage.setItem('userID', userDataJson.id);
+    //   localStorage.setItem('userFirstName', userDataJson.first_name);
+    //   localStorage.setItem('userLastName', userDataJson.last_name);
+    //   localStorage.setItem('userEmail', userDataJson.email);
+    // }
 
     return response.status;
   } else {

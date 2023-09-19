@@ -120,6 +120,3 @@ function App() {
 }
 
 export default App;
-
-// importing CSS at the top applies that css to every component and it's children
-// otherwise you can use styled components or css modules

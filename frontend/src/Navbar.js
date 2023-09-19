@@ -64,15 +64,23 @@ const Navbar = ({ toggleMode }) => {
           >
             <ThemeToggle toggleMode={toggleMode} />
             {/* <button className="nav-active"></button> */}
-            <a className={url === '/practice' ? 'active' : ''} href="/practice">
-              Practice
-            </a>
-            <a className={url === '/social' ? 'active' : ''} href="/social">
+            {localStorage.getItem('authToken') ? (
+              <a
+                className={url === '/practice' ? 'active' : ''}
+                href="/practice"
+              >
+                Practice
+              </a>
+            ) : (
+              <></>
+            )}
+
+            {/* <a className={url === '/social' ? 'active' : ''} href="/social">
               Social
             </a>
             <a className={url === '/feedback' ? 'active' : ''} href="/feedback">
               Feedback
-            </a>
+            </a> */}
 
             {isLoggedIn ? (
               <a onClick={handleLogout}>Logout</a>
@@ -85,9 +93,29 @@ const Navbar = ({ toggleMode }) => {
         </div>
         <div className="hamburger" onClick={handleHamburgerClick}>
           <div className="hamburger-line-container">
-            <div className="hamburger-line"></div>
-            <div className="hamburger-line"></div>
-            <div className="hamburger-line"></div>
+            <div
+              className="hamburger-line"
+              style={{
+                transform: showMenu
+                  ? 'rotate(45deg) translateY(6px) translateX(10px)'
+                  : 'rotate(0deg)',
+              }}
+            ></div>
+            <div
+              className="hamburger-line"
+              style={{
+                opacity: showMenu ? 0 : 1,
+                transform: showMenu ? 'translateX(-250px)' : 'translateX(0px)',
+              }}
+            ></div>
+            <div
+              className="hamburger-line"
+              style={{
+                transform: showMenu
+                  ? 'rotate(-45deg) translateY(-6px) translateX(10px)'
+                  : 'rotate(0deg)',
+              }}
+            ></div>
           </div>
         </div>
       </div>

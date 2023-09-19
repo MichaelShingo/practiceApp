@@ -8,6 +8,7 @@ import { ReactComponent as Chart } from './svg/chart.svg';
 import { ReactComponent as AI } from './svg/openai.svg';
 import Analytics from './components/Analytics.js';
 import { host } from './services/urls';
+import React from 'react';
 
 export const ACTIONS = {
   UPDATE_SEARCH: 'update-search',
@@ -88,6 +89,7 @@ const searchReducer = (state, action) => {
       break;
   }
 };
+export const UserPieceLoadingContext = React.createContext();
 
 const Home = ({ funcNav }) => {
   funcNav(true);
@@ -108,7 +110,7 @@ const Home = ({ funcNav }) => {
   const [refreshActive, setRefreshActive] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [techniques, setTechniques] = useState();
-
+  const [updatingUserPiece, setUpdatingUserPiece] = useState(false);
   const [globalMasterySum, setGlobalMasterySum] = useState(0);
   const prevGlobalMasterySum = useRef(0);
 
@@ -116,10 +118,6 @@ const Home = ({ funcNav }) => {
     searchReducer,
     defaultSearchState
   );
-
-  useEffect(() => {
-    // console.log(searchState);
-  }, [searchState]);
 
   const sortedCategories = useMemo(() => {
     let res = [];
@@ -165,7 +163,7 @@ const Home = ({ funcNav }) => {
     return res;
   }, [categories, searchState]);
 
-  const filteredPieces = useMemo(() => {
+  let filteredPieces = useMemo(() => {
     // returns list of objects
     // FILTER BY COMPLETION
     let completionFiltered = [];
@@ -376,7 +374,9 @@ const Home = ({ funcNav }) => {
       setFilteredPieceIDs(idSet);
       let completion = 0;
       let sum = 0;
+
       if (userPieces) {
+        // this needs to wait until userPieces is populated....
         for (let userPiece of userPieces) {
           if (idSet.has(userPiece.piece.id)) {
             completion = completion + 1;
@@ -388,10 +388,24 @@ const Home = ({ funcNav }) => {
       setGlobalMasterySum(sum);
       setGlobalCompletion(completion);
       console.log(
-        `setting globalMasterySum to ${sum}, globalCompmletion to ${completion}`
+        `filteredPieces changed in PRACTICE useeffect ..... setting globalMasterySum to ${sum}, globalCompmletion to ${completion}`
       );
     }
   }, [filteredPieces]);
+
+  // useEffect(() => {
+  //   let sum = 0;
+  //   if (userPieces) {
+  //     // this needs to wait until userPieces is populated....
+  //     for (let userPiece of userPieces) {
+  //       sum = sum + parseInt(userPiece.mastery_level);
+  //     }
+  //   }
+  //   setGlobalMasterySum(sum);
+  //   console.log(
+  //     `userPieces was updated, PRACTICE useeffect ran ----- setting globalMasterySum to ${sum}`
+  //   );
+  // }, []);
 
   const categoryRefs = useRef([]);
   categoryRefs.current = [];
@@ -421,11 +435,17 @@ const Home = ({ funcNav }) => {
     // console.log(`count, masterySum, totalCount, categoryCount = ${count}, ${masterySum}, ${totalCount} ${categoryCount}`)
     if (globalMasterySum < 0) {
       setGlobalMasterySum(0);
+      console.log('GLOBAL MASTERY SUM LESS THAN 0');
     }
     if (globalCompletion === 0) {
       setGlobalAvgMastery(0);
     } else {
-      setGlobalAvgMastery(globalMasterySum / globalCompletion);
+      console.log(
+        `global mastery sum and completion = ${globalMasterySum}, ${globalCompletion}`
+      );
+      setGlobalAvgMastery(
+        parseInt(globalMasterySum) / parseInt(globalCompletion)
+      );
       console.log(
         `setting globalAvgMastery to ${globalMasterySum / globalCompletion}`
       );
@@ -445,6 +465,7 @@ const Home = ({ funcNav }) => {
   const updateGlobalMastery = (difference) => {
     prevGlobalMasterySum.current = globalMasterySum;
     setGlobalMasterySum((prevSum) => parseInt(prevSum) + parseInt(difference));
+    console.log('update global mastery runs'); // does not run on initial load
   };
 
   const fetchTechniques = async () => {
@@ -465,7 +486,7 @@ const Home = ({ funcNav }) => {
   };
 
   const fetchPieces = async () => {
-    const url = 'http://localhost:8000/api/pieces/';
+    const url = `${host}/api/pieces/`;
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -479,7 +500,7 @@ const Home = ({ funcNav }) => {
   };
 
   const fetchCategories = async () => {
-    const url = 'http://localhost:8000/api/categories/';
+    const url = `${host}/api/categories/`;
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -493,7 +514,7 @@ const Home = ({ funcNav }) => {
   };
 
   const fetchPeriods = async () => {
-    const url = 'http://localhost:8000/api/periods/';
+    const url = `${host}/api/periods/`;
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -506,20 +527,61 @@ const Home = ({ funcNav }) => {
   };
 
   const fetchUserPieces = async () => {
-    const url = 'http://localhost:8000/api/user-piece/';
+    setUpdatingUserPiece(true);
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === name + '=') {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+    console.log(`csrf token = ${csrftoken}`);
+    const url = `${host}/api/user-piece/`;
     try {
       const token = localStorage.getItem('authToken');
       const response = await fetch(url, {
         method: 'GET',
         headers: {
-          Authorization: `Token ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
+          Cookie: `csrftoken=${csrftoken}`,
         },
       });
       const jsonData = await response.json();
-      console.log(`fetch user pieces json = ${jsonData}`);
+      // console.log(`fetch user pieces json = ${jsonData}`);
 
       setUserPieces(jsonData);
+      setUpdatingUserPiece(false);
+
+      // update global mastery on initial load
+
+      let initialMasterySum = 0;
+      if (jsonData) {
+        // this needs to wait until userPieces is populated....
+        for (let data of jsonData) {
+          initialMasterySum = initialMasterySum + parseInt(data.mastery_level);
+        }
+      }
+      console.log(`initial mastery sum = ${initialMasterySum}`);
+      setGlobalMasterySum(initialMasterySum);
+
+      // end update global mastery on initial load
+
+      const completion = jsonData.length;
+      console.log(jsonData);
+      console.log(`length = ${typeof jsonData.length}`);
+
+      console.log(completion);
+      setGlobalCompletion(parseInt(completion));
 
       let idSet = new Set();
       for (let userPiece of jsonData) {
@@ -556,112 +618,127 @@ const Home = ({ funcNav }) => {
   };
 
   return (
-    <div id="practice-content">
-      <PieceDetail
-        pieceDetailPiece={pieceDetailPiece}
-        showDetail={showDetail}
-        setShowDetail={setShowDetail}
-        userPieces={userPieces}
-        periods={periods}
-      />
-      {userPieces && (
-        <Analytics
-          showAnalytics={showAnalytics}
-          periods={periods}
-          userPieces={userPieces}
-          techniques={techniques}
-        />
-      )}
-      <div className="sidebar">
-        <div onClick={() => handleSidebarClick('ai')} className="sidebar-icon">
-          <AI className="icon" id="ai-icon" />
-        </div>
-        <div
-          onClick={() => handleSidebarClick('chart')}
-          className="sidebar-icon"
-        >
-          <Chart className="icon" id="chart-icon" />
-        </div>
-      </div>
+    <UserPieceLoadingContext.Provider
+      value={[updatingUserPiece, setUpdatingUserPiece]}
+    >
       <div
-        id="main-content"
+        className="practice-loading-container"
         style={{
-          transform: showAnalytics ? 'translateX(100vw)' : 'translateX(0vw)',
-          position: showAnalytics ? 'fixed' : 'relative',
-          overflow: showAnalytics ? 'hidden' : 'visible',
+          opacity: updatingUserPiece ? 1 : 0,
+          pointerEvents: updatingUserPiece ? 'auto' : 'none',
         }}
       >
-        <div className="row">
-          <div className="col-1"></div>
-          <div className="col-10">
-            <h2 id="user-greeting">Hello {userName}!</h2>
-            <Search
-              searchDispatch={searchDispatch}
-              searchState={searchState}
-              pieceCount={pieceCount}
-              refreshActive={refreshActive}
-              setRefreshActive={setRefreshActive}
-              techniques={techniques}
-            />
-            <div className="row">
-              <h2 className="fraction global-fraction">
-                {globalCompletion}/{pieceCount}
-              </h2>
-              <div className="progress-container global-progress">
-                <div className="progress-bar-container">
-                  <div
-                    ref={globalProgressRef}
-                    className="progress-bar"
-                    style={{
-                      width:
-                        pieceCount !== 0
-                          ? ((globalCompletion / pieceCount) * 100).toString() +
-                            '%'
-                          : '0%',
-                    }}
-                  ></div>
-                  <div className="progress-bar-back"></div>
+        <LoadingIcon style={{ position: 'fixed !important' }} />
+      </div>
+      <div id="practice-content">
+        <PieceDetail
+          pieceDetailPiece={pieceDetailPiece}
+          showDetail={showDetail}
+          setShowDetail={setShowDetail}
+          userPieces={userPieces}
+          periods={periods}
+        />
+        {userPieces && periods && (
+          <Analytics
+            showAnalytics={showAnalytics}
+            periods={periods}
+            userPieces={userPieces}
+            techniques={techniques}
+          />
+        )}
+        <div className="sidebar">
+          {/* <div onClick={() => handleSidebarClick('ai')} className="sidebar-icon">
+          <AI className="icon" id="ai-icon" />
+        </div> */}
+          <div
+            onClick={() => handleSidebarClick('chart')}
+            className="sidebar-icon"
+          >
+            <Chart className="icon" id="chart-icon" />
+          </div>
+        </div>
+        <div
+          id="main-content"
+          style={{
+            transform: showAnalytics ? 'translateX(100vw)' : 'translateX(0vw)',
+            position: showAnalytics ? 'fixed' : 'relative',
+            overflow: showAnalytics ? 'hidden' : 'visible',
+          }}
+        >
+          <div className="row">
+            <div className="col-1"></div>
+            <div className="col-10">
+              {/* <h2 id="user-greeting">Hello {userName}!</h2> */}
+              <Search
+                searchDispatch={searchDispatch}
+                searchState={searchState}
+                pieceCount={pieceCount}
+                refreshActive={refreshActive}
+                setRefreshActive={setRefreshActive}
+                techniques={techniques}
+              />
+              <div className="row">
+                <h2 className="fraction global-fraction">
+                  {globalCompletion}/{pieceCount}
+                </h2>
+                <div className="progress-container global-progress">
+                  <div className="progress-bar-container">
+                    <div
+                      ref={globalProgressRef}
+                      className="progress-bar"
+                      style={{
+                        width:
+                          pieceCount !== 0
+                            ? (
+                                (globalCompletion / pieceCount) *
+                                100
+                              ).toString() + '%'
+                            : '0%',
+                      }}
+                    ></div>
+                    <div className="progress-bar-back"></div>
+                  </div>
                 </div>
               </div>
+              <div className="table-container">
+                {pieces && userPieces && filteredPieces && pieceIDSet ? (
+                  sortedCategories &&
+                  sortedCategories.map((category) => (
+                    <Category
+                      key={category.id}
+                      category={category}
+                      userPieces={userPieces}
+                      pieces={pieces}
+                      filteredPieces={filteredPieces}
+                      updateGlobalProgress={updateGlobalProgress}
+                      updateGlobalMastery={updateGlobalMastery}
+                      ref={addCategoryRefs}
+                      pieceIDSet={pieceIDSet}
+                      setPieceIDSet={setPieceIDSet}
+                      setUserPieces={setUserPieces}
+                      pieceCount={pieceCount}
+                      firstFetch={firstFetch}
+                      setFirstFetch={setFirstFetch}
+                      searchState={searchState}
+                      searchDispatch={searchDispatch}
+                      filteredPieceIDs={filteredPieceIDs}
+                      setPieceDetailPiece={setPieceDetailPiece}
+                      showDetail={showDetail}
+                      setShowDetail={setShowDetail}
+                      setGlobalCompletion={setGlobalCompletion}
+                      setRefreshActive={setRefreshActive}
+                    />
+                  ))
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
-            <div className="table-container">
-              {pieces && userPieces && filteredPieces && pieceIDSet ? (
-                sortedCategories &&
-                sortedCategories.map((category) => (
-                  <Category
-                    key={category.id}
-                    category={category}
-                    userPieces={userPieces}
-                    pieces={pieces}
-                    filteredPieces={filteredPieces}
-                    updateGlobalProgress={updateGlobalProgress}
-                    updateGlobalMastery={updateGlobalMastery}
-                    ref={addCategoryRefs}
-                    pieceIDSet={pieceIDSet}
-                    setPieceIDSet={setPieceIDSet}
-                    setUserPieces={setUserPieces}
-                    pieceCount={pieceCount}
-                    firstFetch={firstFetch}
-                    setFirstFetch={setFirstFetch}
-                    searchState={searchState}
-                    searchDispatch={searchDispatch}
-                    filteredPieceIDs={filteredPieceIDs}
-                    setPieceDetailPiece={setPieceDetailPiece}
-                    showDetail={showDetail}
-                    setShowDetail={setShowDetail}
-                    setGlobalCompletion={setGlobalCompletion}
-                    setRefreshActive={setRefreshActive}
-                  />
-                ))
-              ) : (
-                <LoadingIcon />
-              )}
-            </div>
+            <div className="col-1"></div>
           </div>
-          <div className="col-1"></div>
         </div>
       </div>
-    </div>
+    </UserPieceLoadingContext.Provider>
   );
 };
 

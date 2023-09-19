@@ -1,7 +1,7 @@
 import { ReactComponent as CheckMark } from '../svg/circle-check-solid.svg';
 import { ReactComponent as PlusMark } from '../svg/circle-plus-solid.svg';
 import { ReactComponent as OpenCircle } from '../svg/circle-regular.svg';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import {
   fetchMasteryUpdate,
   fetchRemovePiece,
@@ -10,7 +10,7 @@ import {
 import { useIsFirstRender } from '../services/firstRenderHook';
 import { checkAuthenticated } from '../services/authService';
 import Popup from './Popup.js';
-import { ACTIONS } from '../Practice';
+import { ACTIONS, UserPieceLoadingContext } from '../Practice';
 
 const PieceList = ({
   piece,
@@ -62,6 +62,9 @@ const PieceList = ({
   const [popupClass, setPopupClass] = useState('popup hide-popup');
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [runCount, setRunCount] = useState(0);
+  const [updatingUserPiece, setUpdatingUserPiece] = useContext(
+    UserPieceLoadingContext
+  );
 
   useEffect(() => {
     // MOUNT AND UNMOUNT
@@ -91,6 +94,7 @@ const PieceList = ({
     // when you filter....can you recalculate the masterySum?
     if (checked) {
       // console.log(`UPDATING CATEGORY MASTERY`)
+      console.log('filtered pieces changed so set global mastery again!!!!');
       updateCategoryMastery(masteryNum);
       updateGlobalMastery(masteryNum);
       updateCategoryCount(true);
@@ -103,19 +107,22 @@ const PieceList = ({
     if (checkAuthenticated()) {
       if (!checked) {
         // add to database
-        setGlobalCompletion((prev) => prev + 1);
+        setGlobalCompletion((prev) => prev + 1); // GLOBAL
         setMasteryNum(10);
 
         updateCategoryMastery(10);
-        updateGlobalMastery(10);
+        updateGlobalMastery(10); // GLOBAL
         updateCategoryCount(!checked, 10);
 
         let updatedPieceIDSet = new Set(pieceIDSet);
         updatedPieceIDSet.add(piece.id);
         setPieceIDSet(updatedPieceIDSet);
+        setUpdatingUserPiece(true);
         const jsonData = await fetchAddPiece(piece.id, 10);
+        console.log('fetch add piece returned');
         setUserPieceID(jsonData.id);
         setUserPieces([...userPieces, jsonData]);
+        setUpdatingUserPiece(false);
       } else {
         //remove from database
         setGlobalCompletion((prev) => prev - 1);
@@ -123,7 +130,7 @@ const PieceList = ({
         updateCategoryMastery(-1 * masteryNum);
         updateGlobalMastery(-1 * masteryNum);
         setMasteryNum(null);
-        masteryLevel.current.value = '';
+        masteryLevel.current.value = 0;
         fetchRemovePiece(piece.id);
         setUserPieces(
           userPieces.filter((element) => element.piece.id !== piece.id)
@@ -230,6 +237,12 @@ const PieceList = ({
         />
         <OpenCircle
           className={checked ? 'open-icon hide-checkmark' : 'open-icon'}
+          style={{
+            fill: updatingUserPiece
+              ? 'var(--color-grey-0)'
+              : 'var(--color-grey-2)',
+            pointerEvents: updatingUserPiece ? 'none' : 'auto',
+          }}
           onClick={(e) => toggleCheckMark(e)}
           ref={openCircle}
         />

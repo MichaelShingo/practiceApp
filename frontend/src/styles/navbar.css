@@ -1,4 +1,4 @@
-@import "globalStyles.css";
+@import 'globalStyles.css';
 
 .navbar .links a {
   justify-content: center;
@@ -31,10 +31,8 @@
   margin-bottom: 6px;
   border-radius: 5px;
   background-color: var(--color-grey-3);
-
+  transition: var(--default-transition);
 }
-
-
 
 .navbar .links a.active {
   background-color: var(--color-accent);
@@ -59,10 +57,10 @@
   text-align: right;
   margin-top: 10px;
   display: flex;
+  justify-content: flex-end;
   padding: 0px;
   /* padding: 500px auto !important; */
 }
-
 
 .navbar {
   box-shadow: var(--box-shadow-1);
@@ -73,7 +71,6 @@
   z-index: 2;
 }
 
-
 .nav-content {
   margin: 0 !important;
   padding: 0px !important;
@@ -82,10 +79,7 @@
 .navbar h1 {
   text-align: left;
   color: var(--color-black);
-
 }
-
-
 
 .piece-preview {
   padding: 10px 16px;
@@ -101,12 +95,10 @@
   margin-bottom: 8px;
 }
 
-
-
 @media (max-width: 1150px) {
-    .nav-bar-middle {
-      width: 15% !important;
-    }
+  .nav-bar-middle {
+    width: 15% !important;
+  }
 }
 
 @media (max-width: 1000px) {
@@ -140,7 +132,6 @@
     text-align: center;
     width: 30%;
     min-width: 120px;
-    
   }
 
   .navbar .col-1 {

@@ -128,7 +128,7 @@ button {
   --color-white: #ffffff;
   --color-transparent: rgba(0, 0, 0, 0);
   --color-black-trans: rgba(0, 0, 0, 0.3);
-  --color-white-trans: rgba(255, 255, 255, 0.3);
+  --color-white-trans: rgba(255, 255, 255, 0.65);
   --color-accent: #046cf3;
   --color-blue-dark-2: #0e2f5a;
   --color-blue-dark-1: #2b4687;
@@ -155,7 +155,7 @@ button {
   --color-white: #303030;
   --color-transparent: rgba(0, 0, 0, 0);
   --color-black-trans: rgba(0, 0, 0, 0.3);
-  --color-white-trans: rgba(255, 255, 255, 0.3);
+  --color-white-trans: rgba(49, 49, 49, 0.3);
   --color-accent: #046cf3;
   --color-blue-dark-2: #0e2f5a;
   --color-blue-dark-1: #2b4687;

@@ -30,7 +30,10 @@ const Login = ({ funcNav }) => {
     } else {
       // successfully logged in
       setIsLoggedIn(true);
-      navigate('/practice');
+      setTimeout(() => {
+        console.log('awaiting login');
+        navigate('/practice');
+      }, 1000);
     }
   };
 
