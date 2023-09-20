@@ -25,6 +25,7 @@ import './styles/authMediaQueries.css';
 
 import Tooltip from './components/Tooltip.js';
 import { checkAuthenticated } from './services/authService.js';
+import CheckAuth from './components/CheckAuth.js';
 
 export const ThemeContext = React.createContext();
 export const LoginContext = React.createContext();
@@ -91,6 +92,10 @@ function App() {
                       <Tooltip visible={showTooltip} message={message} />
                     </div>
                     <Routes>
+                      <Route
+                        path="/"
+                        element={<CheckAuth funcNav={setShowNav} />}
+                      ></Route>
                       <Route
                         path="/practice"
                         element={<Practice funcNav={setShowNav} />}

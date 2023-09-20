@@ -544,7 +544,6 @@ const Home = ({ funcNav }) => {
       return cookieValue;
     }
     const csrftoken = getCookie('csrftoken');
-    console.log(`csrf token = ${csrftoken}`);
     const url = `${host}/api/user-piece/`;
     try {
       const token = localStorage.getItem('authToken');
