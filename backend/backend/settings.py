@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import environ, datetime, os
+import environ
+import datetime
+import os
 from datetime import timedelta
 
 env = environ.Env()
@@ -40,15 +42,15 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'knox.auth.TokenAuthentication',
-        
+
     ]
 }
 
 REST_KNOX = {
     'TOKEN_TTL': None,
 }
-#'rest_framework.permissions.AllowAny'
-    # 'rest_framework.permissions.IsAuthenticated',
+# 'rest_framework.permissions.AllowAny'
+# 'rest_framework.permissions.IsAuthenticated',
 
 
 # Application definition
@@ -88,6 +90,9 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
+    'http://localhost',
+    'http://127.0.0.1',
+    'http://0.0.0.0',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -176,6 +181,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

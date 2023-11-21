@@ -2,6 +2,30 @@ deployed database superuser - mcrawford5376@gmail.com
 Michael Crawford
 m0n0AWARE
 
+2. make sure the api end point updates things properly
+
+
+- add descriptions for techniques and composers
+- keys and meter must be sorted (add number fields in production)
+
+Remaining etudes?
+	mazas?	
+	Wohlfarth 40 studies?	
+	dancla op 73?	
+
+- feedback questions
+	- Are there any etudes books you think should be included?
+	- Could any of the techniques be named more clearly?
+	- Would you use this resource? 
+	- If no, is there anything that could be added that would convince you to use it?
+	- Any other suggestions?
+		
+- IN PIECE DETAIL - the space between lines for longer titles is too large...title text may be too large esp on mobile 		
+		
+
+
+			
+
 - Sends data to AI to provide next practice recommendations
 - Can it provide notifications (text or email) about practice reminders, practice inspiration.
 - boosted type of feature that times your practice sessions
@@ -10,22 +34,8 @@ m0n0AWARE
 DATA DASHBOARD
 	- can you incorporate the difficulty level of each of the pieces into the technique mastery calculation? 	
 
-Responsiveness / Design
-- Create Postgres database online, hook it up to local django 
-	- global completion does not update on first load 
-	- adding a piece is slow, probably because it awaits api call
-		- when you remove a piece, mastery field is null instead of 0 
-- deploy django to railway and test with local react 
-- deploy react to gcloud 
-- add all etude data
-- when you go to another page, then try loggin out from that page, it doesn't log out properly ??? is this still an issue 
-- favicon
-- what happens when a user has no pieces saved? 
+	- 
 
-- when you make api requests with deployed database....
-	- these paths do not work 
-		- pieces/
-		- categories/
 
 
 
@@ -51,15 +61,12 @@ Next time you make a component, think about mobile-first design
 	
 SORTING 
 - sort descending and ascending? 
-- prevent duplicates based on (pieceID, userID) (BACKEND) 
 
 DEPLOY
 - It's basically a working app, can you deploy it so you at least have a react/django app? 
 
 OPTIMIZATIONS
 - run compareObj only once when search state updates 
-- add more data so you know how it's going to run in reality 
-- you'll want to optimize category, so you don't recalculate count every single time you load the app 
 
 DESIGN / LOADING ANIMATIONS
 - loading animation for the table and detail dialogue, on first load and on search 

@@ -97,7 +97,7 @@ const Analytics = ({ showAnalytics, periods, userPieces, techniques }) => {
             <DoughnutChart
               labels={periods && periods.map((period) => period.name)}
               data={periodData}
-              title={'Completion by Period'}
+              title={'Completion by Key'}
               colors={['#003f5c', '#58508d', '#bc5090', '#ff6361', '#ffa600']}
             />
           </div>
@@ -105,7 +105,7 @@ const Analytics = ({ showAnalytics, periods, userPieces, techniques }) => {
             <DoughnutChart
               labels={types}
               data={typesData}
-              title={'Completion by Type'}
+              title={'Completion by Meter'}
               colors={['#4b005c', '#aa005e', '#ef4647', '#ff9a19', '#fff100']}
             />
           </div>

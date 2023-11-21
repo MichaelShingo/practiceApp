@@ -19,6 +19,7 @@ export const ACTIONS = {
   UPDATE_TECHNIQUE: 'update-technique',
   UPDATE_TYPE: 'update-type',
   UPDATE_COMPLETE: 'update-complete',
+  UPDATE_TEMPO: 'update-tempo',
   UPDATE_CATEGORY_SORT: 'update-category-sort',
   CLEAR: 'clear',
   REFRESH: 'refresh',
@@ -35,6 +36,7 @@ export const defaultSearchState = {
   techniqueTags: new Set(),
   complete: 'all',
   categorySort: 'difficulty',
+  tempo: '',
   refreshActive: false,
 };
 
@@ -69,6 +71,10 @@ const searchReducer = (state, action) => {
 
     case ACTIONS.UPDATE_COMPLETE:
       return { ...state, complete: action.payload.value };
+
+    case ACTIONS.UPDATE_TEMPO:
+      console.log(action.payload.value)
+      return { ...state, tempo: action.payload.value };
 
     case ACTIONS.UPDATE_CATEGORY_SORT:
       return { ...state, categorySort: action.payload.value };
@@ -248,14 +254,24 @@ const Home = ({ funcNav }) => {
       typeFiltered = periodFiltered;
     }
 
+    // FILTER BY TEMPO
+    let tempoFiltered;
+    if (searchState.tempo !== '') {
+      tempoFiltered = typeFiltered && typeFiltered.filter((piece) => {
+        return piece.tempo.map((tempo) => tempo.name).includes(searchState.tempo);
+      }) 
+    } else {
+      tempoFiltered = typeFiltered;
+    }
+
     // FILTER BY TECHNIQUE
     let techniqueFiltered = [];
     if (searchState.techniqueTags.size === 0) {
-      techniqueFiltered = typeFiltered;
+      techniqueFiltered = tempoFiltered;
     } else {
       techniqueFiltered =
-        typeFiltered &&
-        typeFiltered.filter((piece) => {
+      tempoFiltered &&
+      tempoFiltered.filter((piece) => {
           let pieceTechIDs = new Set();
           for (let technique of piece.techniques) {
             pieceTechIDs.add(technique.id);
@@ -494,6 +510,8 @@ const Home = ({ funcNav }) => {
       const jsonData = await response.json();
       setPieces(jsonData);
       console.log('fetched pieces');
+      setUpdatingUserPiece(false);
+
     } catch (error) {
       console.log('Error fetching data:', error);
     }
@@ -559,7 +577,7 @@ const Home = ({ funcNav }) => {
       // console.log(`fetch user pieces json = ${jsonData}`);
 
       setUserPieces(jsonData);
-      setUpdatingUserPiece(false);
+      // setUpdatingUserPiece(false);
 
       // update global mastery on initial load
 

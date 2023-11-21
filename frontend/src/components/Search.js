@@ -1,9 +1,8 @@
-import { ReactComponent as MagnifyingGlass } from '../svg/magnifying-glass-solid.svg';
 import { useState, useEffect, useContext } from 'react';
 import TechniqueTag from './TechniqueTag';
 import { ACTIONS, UserPieceLoadingContext } from '../Practice';
 import { defaultSearchState } from '../Practice';
-import LoadingIcon from './LoadingIcon';
+import { host } from '../services/urls';
 
 const Search = ({
   searchDispatch,
@@ -17,7 +16,40 @@ const Search = ({
   const [updatingUserPiece, setUpdatingUserPiece] = useContext(
     UserPieceLoadingContext
   );
-  useEffect(() => {}, []);
+  const [keys, setKeys] = useState([]);
+  const [meters, setMeters] = useState([]);
+
+  const fetchKeys = async () => {
+    const url = `${host}/api/periods/`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+      });
+      const jsonData = await response.json();
+      setKeys(jsonData);
+      console.log(jsonData);
+    } catch (error) {
+      console.log('Error fetching data:', error);
+    }
+  };
+  
+  const fetchMeters = async () => {
+    const url = `${host}/api/types/`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+      });
+      const jsonData = await response.json();
+      setMeters(jsonData);
+      console.log(jsonData);
+    } catch (error) {
+      console.log('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
+    fetchMeters();
+    fetchKeys();
+  }, []);
 
   const handleRefresh = () => {
     searchDispatch({ type: ACTIONS.REFRESH });
@@ -205,7 +237,7 @@ const Search = ({
 
           <div className="label-input-container">
             <label id="period-label" htmlFor="period">
-              <h3>Period</h3>
+              <h3>Key</h3>
             </label>
             <select
               onChange={(e) =>
@@ -225,17 +257,16 @@ const Search = ({
               }}
             >
               <option value=""></option>
-              <option value="Baroque">Baroque</option>
-              <option value="Classical">Classical</option>
-              <option value="Romantic">Romantic</option>
-              <option value="20th Century">20th Century</option>
-              <option value="Contemporary">Contemporary</option>
+              {keys && keys.map((key) => (
+                <option value={key.name}>{key.name}</option>
+              ))}
+            
             </select>
           </div>
 
           <div className="label-input-container">
             <label id="type-label" htmlFor="type">
-              <h3>Type</h3>
+              <h3>Meter</h3>
             </label>
             <select
               onChange={(e) =>
@@ -255,17 +286,41 @@ const Search = ({
               }}
             >
               <option value=""></option>
-              <option value="Sonata">Sonata</option>
-              <option value="Etude">Etude</option>
-              <option value="Concerto">Concerto</option>
-              <option value="Miniature">Miniature</option>
-              <option value="Showpiece">Showpiece</option>
-              <option value="Exercise">Exercise</option>
-              <option value="Suite">Suite</option>
+              {meters && meters.map((meter) => (
+                <option value={meter.name}>{meter.name}</option>
+              ))}
+          
             </select>
           </div>
         </div>
         <div className="search-flex">
+        <div className="label-input-container">
+            <label id="tempo-label" htmlFor="tempo-filter">
+              <h3>Tempo</h3>
+            </label>
+            <select
+              onChange={(e) =>
+                searchDispatch({
+                  type: ACTIONS.UPDATE_TEMPO,
+                  payload: { value: e.target.value },
+                })
+              }
+              id="tempo-filter"
+              type="select"
+              value={searchState.tempo}
+              style={{
+                borderColor:
+                  searchState.tempo === defaultSearchState.tempo
+                    ? 'var(--color-grey-2)'
+                    : 'var(--color-accent)',
+              }}
+            >
+              <option value=""></option>
+              <option value="slow">Slow</option>
+              <option value="moderate">Moderate</option>
+              <option value="fast">Fast</option>
+            </select>
+          </div>
           <div className="label-input-container">
             <label id="category-label" htmlFor="category-sort">
               <h3>Sort Categories By</h3>
@@ -322,7 +377,10 @@ const Search = ({
               <option value="date-created">Date Created</option>
             </select>
           </div>
-          <button
+          
+        </div>
+        <div className="search-flex">
+        <button
             disabled={compareObj(searchState, defaultSearchState)}
             onClick={handleClear}
             style={{

@@ -110,8 +110,20 @@ const PieceDetail = ({
                             />
                         </div>
                         <div className="col-4">
-                            <h3>Period</h3>
-                            <div className="period-container">
+                            <h3>Time Signature</h3>
+                            <div className="text-container">
+                                <h4>
+                                    {`${pieceDetailPiece.type_of_piece.name}`}
+                                </h4>
+                            </div>
+                            <h3>Tempo</h3>
+                            <div className="text-container">
+                                <h4>
+                                    {`${pieceDetailPiece.tempo.map((tempo) => tempo.name).join('/')}`}
+                                </h4>
+                            </div>
+                        
+                            {/* <div className="period-container">
                                 {periods && periods.map(period => (
                                     <Periods 
                                         pieceDetailPiece={pieceDetailPiece}
@@ -120,7 +132,7 @@ const PieceDetail = ({
                                         handleOnMouseLeave={handleOnMouseLeave}
                                     />
                                 ))}
-                            </div>                 
+                            </div>                  */}
                         </div>
                         <div className="col-4">
                             <h3>Mastery</h3>
@@ -155,13 +167,13 @@ const PieceDetail = ({
                                     {`${pieceDetailPiece.composer.first_name} ${pieceDetailPiece.composer.last_name}`}
                                 </h4>
                             </div>
-                            <h3>Type</h3>
+                            <h3>Key Signature</h3>
                             <div className="text-container">
                                 <h4 
                                     onMouseEnter={() => handleOnMouseEnter('type')} 
                                     onMouseOut={handleOnMouseLeave}
                                 >
-                                    {pieceDetailPiece.type_of_piece.name}
+                                    {pieceDetailPiece.period.name}
                                 </h4>
                             </div>     
                         </div>
