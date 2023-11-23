@@ -5,8 +5,7 @@ m0n0AWARE
 2. make sure the api end point updates things properly
 
 
-- add descriptions for techniques and composers
-- keys and meter must be sorted (add number fields in production)
+- completion is 100% when you select incomplete only.... and only one cate is showing?
 
 Remaining etudes?
 	mazas?	
@@ -53,36 +52,12 @@ AI
 - AI will suggest further practice recommendations. 
 - Allow chatting with the AI after this point? (but this could lead to abuse if people just use this as their personal portal) 
 ***************************
-Next time you make a component, think about mobile-first design 
 
 
 
-
-	
-SORTING 
-- sort descending and ascending? 
-
-DEPLOY
-- It's basically a working app, can you deploy it so you at least have a react/django app? 
 
 OPTIMIZATIONS
 - run compareObj only once when search state updates 
-
-DESIGN / LOADING ANIMATIONS
-- loading animation for the table and detail dialogue, on first load and on search 
-- animation when clicking technique tag 
--  allow background color picker, store dark/light and color in local storage.
-
-BUGS
-- It's making a put request to update mastery when you add the piece (after clearing) , but it's not found in the database 
-
-
-
-- WHAT HAPPENS IF YOU HAVE THE SAME PAGE OPEN ON MULTIPLE TABS/DEVICES? 
-
-
-- Do you need to override rest_framework/serializers
-
 
 - Violin Roadmap
 
@@ -116,77 +91,3 @@ mcrawford5376@gmail.com
 1234
 
 
-Type of Pieces
-- Sonata
-- Etude
-- Scale
-- Arpeggio
-- Concerto
-- Miniature
-- Showpiece
-- Exercise
-- Suite
-
-
-INSERT INTO pieces_technique (name, description, tutorial)
-VALUES ('left hand articulation', 'placeholder', 'placeholder');
-
-
-	
-	
-from rest_framework import serializers
-from .models import Techniques
-
-class TechniquesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Techniques
-        fields = '__all__'
-		
-		
-		
-		
-OLD HANDLE CHECK FUNCTION 
-const oldHandleCheckFunction= (e) => {
-        console.log(e.target.name);
-        try {
-            e.target.classList.toggle('hide-checkmark');
-            const checkedElement = e.target.previousElementSibling;
-            checkedElement.classList.toggle('hide-checkmark');
-            const pieceRow = checkedElement.parentNode.parentNode;
-            const categoryID = pieceRow.getAttribute("categoryID").toString();
-            const masteryLevel = pieceRow.querySelector('.mastery-number');
-
-            const fraction = document.querySelector(`.fraction[categoryID="${categoryID}"]`);
-
-
-            const fractionText = fraction.textContent;
-            const slashIndex = fractionText.indexOf('/');
-            console.log(fractionText, slashIndex);
-            let numerator = parseInt(fractionText.substring(0, slashIndex));
-            const denominator = fractionText.substring(slashIndex + 1, fractionText.length);
-            // console.log(fractionText.indexOf('/'));
-            const progressBar = document.querySelector(`.progress-bar[categoryID="${categoryID}"]`);
-            console.log(progressBar);
-            
-
-            if (checkedElement.classList.contains('hide-checkmark')) { 
-                // When you uncheck it decrement mastery
-                console.log('unchecked');
-                // masteryLevel.value = 0;
-                numerator = numerator - 1;
-                console.log(`numerator = ${numerator}`);
-            } else {
-                console.log('checked');
-                // masteryLevel.value = 10;
-                numerator = numerator + 1; 
-            }
-            let percentage = numerator / denominator * 100;
-            console.log(`percentage = ${percentage}`);
-            progressBar.style.width = `${percentage.toString()}%`;
-            fraction.textContent = numerator.toString() + '/' + denominator.toString();
-            // update database
-        } catch (error){
-            e.target.classList.toggle('hide-checkmark');
-            console.log(error.message);
-        }  
-    }

@@ -68,7 +68,7 @@ const PieceDetail = ({
                 setMessage(pieceDetailPiece.composer.description)
                 break;
             case 'type':
-                setMessage(pieceDetailPiece.type_of_piece.description);
+                setMessage(pieceDetailPiece.period.description);
                 break;
             case 'period':
                 setMessage(specifiedMessage);

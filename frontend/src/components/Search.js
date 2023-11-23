@@ -344,7 +344,7 @@ const Search = ({
             >
               <option value="difficulty">Difficulty</option>
               <option value="title">Title</option>
-              <option value="completion">Completion</option>
+              {/* <option value="completion">Completion</option> */}
             </select>
           </div>
 
