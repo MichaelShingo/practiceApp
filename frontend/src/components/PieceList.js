@@ -160,6 +160,14 @@ const PieceList = ({
     }
   };
 
+  const generateMenu = () => {
+    let res = [];
+    for (let i = 0; i < 11; i++) {
+      res.push(<option>{i}</option>);
+    }
+    return res;
+  }
+
   useEffect(() => {
     if (masteryNum === null) {
       masteryLevel.current.style.backgroundColor = 'var(--color-grey-1)';
@@ -229,12 +237,14 @@ const PieceList = ({
           position={popupPosition}
           message="Login first!"
         />
-        <CheckMark
+        {checked ? <CheckMark
           className={
             !checked ? 'complete-icon hide-checkmark' : 'complete-icon'
           }
+          onClick={(e) => toggleCheckMark(e)}
           ref={checkMarkRef}
         />
+        :
         <OpenCircle
           className={checked ? 'open-icon hide-checkmark' : 'open-icon'}
           style={{
@@ -246,6 +256,9 @@ const PieceList = ({
           onClick={(e) => toggleCheckMark(e)}
           ref={openCircle}
         />
+        }
+       
+        
       </td>
       <td>{piece.difficulty}</td>
       <td className="mastery-row">
@@ -255,17 +268,8 @@ const PieceList = ({
           value={masteryNum}
           onChange={handleMasteryChange}
         >
-          <option>0</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-          <option>10</option>
+            {generateMenu()}
+         
         </select>
 
         {/* <input 

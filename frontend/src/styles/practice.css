@@ -223,7 +223,6 @@ tbody tr:hover {
   opacity: 1;
   max-height: 25px;
   transition: var(--fast-transition);
-  left: 12.5px;
 }
 
 .complete-icon:hover {
@@ -236,7 +235,6 @@ tbody tr:hover {
   max-height: 25px;
   transition: var(--fast-transition);
   margin: auto;
-  left: -12.5px;
   text-align: center;
   z-index: 1;
 }
@@ -279,13 +277,13 @@ tbody tr:hover {
 } */
 
 .mastery-number {
-  display: inline;
+  display: block;
   text-align: center;
+  text-align-last: center;
   background-color: var(--color-grey-2);
   width: 40px;
   border-radius: 2rem;
   transition: var(--default-transition);
-
   color: white;
 }
 
@@ -299,6 +297,9 @@ tbody tr:hover {
   z-index: 5;
 }
 .sidebar-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
   margin-block: 10px;
   height: 60px;
   width: 60px;
@@ -313,13 +314,15 @@ tbody tr:hover {
 
 .sidebar-icon:hover {
   cursor: pointer;
-  transform: translateY(-3px);
 }
 
 .sidebar-icon .icon {
   height: 40px;
   width: 40px;
   position: fixed;
+  position: fixed;
+  bottom: 40px;
+  right: 30px;
 }
 
 #chart-icon {
