@@ -26,19 +26,36 @@ const Calendar = ({ userPieces }) => {
   const weekdayLabels = ['Sun', 'Wed', 'Sat'];
   useEffect(() => {
     populateDays();
-  }, []);
+  }, [year]);
+
+  function isLeapYear(year) {
+    // Feb is 29 days in a leap year, instead of 28
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+  }
+
+  function getFirstDayOfYear(year) {
+    const firstDayOfYear = new Date(year, 0, 1);
+    const dayOfWeek = firstDayOfYear.getDay();
+    return dayOfWeek;
+  }
 
   const populateDays = () => {
     let dayList = [];
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
+    const daysInYear = isLeapYear(year) ? 366 : 365;
+    const firstDayOfWeek = getFirstDayOfYear(year);
 
-    for (let day = 0; day < 365; day++) {
-      const dateInYear = new Date(currentYear, 0, day + 1);
+    for (let i = 0; i < firstDayOfWeek; i++) {
+      dayList.push(new Date(1900, 0, 1));
+      console.log('pushed 1900', i)
+    }
+    for (let day = 0; day < daysInYear; day++) {
+      const dateInYear = new Date(year, 0, day + 1);
       dayList.push(dateInYear);
     }
     setDays(dayList);
-    setYear(currentYear);
+    setYear(year);
 
     let yearList = [];
     for (let i = 2015; i <= currentYear; i++) {
@@ -71,10 +88,10 @@ const Calendar = ({ userPieces }) => {
             <p key={weekday}>{weekday}</p>
           ))}
         </div>
-        {days.map((day) => (
+        {days.map((day, index) => (
           <CalendarBox
             day={day}
-            key={day}
+            key={index}
             year={year}
             selectedDate={selectedDate}
             userPieces={userPieces}

@@ -11,7 +11,6 @@ const CalendarBox = ({
     const [isActive, setIsActive] = useState(false);
     const [matchedPieces, setMatchedPieces] = useState([]);
     const [isSelected, setIsSelected] = useState(false);
-
     const [setShowTooltip, setMessage] = useContext(TooltipContext);
 
     useEffect(() => {
@@ -46,7 +45,9 @@ const CalendarBox = ({
     }, [matchedPieces])
 
     return ( 
-        <div 
+        <>
+        {day.getFullYear() !== 1900 ? 
+            (<div 
             className="cal-box"
             onClick={() => handleBoxClick(matchedPieces, day)}
             onMouseEnter={() => {
@@ -60,7 +61,16 @@ const CalendarBox = ({
                 border: isSelected ? '2px solid var(--color-accent)' : ''
             }} 
         >
-        </div>
+        </div>)
+            :
+            (<div 
+                className="cal-box-placeholder"
+                
+            >
+            </div>)
+        }
+        </>
+       
      );
 }
  

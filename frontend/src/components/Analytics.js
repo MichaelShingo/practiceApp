@@ -98,15 +98,42 @@ const Analytics = ({ showAnalytics, periods, userPieces, techniques }) => {
               labels={periods && periods.map((period) => period.name)}
               data={periodData}
               title={'Completion by Key'}
-              colors={['#003f5c', '#58508d', '#bc5090', '#ff6361', '#ffa600']}
-            />
+              colors={['#003f5c', 
+              '#0075ab', 
+              '#00acfb', 
+              '#2f4b7c', 
+              '#547ec7', 
+              '#75a7ff', 
+              '#665191', 
+              '#987bd3', 
+              '#6a00fa', 
+              '#a05195', 
+              '#c968bc', 
+              'ff85ee', 
+              '#d45087', 
+              '#ff69a8', 
+              '#ffa9cd', 
+              '#f95d6a', 
+              '#ff1428', 
+              '#ff7c43', 
+              '#de4300', 
+              '#ffa600', 
+              '#ffd991', 
+              '#4d009c', 
+              '#bd767c', 
+              '#ffb18f', 
+              '#ac75ff', 
+              '#ffa600', 
+              '#7e00ff',]}            />
           </div>
           <div className="chart-row chart-row-doughnut" id="doughnut-right">
             <DoughnutChart
               labels={types}
               data={typesData}
               title={'Completion by Meter'}
-              colors={['#4b005c', '#aa005e', '#ef4647', '#ff9a19', '#fff100']}
+              colors={['#003f5c', '#2f4b7c', '#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600', '#ffacb3', '#ffb18f', '#ffa600']}
+
+           
             />
           </div>
         </div>
