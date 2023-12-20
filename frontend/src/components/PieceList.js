@@ -256,9 +256,7 @@ const PieceList = ({
           onClick={(e) => toggleCheckMark(e)}
           ref={openCircle}
         />
-        }
-       
-        
+        } 
       </td>
       <td>{piece.difficulty}</td>
       <td className="mastery-row">

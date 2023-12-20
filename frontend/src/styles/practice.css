@@ -285,6 +285,12 @@ tbody tr:hover {
   border-radius: 2rem;
   transition: var(--default-transition);
   color: white;
+  margin-left: 50%;
+  margin-right: 50%;
+  transform: translateX(-50%);
+}
+
+.mastery-row {
 }
 
 /* SIDEBAR ICONS */
